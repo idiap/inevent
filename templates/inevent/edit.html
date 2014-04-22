@@ -46,45 +46,86 @@
 
 {% block content_inevent_page %}
 
-<form class="form updateForm" action="{% url hyperevent_update id %}" method="post">{% csrf_token %}
-    Id: {{id}}<br/>
-    Title: <input type="text" class="form-control" name="title"
-            value="{% if title %}{{title}}{% endif %}" required /><br/>
-    Name: <input type="text" class="form-control" name="name"
-           value="{% if name %}{{name}}{% endif %}" required /><br/>
-    Description: <input type="text" class="form-control" name="description"
-                  value="{% if description %}{{description}}{% endif %}" /><br/>
-    <input type="submit" value="Save" />
-</form>
-
-<b>{{tracks|length}} tracks:<br/></b>
-
-<ul>
-{% for track in tracks %}
-    {% if track.mimeType == 'inevent/video' %}
-        <li>video track:</li>
-        <ul>
-        {% for file in track.files %}
-            {% if file.mimeType|slice:":5" == 'video' %}
-                <li>video: {{file.fileName}}</li>
-            {% elif file.mimeType|slice:":5" == 'image' %}
-                <li>image: {{file.fileName}}</li>
-            {% else %}
-                <li>other: {{file.fileName}}</li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    {% elif track.mimeType == 'inevent/slides' %}
-        <li>{{track.files|length}} slides</li>
-    {% elif track.mimeType == 'inevent/transcript' %}
-        <li>transcript track</li>
-    {% else %}
-        <li>other type: {{track.mimeType}}</li>
-    {% endif %}
-{% endfor %}
-</ul>
-
-
+<div class="row-fluid nihilo">
+	<div class="container-fluid span12">
+		<div class="row-fluid">
+			<h1>
+				{% if title %}
+					{{title}}
+				{% else %}
+					No name
+				{% endif %}
+			</h1>
+		</div>
+		
+		<form class="form updateForm" action="{% url hyperevent_update id %}" method="post">{% csrf_token %}
+			<div class="row-fluid">
+				<div class="col-fluid span1">Title:</div>
+				<div class="col-fluid span1">
+					<input type="text" class="form-control" name="title" value="{% if title %}{{title}}{% endif %}" required />
+				</div>
+			</div>
+		
+			<div class="row-fluid">
+				<div class="col-fluid span1">Name:</div>
+				<div class="col-fluid span1">
+					<input type="text" class="form-control" name="name" value="{% if name %}{{name}}{% endif %}" required />
+				</div>
+			</div>
+		
+			<div class="row-fluid">
+				<div class="col-fluid span1">Description:</div>
+				<div class="col-fluid span1">
+					<input type="text" class="form-control" name="description" value="{% if description %}{{description}}{% endif %}" />
+				</div>
+			</div>
+		
+			<div class="row-fluid">
+				<div class="col-fluid span2"><input type="submit" value="Save" /></div>
+			</div>
+		</form>
+		
+		<div class="row-fluid">
+			<h2>{{tracks|length}} tracks</h2>
+		</div>
+		
+		<div class="row-fluid">
+			<ul>
+				{% for track in tracks %}
+					{% if track.mimeType == 'inevent/video' %}
+						<li>video track:</li>
+						<ul>
+						{% for file in track.files %}
+							{% if file.mimeType|slice:":5" == 'video' %}
+								<li>video: {{file.fileName}}</li>
+							{% elif file.mimeType|slice:":5" == 'image' %}
+								<li>image: {{file.fileName}}</li>
+							{% else %}
+								<li>other: {{file.fileName}}</li>
+							{% endif %}
+						{% endfor %}
+						</ul>
+					{% elif track.mimeType == 'inevent/slides' %}
+						<li>{{track.files|length}} slides</li>
+					{% elif track.mimeType == 'inevent/transcript' %}
+						<li>transcript track</li>
+					{% else %}
+						<li>other type: {{track.mimeType}}</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+		
+		<div class="row-fluid">
+			<button class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#uploadTrackForm">Add Track</button>
+			
+			{# SD/TODO Check video_url and slides availability #}
+			{% if 1 %}
+				<a class="btn btn-info btn-small" href="{% url alignment_index id %}">Edit Slides</a>
+			{% endif %}
+		</div>
+	</div>
+</div>
 
 <script>
 
@@ -174,9 +215,6 @@
     });
 </script>
 
-<button class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#uploadTrackForm">
-    Add Track
-</button>
 <div class="modal fade" id="uploadTrackForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">

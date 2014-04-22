@@ -29,11 +29,13 @@ django-debug-toolbar==0.9.4
 Starting
 --------
 
-Run server with the following command
-
 In your local repository create a settings_local.py file which overwrites DEBUG to True (in development mode). 
-Debug = True
 
+```python
+DEBUG = True
+```
+
+Run server with the following command
 
 ```sh
 ./manage runserver 127.0.0.1:8000

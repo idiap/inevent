@@ -12,6 +12,11 @@ function Graph() {
 		this.graph_top = this.top;
 		this.graph_left = this.left;
 		
+		
+		this.queue = [] ;
+		this.excluded = [] ; //SD/ to store node who already displays neighbours
+		this.input_links = [] ;
+		
 		this.svg = d3.select("#" + this.graph_id).append("svg")
 			.attr("width", this.graph_width)
 			.attr("height", this.graph_height);
@@ -19,9 +24,6 @@ function Graph() {
 		this.color = {	black:"black",
 						grey:"grey"} ;
 		
-		this.queue = [] ;
-		this.excluded = [] ; //SD/ to store node who already displays neighbours
-		this.input_links = [] ;
 	}
 
 	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
@@ -104,8 +106,11 @@ function Graph() {
 	}
 
 	this.setCenter = function(d) {
-		if(d.id == this.input_nodes[0]['id'] && this.video_switch)
+		if(d.id == this.input_nodes[0]['id'] && this.video_switch == true) {
 			get_graph() ;
+			
+		}
+			
 		else
 			document.location.href = document.location.href.split("inevent_portal")[0] + "inevent_portal/hyperevent/" + d.id;
 	}

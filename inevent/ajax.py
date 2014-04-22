@@ -113,14 +113,15 @@ def get_graph_neighbours(request, event_id, count, depth, num_of_similar=4):
 
 #SD/ Convert dates for json export
 def date_convert(all_events):
-    if all_events[0].has_key("date"):
+    if all_events[0].has_key("linkedEvent"):
         for i in range(0, len(all_events)):
-            if type(all_events[i]['date']) == datetime.datetime:
-                all_events[i]['date'] = all_events[i]['date_ms']
-    elif all_events[0].has_key("linkedEvent"):
-        for i in range(0, len(all_events)):
-            if type(all_events[i]['linkedEvent']['date']) == datetime.datetime:
+            if all_events[i].has_key("date") and type(all_events[i]['linkedEvent']['date']) == datetime.datetime:
                 all_events[i]['linkedEvent']['date'] = all_events[i]['linkedEvent']['date_ms']
+    else:
+        for i in range(0, len(all_events)):
+            if  all_events[i].has_key("date") and type(all_events[i]['date']) == datetime.datetime:
+                all_events[i]['date'] = all_events[i]['date_ms']
+    
     return all_events
 
 def _get_events(events,events_to_add,ids):

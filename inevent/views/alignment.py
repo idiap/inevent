@@ -15,6 +15,7 @@ def alignment_index(request, hyperevent_id=None):
     if hyperevent_id:
         hyperevent = get_event(hyperevent_id, only_basic_info=False)
         data['hyperevent_id'] = hyperevent_id
+        data['hyperevent_title'] = hyperevent['title']
         data['video_url'] = hyperevent['video_url']
         if hyperevent['mime_type'] == 'video/x-flv':
             data['video_type'] = 'flv'

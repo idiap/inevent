@@ -15,9 +15,12 @@ function Graph() {
 		this.svg = d3.select("#" + this.graph_id).append("svg")
 			.attr("width", this.graph_width)
 			.attr("height", this.graph_height);
+			
+		this.color = {	black:"black",
+						grey:"grey"} ;
 	}
 
-	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, toggleable) {
+	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
 	
 		this.input_nodes = data ;
 
@@ -31,10 +34,7 @@ function Graph() {
 		this.max_depth = max_depth ;
 		this.max_neighbours = max_neighbours ;
 
-		this.color_black = "black" ;
-		this.color_grey = "grey"
-
-		this.toggleable = typeof toggleable !== 'undefined' ? toggleable : false;
+		this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 
 		this.queue = [] ;
 		this.excluded = [] ; //SD/ to store node who already displays neighbours
@@ -105,7 +105,7 @@ function Graph() {
 	}
 
 	this.setCenter = function(d) {
-		if(d.id == this.input_nodes[0]['id'] && this.toggleable)
+		if(d.id == this.input_nodes[0]['id'] && this.video_switch)
 			get_graph() ;
 		else
 			document.location.href = document.location.href.split("inevent_portal")[0] + "inevent_portal/hyperevent/" + d.id;
@@ -158,7 +158,7 @@ function Graph() {
 			.attr("width", this.small_rect[0])
 			.style("stroke", function(d) {
 				//SD/ Color in black first node only
-				if(d.depth < 1) { return _this.color_black } else { return _this.color_grey }
+				if(d.depth < 1) { return _this.color.black } else { return _this.color.grey }
 			})
 			.attr("rx", "5")
 			.attr('x', -this.small_rect[0] / 2)
@@ -192,7 +192,7 @@ function Graph() {
 			.attr("width", this.big_rect[0])
 			.style("stroke", function(d) {
 				//SD/ Color in black first node only
-				if(d.depth < 1) { return _this.color_black } else { return _this.color_grey } 
+				if(d.depth < 1) { return _this.color.black } else { return _this.color.grey } 
 			})
 			.style("fill","white") // Make the nodes hollow looking
 			.style("stroke-width", 2) // Give the node strokes some thickness
@@ -299,7 +299,7 @@ function Graph() {
 			.style("stroke-width",function(d) {return  d.weight})
 			.style("stroke", function(d) { 
 				//SD/ Color in black links of first node only
-				if(d.depth < 2) { return _this.color_black } else { return _this.color_grey }
+				if(d.depth < 2) { return _this.color.black } else { return _this.color.grey }
 			})
 			.attr("x1", function(d) { return d.source.x})
 			.attr("y1", function(d) { return d.source.y})
@@ -403,10 +403,10 @@ function display_graph_error(error) {
 }
 
 //SD/ Initiate the first graph and call dynamically next data
-function display_graph_head(data, toggleable, max_neighbours, max_depth, max_size) {
+function display_graph_head(data, video_switch, max_neighbours, max_depth, max_size) {
 	graph_data_fetched = true;
 
-	toggleable = typeof toggleable !== 'undefined' ? toggleable : false;
+	video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 	max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
 	max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
 	max_size = typeof max_size !== 'undefined' ? max_size : 100;
@@ -415,7 +415,7 @@ function display_graph_head(data, toggleable, max_neighbours, max_depth, max_siz
 	$('#graph').html("");
 	position = $('#graph').position();
 	
-	graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], toggleable);
+	graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
 	//SD/ Prepare queue for nodes
 	data[0]['depth'] = 0 ;

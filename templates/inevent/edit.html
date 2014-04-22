@@ -45,7 +45,6 @@
 {% endblock %}
 
 {% block content_inevent_page %}
-
 <div class="row-fluid nihilo">
 	<div class="container-fluid span12">
 		<div class="row-fluid">
@@ -91,6 +90,8 @@
 		
 		<div class="row-fluid">
 			<ul>
+				{# SD/TODO format data in view !!! #}
+			
 				{% for track in tracks %}
 					{% if track.mimeType == 'inevent/video' %}
 						<li>video track:</li>
@@ -119,8 +120,7 @@
 		<div class="row-fluid">
 			<button class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#uploadTrackForm">Add Track</button>
 			
-			{# SD/TODO Check video_url and slides availability #}
-			{% if 1 %}
+			{% if has_video and has_slide %}
 				<a class="btn btn-info btn-small" href="{% url alignment_index id %}">Edit Slides</a>
 			{% endif %}
 		</div>

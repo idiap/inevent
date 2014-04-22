@@ -64,6 +64,20 @@ def edit(request, hyperevent_id):
     if hyperevent_id:
         data = get_event(hyperevent_id, raw_data=True)
 
+	has_video = 0
+	has_slide = 0
+	
+	for track in data['tracks']:
+		if track['mimeType'] == 'inevent/video':
+			for file in track['files'] :
+				if file['mimeType'][0:5] == 'video':
+					has_video = 1
+		elif track['mimeType'] == 'inevent/slides':
+			has_slide = 1
+
+	data['has_video'] = has_video
+	data['has_slide'] = has_slide
+
     template = 'inevent/edit.html'
     return render_to_response(template, data, context_instance=RequestContext(request))
 

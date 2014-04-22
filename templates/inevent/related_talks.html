@@ -1,0 +1,64 @@
+<div id="rec_list"></div>
+<!-- <div id="rec_graph" class="display:none" style="position:relative"></div> -->
+ 
+ <script type="text/javascript">
+  var graph_data_fetched = false;
+  $(document).ready(function() {
+ 	//	$('#graph_button').bind('click', toggle_view_mode_re);
+		Dajaxice.inevent.get_recommendations(display_recommendations, {'event_id': "{{ hyperevent_id }}" });
+		//Dajaxice.inevent.graph_related_talks(display_graph_related_talks,{'event_id': "{{ hyperevent_id }}" },{'error_callback': 'error'});
+	//	Dajaxice.inevent.graph_related_talks(display_graph_related_talks, {'event_id': "{{ hyperevent_id }}"});
+	});
+		
+	function display_recommendations(data) {
+		// check if center-element is still there, because it could be that after an asynchronous search request, 
+		// it has been cleared while recommendations were being fetched.
+		//if ($('#recommendations').length>0 && $('#center-element').length>0)
+		if ($('#rec_list')!=undefined) {
+		//	$('#rec_graph').css("display", "");
+			$('#rec_list').html(data);
+		}
+	}
+	
+	function display_graph_related_talks(data) {
+		if ($('#rec_graph')!=undefined) {
+			graph_data_fetched = true;
+			$('#rec_graph').html("");
+			offset = $('#rec_graph').offset();
+			load_graph(data,"rec_graph", 400, 500,offset['top'], offset['left']+20);
+		//	make sure it remains hidden until user click on +view as graph+
+			if ($('#graph_button').attr("name") == "list")
+				$('#rec_graph').css("display", "none");
+		}
+	}
+	
+		function toggle_view_mode_re(){
+		if ($('#graph_button').attr("name") == "list") {
+			$('#rec_graph').css("display", "");
+			$('#rec_list').css("display", "none");
+			if (graph_data_fetched == false) {
+				//Dajaxice.inevent.get_graph(function(data){display_graph(data, true);},{'error_callback': display_graph_error});
+				$('#rec_graph').html('<div class="alert alert-info" style="margin-top:20px"> Loading ... </div>');
+				//$('#graph_button').prop('disabled', true);
+			}
+			$('#graph_button').attr("name","graph");
+			$('#graph_button').html("View as List")
+		
+			
+		}
+		else {
+			$('#graph_button').attr("name","list");
+			$('#rec_list').css("display", "");
+			$('#rec_graph').css("display", "none");
+			$('#graph_button').html("View as graph")
+		}
+		 	
+	}
+//	if user attemps to click on a video while graph is being loaded, this is generated an error so need to display to user if graph fails, or later differentiate conditions on reload
+	/*	function display_graph_error(error) { 
+		graph_data_fetched = false;
+		$('#graph_button').html("Show as List")
+		$('#rec_graph').html('<div class="alert alert-error" style="margin-top:20px"> Unable to load graph. Please try again later.');
+		//$('#graph_button').prop('disabled', false);
+	} */
+ </script>

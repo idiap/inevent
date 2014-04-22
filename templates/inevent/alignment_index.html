@@ -1,0 +1,596 @@
+{% extends "inevent/base.html" %}
+{% load staticfiles %}
+
+{% block extrastyle_inevent_page %}
+
+<style>
+#all-slides,#ordered-slides,#thumbs-div {
+    overflow-y: auto;
+    list-style-type: none;
+}
+.no-border {
+    border: 2px solid white;
+}
+.with-border {
+    border: 2px solid red;
+}
+.current-slide {
+    border: 2px solid lime;
+}
+
+.drag-destination {
+    height: 100px;
+    background-color: yellow;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+</style>
+
+{% endblock %}
+
+{% block extrascripts_inevent_page %}
+
+<script src="{% static "inevent/scripts/sprintf.js" %}"></script>
+<script src="{% static "inevent/scripts/jquery-ui.js" %}"></script>
+<script src="{% static "inevent/scripts/jquery.jplayer.min.js" %}"></script>
+
+<script type="text/javascript">
+
+    /////////// for csrf ////////////
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: true,  // to be able to call cross-domain
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    ///////// end csrf part /////////
+
+</script>
+
+{% if video_url %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        //////// internal variables //////
+        var video_len = 1;
+
+        /////// event handlers /////////
+        $(document).keyup(function(event) {
+            if (event.keyCode == 8) {
+                //console.log("DELETE");
+                $('.slide.with-border').parent().remove();
+                update_slides_list();
+            };
+        });
+        $(document).keypress(function(event) {
+                //console.log("KEYPRESSED", event.which);
+        });
+
+        $('#progress-bar-div').mousedown(function(evt) {
+            var video_position = evt.offsetX / $(this).width() * 100;
+            if (evt.which == 1) {
+                $("#jplayer").jPlayer("playHead", video_position);
+            }
+        });
+        $('#progress-bar-div').mousemove(function(evt) {
+            var video_position = evt.offsetX / $(this).width() * 100;
+            if (evt.which == 1) {
+                $("#jplayer").jPlayer("playHead", video_position);
+            }
+        });
+
+        // bind all the wanted jPlayer events
+        $("#jplayer").bind($.jPlayer.event.play, function(event) {
+            printout_time(event.jPlayer.status.currentTime);
+            $("#progress-bar-div").addClass('active progress-striped');
+        });
+        $("#jplayer").bind($.jPlayer.event.pause, function(event) {
+            printout_time(event.jPlayer.status.currentTime);
+            $("#progress-bar-div").removeClass('active progress-striped');
+        });
+        $("#jplayer").bind($.jPlayer.event.stop, function(event) {
+            printout_time(event.jPlayer.status.currentTime);
+            $("#progress-bar-div").removeClass('active progress-striped');
+        });
+        $("#jplayer").bind($.jPlayer.event.ended, function(event) {
+            printout_time(event.jPlayer.status.currentTime);
+            $("#progress-bar-div").removeClass('active progress-striped');
+        });
+        $("#jplayer").bind($.jPlayer.event.timeupdate, function(event) {
+            video_len = event.jPlayer.status.duration;
+            absolutePosition = event.jPlayer.status.currentPercentAbsolute;
+            $("#progress-bar").css({'width': absolutePosition + "%"});
+            printout_time(event.jPlayer.status.currentTime);
+
+            var current_slide_id = find_slide_at(event.jPlayer.status.currentTime);
+            var displayed_slide_id = parseInt($('#displayed-slide-id').text(), 10);
+            if (displayed_slide_id != current_slide_id) {
+                update_displayed_slide(current_slide_id);
+                scroll_slides_to(current_slide_id);
+            }
+        });
+        $("#jplayer").bind($.jPlayer.event.seeking, function(event) {
+            printout_time(event.jPlayer.status.currentTime);
+        });
+        $("#jplayer").bind($.jPlayer.event.seeked, function(event) {
+            printout_time(event.jPlayer.status.currentTime);
+        });
+        $("#jplayer").bind($.jPlayer.event.durationchange, function(event) {
+            video_len = event.jPlayer.status.duration;
+        });
+
+        //////// functions /////////
+
+        function get_nb_ordered_slides() {
+            return $($('#ordered-slides')[0]).find('li').length;
+        }
+
+        function add_border_to_current_slide(slide_id) {
+            $('.slide').removeClass('current-slide');
+            $($($('#ordered-slides')[0]).find('li')[slide_id]).find('.slide').addClass('current-slide');
+        }
+
+        function format_timestamp(timestamp) {
+            if (timestamp < 0) {
+                timestamp = 0;
+            }
+            if (timestamp > video_len) {
+                timestamp = video_len;
+            }
+            return sprintf('%02d:%02d:%02d', timestamp / 60 / 60, timestamp / 60 % 60, timestamp % 60);
+        }
+
+        function slide_clicked(slide) {
+            $('.slide').removeClass('with-border').addClass('no-border');
+            slide.removeClass('no-border');
+            slide.addClass('with-border');
+        }
+
+        function setup_simple_click(element) {
+            element.off('click');
+            element
+                .click(function(event) {
+                    slide_clicked($(this));
+                });
+        }
+
+        function printout_time(timestamp) {
+            $("#play-txt-progress").text("time: " + format_timestamp(timestamp));
+        };
+
+        function find_slide_at(timestamp) {
+            var the_lis = $('#ordered-slides').find('li');
+            for (var i = 0; i < the_lis.length; i++) {
+                if (parseInt($(the_lis[i]).find('.slide-start-time').text(), 10) > timestamp) {
+                    return i - 1;
+                }
+            }
+            return the_lis.length - 1;
+        }
+
+        function setup_double_click(element) {
+            element
+                .dblclick(function(event) {
+                    var parent = $(this).parent();
+                    var new_li = parent.clone().appendTo('#ordered-slides');
+                    var last_start_time = parseInt($('#ordered-slides').find('.slide-start-time').last().text(), 10);
+                    if (isNaN(last_start_time)) {
+                        last_start_time = 0;
+                    }
+                    add_start_time(new_li, last_start_time + (video_len - last_start_time) / 2, 1);
+                    setup_simple_click(new_li.find('.slide'));
+                    slide_clicked(new_li.find('.slide'));
+                    new_li.focus();
+                    scroll_slides_to(get_nb_ordered_slides());
+                    update_slides_list();
+                });
+        }
+
+        function colorize_start_time_mode(mode_element) {
+            var time_str_element = mode_element.parent().find('.slide-start-time-str');
+            if (mode_element.text() == '1') {
+                time_str_element.css({'background-color': ''});
+            } else {
+                time_str_element.css({'background-color': 'lime'});
+            }
+        }
+
+        function compute_drag_timestamp(ui) {
+            var current = ui.helper.parent();
+            var prev = current.prev();
+            var next = current.next();
+            var timestamp = parseInt(current.find('.slide-start-time').text(), 10);
+            var min = parseInt(prev.find('.slide-start-time').text(), 10);
+            var max = parseInt(next.find('.slide-start-time').text(), 10);
+            var new_timestamp = timestamp + ui.position.top / 3;
+            if (isNaN(min)) {
+                min = 0;
+            }
+            if (isNaN(max)) {
+                max = video_len;
+            }
+            if (new_timestamp < min) {
+                new_timestamp = min;
+            }
+            if (new_timestamp > max) {
+                new_timestamp = max;
+            }
+            return new_timestamp;
+        }
+
+        function add_start_time(element, time, is_automatic) {
+            element.find('.slide-start-time').remove();
+            element.find('.slide-start-time-str').remove();
+            element.find('.slide-start-time-mode').remove();
+            time = Math.floor(time);
+            var time_str = format_timestamp(time);
+            var time_str_span = $('<span />').html('' + time_str + '<br/>')
+                .attr('class', 'slide-start-time-str')
+                .click(function(event) {
+                    var mode_element = $(this).parent().find('.slide-start-time-mode')
+                    mode_element.text(mode_element.text() == '1' ? '0' : '1');
+                    colorize_start_time_mode(mode_element);
+                    update_slides_list();
+                });
+            time_str_span.draggable({
+                revert: 'invalid',
+                drag: function(event, ui) {
+                    var drag_timestamp = compute_drag_timestamp(ui);
+                    ui.helper.text(format_timestamp(drag_timestamp));
+                    ui.helper.css({'background-color': 'white'});
+                },
+                stop: function(event, ui) {
+                    var drag_timestamp = compute_drag_timestamp(ui);
+                    ui.helper.parent().find('.slide-start-time').text(drag_timestamp)
+                    add_start_time(ui.helper.parent(), drag_timestamp, 0);
+                    update_slides_list();
+                },
+            });
+            time_str_span.insertBefore(element.find('.slide'));
+            $('<span />').html('' + Math.floor(time) + '<br/>')
+                .attr('class', 'slide-start-time')
+                .insertBefore(element.find('.slide'))
+                .hide();
+            $('<span />').text(is_automatic)
+                .attr('class', 'slide-start-time-mode')
+                .insertBefore(element.find('.slide'))
+                .hide();
+            colorize_start_time_mode(element.find('.slide-start-time-mode'));
+        }
+
+        function update_displayed_slide(slide_id) {
+            var displayed_slide = $('#displayed-slide')
+            displayed_slide.html('');
+            $('<span />')
+                .attr('id', 'displayed-slide-id')
+                .text(slide_id)
+                .hide()
+                .appendTo(displayed_slide);
+            $('<img />')
+                .attr('class', 'slide no-border')
+                .attr('src', $($('#ordered-slides').find('li')[slide_id]).find('img').attr('src'))
+                .attr('width', '95%')
+                .appendTo(displayed_slide);
+        }
+
+        function scroll_slides_to(slide_id) {
+            $('#ordered-slides').scrollTop(
+                (slide_id - 1)
+                / get_nb_ordered_slides()
+                * $('#ordered-slides')[0].scrollHeight);
+            add_border_to_current_slide(slide_id);
+        }
+
+        function update_slides_list() {
+            var current_order = new Array();
+            var list = $('#ordered-slides li');
+            list.each(function(index, item){
+                var start_time = $(item).find('.slide-start-time').text();
+                var slide_id = $(item).find('.slide').attr('id');
+                var mode = $(item).find('.slide-start-time-mode').text();
+                current_order.push(new Array(slide_id, start_time, mode));
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url hyperevent_align hyperevent_id %}',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                cache: false,
+                data: JSON.stringify({
+                    'video_id': '{{hyperevent_id}}',
+                    'video_len': video_len,
+                    'slides': current_order,
+                }),
+            }).done(function(data) {
+                if (data.slides.length != $('#ordered-slides li').length) {
+                    $('#answer').html('WARNING: Invalid number of results.');
+                    return;
+                }
+                var counter = 0;
+                $('#ordered-slides li').each(function(index, item) {
+                    add_start_time(
+                        $(item),
+                        data.slides[counter].slide_start_time,
+                        data.slides[counter].slide_start_time_mode);
+                    counter++;
+                });
+                var current_slide_id = find_slide_at($("#jplayer").data('jPlayer').status.currentTime);
+                update_displayed_slide(current_slide_id);
+            });
+        }
+
+        function load_slides() {
+            {% for slide in slides %}
+                var slide_id = sprintf('slide_%05d', {{forloop.counter}});
+                var li = $('<li>');
+                var list_element = $('<img />')
+                    .attr('class', 'slide no-border')
+                    .attr('id', slide_id)
+                    .attr('src', '{{slide.url}}')
+                    .attr('width', '95%')
+                    .appendTo(li);
+                add_start_time(li, {{slide.startTime}}, 0);
+                li.appendTo('#ordered-slides');
+                var new_li = li.clone();
+                new_li.find('.slide-start-time').remove();
+                new_li.find('.slide-start-time-str').remove();
+                new_li.appendTo('#all-slides');
+                setup_simple_click(list_element);
+                setup_simple_click(new_li.find('.slide'));
+                setup_double_click(new_li.find('.slide'));
+            {% endfor %}
+
+            $('#all-slides li').draggable({
+                revert: 'invalid',
+                connectToSortable: '#ordered-slides',
+                helper: function() {
+                    var li = $(this).clone();
+                    add_start_time(li, 0, 1);
+                    slide_clicked(li.find('.slide'));
+                    return li;
+                }
+            });
+            $('#ordered-slides').droppable({
+            });
+            $('#ordered-slides').sortable({
+                placeholder: 'drag-destination',
+                stop: function(event, ui) {
+                    update_slides_list();
+                },
+                change: function(event, ui) {
+                    var prev = $('.drag-destination').prev();
+                    var next = $('.drag-destination').next();
+                    var time_prev = parseInt(prev.find('.slide-start-time').text(), 10);
+                    var time_next = parseInt(next.find('.slide-start-time').text(), 10);
+                    var time_drag = parseInt($(ui.draggable).text(), 10);
+                    if (isNaN(time_prev)) {
+                        time_prev = 0;
+                    }
+                    if (isNaN(time_next)) {
+                        time_next = video_len;
+                    }
+                    if (isNaN(time_drag) || time_drag < time_prev || time_drag > time_next) {
+                        time_drag = time_prev + (time_next - time_prev) / 2;
+                    }
+                    add_start_time($(ui.helper), time_drag, 1);
+                    add_start_time($(ui.item), time_drag, 1);
+                    setup_simple_click($(ui.item).find('.slide'));
+                    slide_clicked($(ui.item).find('.slide'));
+                },
+            });
+        }
+
+        //////// begin of execution //////////
+
+        // create the jPlayer object
+        $("#jplayer").jPlayer({
+            ready: function () {
+                $(this).jPlayer("setMedia", {
+                    {{video_type}}: "{{video_url}}",
+                    preload: "auto",
+                });
+            },
+            swfPath: "{% static "inevent/scripts/" %}",
+            supplied: "{{video_type}}",
+            solution: "html, flash",
+            size: {
+                //width: "640px",
+                //height: "480px",
+                width: "100%",
+                //height: "100%",
+                cssClass: "jp-video-360p"
+            },
+            smoothPlayBar: true,
+            keyEnabled: true
+        });
+
+        $('#progress-bar-div').css({'width': '100%'});
+        $("#play-txt-progress").text("-");
+
+        var slide_timeline = $("#all-slides");
+        slide_timeline.css({'width': '100%', 'height': '' + ($(window).height() - 80) + 'px'})
+        slide_timeline[0].width = slide_timeline.width();
+        slide_timeline[0].height = slide_timeline.height();
+
+        var slides = $("#ordered-slides");
+        slides.css({'height': '' + ($(window).height() - 80) + 'px'})
+
+        // simulate a play to retrieve size of the video, and to be able to load timeline
+        setTimeout(function() {
+            $("#jplayer").jPlayer("play");
+            setTimeout(function() {
+                $("#jplayer").jPlayer("stop");
+                load_slides();
+                update_slides_list();
+                update_displayed_slide(0);
+                add_border_to_current_slide(0);
+            }, 10000);
+        }, 1500);
+    });
+
+</script>
+
+{% endif %}
+
+{% endblock %}
+
+{% block content_inevent_page %}
+
+<script>
+    $(document).ready(function(){
+        var addHyperEventSelector = '#addHyperEventForm';
+        initForm(addHyperEventSelector, function(){
+            var value = getFormValue(addHyperEventSelector);
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: "http://inevent.haifa.il.ibm.com/rest/archiving/newHyperEvent",
+                contentType:"application/json; charset=utf-8",
+                data: '{'
+                      + '"type": "Lecture"'
+                      + ',"name": "' + value.name + '"'
+                      + ',"title": "' + value.title + '"'
+                      + ',"description": "' + value.description + '"'
+                      + ',"date": "2012-12-12T12:12:12"'
+                      + ',"tracks": []'
+                      + ',"mediaProvider": {"id": 2}'
+                      + '}',
+                success: function(result) {
+                    alert('OK');
+                    console.log(result);
+                    //alert('Error: ' + result['error'] + ". Content: " + result['content'] + ". Firstname: " + result['firstName']);
+                }
+            });
+        });
+    });
+</script>
+
+<button class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#addHyperEventForm">
+    Create New HyperEvent
+</button>
+<div class="modal fade" id="addHyperEventForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add new HyperEvent</h4>
+                <h5 class='error'></h5>
+            </div>
+            <div class="modal-body">
+                <form class="form addHyperEventForm">
+                    <div class="input-group formInput">
+                        <span class="input-group-addon requiredField">*</span>
+                        <input type="text" class="form-control" placeholder="Name" name="name" required>
+                        <span class="input-group-addon requiredField hidden"></span>
+                    </div>
+                    <div class="input-group formInput">
+                        <span class="input-group-addon requiredField">*</span>
+                        <input type="text" class="form-control" placeholder="Title" name="title" required>
+                        <span class="input-group-addon requiredField hidden"></span>
+                    </div>
+                    <div class="input-group formInput">
+                        <span class="input-group-addon requiredField">*</span>
+                        <input type="text" class="form-control" placeholder="Description" name="description" required>
+                        <span class="input-group-addon requiredField hidden"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary submitBtn">Add</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+        <div class="container-fluid">
+            {% block content %}
+            <div class="row-fluid">
+                <div class="span6">
+
+
+{% if video_url %}
+
+<div id="jp_container_1">
+    <a href="#" class="jp-play">Play</a>
+    <a href="#" class="jp-pause">Pause</a>
+</div>
+<div id="jplayer"></div>
+<div id="play-txt-progress"></div>
+
+<div class="progress progress-striped active" id="progress-bar-div">
+    <div class="bar bar-success" style="width: 40%" id="progress-bar"></div>
+</div>
+
+<div id='answer'></div>
+<div id='displayed-slide'></div>
+
+{% else %}
+
+<ul>
+    {% for hyperevent in hyperevent_ids %}
+        <li> 
+        #{{hyperevent.id}} - {{hyperevent.date}}:
+            {% if hyperevent.title %}
+                {{hyperevent.title}}
+            {% else %}
+                (no name)
+            {% endif %}
+            {% if hyperevent.slides and hyperevent.video_url %}
+                <a href="{% url alignment_index hyperevent.id %}">align slides</a> - 
+            {% endif %}
+            <a href="{% url hyperevent_edit hyperevent.id %}">edit</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+                </div>
+                <div class="span6">
+
+{% if video_url %}
+
+<div class="row-fluid drag-container">
+    <div class="span8">
+        <ul id="ordered-slides" class="draggable sortable"></ul>
+    </div>
+    <div class="span3">
+        <ul id="all-slides" class="draggable"></ul>
+    </div>
+    <div class="span1"></div>
+</div>
+
+{% endif %}
+
+
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+
+{% endblock %}

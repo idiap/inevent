@@ -1,0 +1,103 @@
+{% load staticfiles %}
+
+<script type="text/javascript" src="{% static "scripts/bootstrap-datepicker.js" %}" charset="UTF-8"></script>
+<link rel="stylesheet" href="{% static "inevent/styles/datepicker.css" %}" type="text/css"/>
+<!-- Advanced Search Modal -->
+<form action=""  class="form-horizontal" method="post" id ="adv_search_form">
+	 {% csrf_token %}
+	<div id="adv_search" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="adv_search_label">
+		<div class="modal-header">
+	    	<p class="lead">Advanced Search</p>
+		</div>
+
+		<div class="modal-body" id="adv_search_content">
+			
+			<div class="control-group"> 
+
+				<label class="control-label">Start Date:</label>
+				
+				<div class="controls">
+					<div class="input-append date" id="dp3" data-date-format="dd/mm/yyyy">
+						<input  name="start_date" style="cursor:pointer" class="span2" type="text" value=""><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="control-group"> 
+				
+				<label class="control-label">End Date:</label>
+				
+				<div class="controls">
+					<div class="input-append date" id="dp4" data-date-format="dd/mm/yyyy">
+						<input  name="end_date" style="cursor:pointer" class="span2"  type="text" value=""><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			{% if search_form.searchable %}
+ 	 	 		<div class="control-group"> 
+					<label class="control-label">Media Provider:</label>
+  					<div class="controls">
+  						<div class="btn-group">
+							<button class="btn dropdown-toggle" id="search_option_button" data-toggle="dropdown">
+								{{ search_form.searchable.field.choices.0.1 }} &nbsp;
+  								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+  								{% for value, name in search_form.searchable.field.choices %}
+  									<li onclick="update_select_option('{{ name }}', {{ value }});" id="search_option_{{value}}">
+										<a tabindex="-1" href="#">{{ name }}</a>
+										<input type="radio" id="radio_{{ value }}" name="{{ search_form.searchable.name }}" value="{{ value }}" style="display:none" 
+										{% ifequal value search_form.searchable.field.choices.0.0 %} checked="checked" {% endifequal %} ></input>
+									</li>
+  								{% endfor %}
+  							</ul>
+  						</div>	
+  					</div>
+  		 		</div>
+			{% endif %}
+			
+				<div class="control-group">
+				<label class="control-label">Title:</label>
+				<div class="controls">
+					<input name="title"> <!-- input field for title search-->
+				</div>
+			</div>
+			
+			
+			
+	  		<div class="control-group">
+				<label class="control-label">Speaker:</label>
+				<div class="controls">
+					<input name="speaker"> <!-- input field for speaker search-->
+				</div>
+			</div>
+			
+			
+			<!-- DatePicker-->
+			
+			
+			
+			
+		</div>
+
+  		
+	  <div class="modal-footer">
+	    <button id="adv_submit_form"  class="btn btn-primary">Search</button>
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	  </div>
+	</div>
+</form>
+<!-- End Advanced Search Modal -->
+
+
+<script type="text/javascript">
+	$('#dp3').datepicker();
+	$('#dp4').datepicker();
+	$('#adv_submit_form').bind('click', { from: '{{ from }}', form: 'adv_search_form'}, on_click_adv);
+</script>
+
+
+
+	   

@@ -1,0 +1,211 @@
+{% extends "inevent/base.html" %}
+{% load staticfiles %}
+
+{% block extrastyle_inevent_page %}
+{% endblock %}
+
+{% block extrascripts_inevent_page %}
+<script type="text/javascript" src="{% static "inevent/scripts/jszip.js" %}"></script>
+<script type="text/javascript" src="{% static "inevent/scripts/jszip-load.js" %}"></script>
+<script type="text/javascript" src="{% static "inevent/scripts/jszip-inflate.js" %}"></script>
+<script type="text/javascript">
+
+    /////////// for csrf ////////////
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: true,  // to be able to call cross-domain
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    ///////// end csrf part /////////
+
+</script>
+{% endblock %}
+
+{% block content_inevent_page %}
+
+<form class="form updateForm" action="{% url hyperevent_update id %}" method="post">{% csrf_token %}
+    Id: {{id}}<br/>
+    Title: <input type="text" class="form-control" name="title"
+            value="{% if title %}{{title}}{% endif %}" required /><br/>
+    Name: <input type="text" class="form-control" name="name"
+           value="{% if name %}{{name}}{% endif %}" required /><br/>
+    Description: <input type="text" class="form-control" name="description"
+                  value="{% if description %}{{description}}{% endif %}" /><br/>
+    <input type="submit" value="Save" />
+</form>
+
+<b>{{tracks|length}} tracks:<br/></b>
+
+<ul>
+{% for track in tracks %}
+    {% if track.mimeType == 'inevent/video' %}
+        <li>video track:</li>
+        <ul>
+        {% for file in track.files %}
+            {% if file.mimeType|slice:":5" == 'video' %}
+                <li>video: {{file.fileName}}</li>
+            {% elif file.mimeType|slice:":5" == 'image' %}
+                <li>image: {{file.fileName}}</li>
+            {% else %}
+                <li>other: {{file.fileName}}</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    {% elif track.mimeType == 'inevent/slides' %}
+        <li>{{track.files|length}} slides</li>
+    {% elif track.mimeType == 'inevent/transcript' %}
+        <li>transcript track</li>
+    {% else %}
+        <li>other type: {{track.mimeType}}</li>
+    {% endif %}
+{% endfor %}
+</ul>
+
+
+
+<script>
+
+    function send_track(track_info, track_file) {
+        var track_dto = new Blob([JSON.stringify(track_info)], {type: 'application/json'});
+
+        var form_data = new FormData();
+        form_data.append('trackDTO', track_dto);
+        form_data.append('data', track_file, track_file.name);
+
+        $.ajax({
+            contentType: false,
+            cache: false,
+            processData: false,
+            type: "POST",
+            url: 'http://inevent.haifa.il.ibm.com/rest/archiving/uploadTrack',
+            data: form_data,
+            success: function(result) {
+                alert('OK');
+            }
+        });
+    };
+
+
+    $(document).ready(function(){
+        var uploadTrackSelector = '#uploadTrackForm';
+        initForm(uploadTrackSelector, function(){
+            var value = getFormValue(uploadTrackSelector);
+            var file = document.getElementById('newTrackFile').files[0];
+
+            var mimetype = 'inevent/unknown';
+            var description = 'Unknown';
+            switch(value.type) {
+            case 'video':
+                mimetype = 'inevent/video';
+                description = 'Video';
+                break;
+            case 'slides':
+                mimetype = 'inevent/slides';
+                description = 'Slides';
+                break;
+            case 'transcript':
+                mimetype = 'inevent/transcript';
+                description = 'Transcript';
+                break;
+            }
+
+
+            var track_info = {
+                'parentId': {{id}},
+                'mimeType': mimetype,
+                'description': description,
+                'files': [
+                ]
+            };
+
+
+            if (file.type == 'application/zip') {
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        var zip = new JSZip(e.target.result);
+                        $.each(zip.files, function(index, zipEntry) {
+                            track_info['files'].push(
+                            {
+                                'mimeType': 'image/jpg',
+                                'fileName': zipEntry.name
+                            });
+                        });
+
+                    send_track(track_info, file);
+
+                    }
+                })(file);
+                reader.readAsArrayBuffer(file);
+            } else {
+                track_info['files'].push(
+                    {
+                        'mimeType': file.type,
+                        'fileName': file.name
+                    }
+                );
+                send_track(track_info, file);
+            }
+
+        });
+    });
+</script>
+
+<button class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#uploadTrackForm">
+    Add Track
+</button>
+<div class="modal fade" id="uploadTrackForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Upload Track</h4>
+                <h5 class='error'></h5>
+            </div>
+            <div class="modal-body">
+                <form class="form uploadTrackForm">
+                    <div class="input-group formInput">
+                        <select class="form-control" name="type">
+                            <option value="video">video track</option>
+                            <option value="slides">slides</option>
+                            <option value="transcript">transcript</option>
+                        </select>
+                    </div>
+                    <div class="input-group formInput">
+                        <input type="file" class="form-control" name="file" id="newTrackFile" required>
+                        <span class="input-group-addon requiredField hidden"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary submitBtn">Upload</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+{% endblock %}

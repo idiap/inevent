@@ -1,0 +1,48 @@
+/* http://www.w3schools.com/cssref/css_colorsfull.asp */
+
+.video_link {
+	fill: none;
+	stroke: #C0C0C0;
+	stroke-dasharray: 2 4;
+	stroke-width: 3px;
+}
+
+.btn {
+	min-width: 30px;
+}
+
+.svg {
+	float: left;
+/* 	margin-top: 200px;  */
+}
+
+.first-rows {
+	margin-bottom: 15px;
+	margin-top: 20px;
+	text-align: center;
+}
+
+.graph_images {
+	cursor: pointer;
+}
+
+.rect_video {
+	fill: none;
+	display: none;
+	opacity: 0.5;
+	stroke-width: 4;
+}
+
+
+.word_cloud {
+	display: none;
+	cursor: pointer;
+	font-size: 13px;
+	color: #707070;
+}
+
+.node text {
+	pointer-events: none;
+}
+
+

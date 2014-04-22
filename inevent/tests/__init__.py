@@ -1,0 +1,1 @@
+from inevent.tests.views.test_ajax_view import *

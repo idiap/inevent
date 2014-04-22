@@ -1,0 +1,266 @@
+
+
+<!-- scripts -->
+<script type="text/javascript">
+
+	function validateForm(selector){
+		var valid = true;
+		$(selector+" .form-control").each(function(){
+			if($(this).attr('required')){
+    			if(!validateField(selector, $(this))){
+    				valid = false;
+    			}
+			}
+		});
+		return valid;
+	}
+	
+	function validateField(selector, elem){
+		var value = elem.val();
+    	var name = elem.attr('name');
+	    var msgElem = $('[name='+name+'] + .requiredField');
+	    if(!value || value.length == 0){
+	    	if(elem.attr('required')){
+	    		failField(elem, "required field");
+	    		return false;
+	    	}		    	
+	    }else{
+	    	if(elem.attr('equals')){
+	    		var otherField = $(selector+' [name='+elem.attr('equals')+']');
+	    		if(otherField.val() != value){
+	    			failField(elem, 'no match!');
+	    			return false;
+	    		}else{
+	    			clearField(elem);
+	    		}
+	    	}else{
+		    	clearField(elem);
+	        }
+	        
+	        if(elem.attr('regex')){
+	        	var regEx = new RegExp(elem.attr('regex'));
+	        	if(!regEx.test(value)){
+	        		failField(elem, 'invalid format');
+	        		return false;
+	        	}
+	        }
+	    }
+	    
+	    return true;    			
+	}
+	
+	function failField(elem, msg){
+		var name = elem.attr('name');
+	    var msgElem = $('[name='+name+'] + .requiredField');
+	    msgElem.html(msg);
+	    if(msgElem.hasClass("hidden")){
+	    	msgElem.removeClass("hidden");		    		
+	    }
+	}
+	
+	function clearField(elem){
+		var name = elem.attr('name');
+	    var msgElem = $('[name='+name+'] + .requiredField');
+	    msgElem.html("");
+	    if(!msgElem.hasClass("hidden")){
+			msgElem.addClass("hidden");
+		}
+	}
+	
+	function initForm(selector, submitFn){
+		$(selector+" .form-control").each(function(){
+			
+			$(this).keyup(function(){
+				$(selector+" .error").html("");
+				validateField(selector, $(this));		
+			});
+			
+		});
+		
+		$(selector+" .submitBtn").on('click', submitFn);
+		
+		clearForm(selector);
+	}
+	
+	function clearForm(selector){
+		$(selector).on('hidden.bs.modal', function(){
+			$(selector+" .form-control").each(function(){
+				$(this).val('');
+				clearField($(this));
+			});
+		});
+		
+		
+	}
+	
+	function getFormValue(selector){
+		var value = {};
+		$($(selector+" .form").serializeArray()).each(function(i, fieldValue){
+			value[fieldValue.name] = fieldValue.value;
+		});
+		return value;
+	}
+	
+    function logoutSession(){
+        function cb_logout(result) {
+            $('#register-btn').show();
+            $('#login-btn').show();
+            $('#logout-btn').hide();
+        }
+        Dajaxice.inevent.user_logout(cb_logout);
+    }
+
+	$(document).ready(function(){
+		
+		var registerFormSelector = '#registerForm';
+		var loginFormSelector = '#loginForm';
+
+		initForm(registerFormSelector, function(){
+			if(validateForm(registerFormSelector)){
+				var value = getFormValue(registerFormSelector);
+                function cb_register(result) {
+                    if (result['error']) {
+                        alert("Can't register: " + result['content']);
+                    } else {
+                        $(registerFormSelector).modal('hide');
+                        alert('Login ' + result['login'] + ' is now registred. Please log in.');
+                    }
+                }
+                Dajaxice.inevent.user_register(cb_register, value);
+			}
+		});
+		
+		
+		initForm(loginFormSelector, function(){
+            var value = getFormValue(loginFormSelector);
+            function cb_login(result) {
+                if (result['error']) {
+                	alert('Login or password is incorrect');
+                } else {
+                    $('#register-btn').hide();
+                    $('#login-btn').hide();
+                    $('#logout-btn span').text(value.login);
+                    $('#logout-btn').show();
+                    $(loginFormSelector).modal('hide');
+                }
+            }
+            Dajaxice.inevent.user_login(cb_login, {'login': value.login, 'password': value.password});
+		});
+
+	});
+</script>
+
+<div class="btn-group">
+    <button id="logout-btn" class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown"
+        {% if not request.session.login %}
+            style="display: none;"
+        {% endif %}
+    >
+        <span>{{ request.session.login }}</span> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu pull-right">
+        <li><a href="#">Profile</a></li>
+        <li><a href="{% url alignment_index None %}">Manage Events</a></li>
+        <li class="divider"></li>
+        <li><a href="#" onclick="logoutSession()">Logout</a></li>
+    </ul>
+</div>
+
+<!-- Button trigger modal -->
+<button id="register-btn" class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#registerForm"
+    {% if request.session.login %}
+        style="display: none;"
+    {% endif %}
+>
+  Register
+</button>
+
+<button id="login-btn" class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#loginForm"
+    {% if request.session.login %}
+        style="display: none;"
+    {% endif %}
+>
+  Login
+</button>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">InEvent registration</h4>
+        <h5 class='error'></h5>
+      </div>
+      <div class="modal-body">
+      	<form class="form registerForm">
+	        <div class="input-group formInput">
+	        	<span class="input-group-addon requiredField">*</span>
+	  			<input type="text" class="form-control" placeholder="Login" name="login" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+	  		<div class="input-group formInput">
+	  			<span class="input-group-addon requiredField">*</span>
+	  			<input type="text" class="form-control" placeholder="Email" name="email" regex='^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+	  		<div class="input-group formInput">
+	  			<span class="input-group-addon requiredField">*</span>
+	  			<input type="text" class="form-control" placeholder="First name" name="firstName" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+	  		<div class="input-group formInput">
+	  			<span class="input-group-addon requiredField">*</span>
+	  			<input type="text" class="form-control" placeholder="Last name" name="lastName" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+	  		<div class="input-group formInput">
+	  			<span class="input-group-addon requiredField">*</span>
+	  			<input type="password" class="form-control" placeholder="Password" name="password" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+	  		<div class="input-group formInput">
+	  			<span class="input-group-addon requiredField">*</span>
+	  			<input type="password" class="form-control" placeholder="Repeat password" name="password2" equals="password" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+  		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary submitBtn">Register</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Login</h4>
+        <h5 class='error'></h5>
+      </div>
+      <div class="modal-body">
+      	<form class="form registerForm">
+	        <div class="input-group formInput">
+	        	<span class="input-group-addon requiredField">*</span>
+	  			<input type="text" class="form-control" placeholder="Login" name="login" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+	  		<div class="input-group formInput">
+	  			<span class="input-group-addon requiredField">*</span>
+	  			<input type="password" class="form-control" placeholder="Password" name="password" required>
+	  			<span class="input-group-addon requiredField hidden"></span>
+	  		</div>
+  		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary submitBtn">Login</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load i18n %}
+{% load staticfiles %}
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>	Inevent | Portal </title>
+	<link rel="stylesheet" href="/static/inevent/styles/bootstrap.min.css" type="text/css" />
+	<style type="text/css">
+	.body {
+		padding-top: 60px;
+		padding-bottom: 40px;
+	}
+	</style>
+	
+	<link rel="stylesheet" href="/static/inevent/styles/bootstrap-responsive.min.css" type="text/css" />
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	    <!--[if lt IE 9]>
+	      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+	<link rel="stylesheet" href="/static/inevent/styles/hyperevent.css" type="text/css" />
+    <link rel="stylesheet" href='/static/inevent/styles/graph.css' type="text/css"/>
+		
+	{% block extrastyle_inevent_page %} {% endblock %}
+	
+    <script src="/static/inevent/scripts/jquery.js"></script>
+	<script src="/static/inevent/scripts/spin.min.js"></script>
+	<script src="/static/inevent/scripts/jquery.spin.js"></script>
+	<script src="/static/inevent/scripts/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/static/scripts/search.js"></script>
+
+	
+	
+
+	<script src="/static/inevent/scripts/d3.v3.min.js"></script>
+	<script type="text/javascript" src='/static/inevent/scripts/graph_extension.js'></script>
+	<script type="text/javascript" src='/static/inevent/scripts/graph.js'></script>
+
+	{% block extrascripts_inevent_page %} {% endblock %}
+	
+	{% block extrahead %}{% endblock %}
+	{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+
+
+</head>
+{% load my_tags %}
+{% load dajaxice_templatetags %}
+<body>
+
+	<div class="navbar">
+		<div class="navbar-inner">
+			<a href="/inevent_portal" class="nav nav-pills pull-left" style="margin-left:10px;cursor:pointer">
+				<img src="http://www.inevent-project.eu/logo.png" style="height:80px;" alt="Home"></img> 
+			</a> 
+            <div style="margin-top:40px;margin-left:40px"> {% block menu_inevent_page %} {% endblock %} </div>  
+
+            <div id='loginWidget' class="pull-right">
+                {% include "inevent/login.html" %}
+            </div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+	    <div class='row-fluid'>{% block content_inevent_page %} {% endblock %}</div>
+			{% include "advanced_form.html" with search_form=search_form from="inevent" %}
+		</div>
+	{% dajaxice_js_import %}
+	
+</body>
+</html>

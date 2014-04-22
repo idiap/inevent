@@ -1,0 +1,73 @@
+{% extends "inevent/base.html" %}
+{% block menu_inevent_page %}
+<ul class="tabbable nav">
+		<li class="active"><a href="#tab1" data-toggle="tab">Most Recent Talks</a></li>
+		<!-- <li><a href="#tab2" data-toggle="tab">Most Popular Talks</a></li> -->
+    	<li href="#tab3" data-toggle="tab">
+    		{% include "search.html"  with search_form=search_form from="inevent" %}
+    	</li>
+  	</ul>
+{% endblock %}
+{% block content_inevent_page %}
+		<div class="col-fluid">
+			<div id="graph_container" class="tabbable well well-small span10"> <!-- Only required for left/right tabs -->
+  				<div class="tab-content">
+    				<div class="tab-pane active" id="tab1">
+    						<div class="row-fluid" id="recency">
+    							<div id="list">{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}</div>
+    							<div id="graph" style="display:none"></div>
+    						</div>
+    				</div>
+    				<!--<div class="tab-pane" id="tab2">
+    					<p> Coming Soon </p>
+      			</div> -->
+      				<div class="tab-pane" id="tab3">
+      					<div id="search_list"></div>
+      				</div>
+  				</div>
+			</div>	
+		</div>
+		<div class="col-fluid span2">
+			<button class="btn btn-info btn-small" id="graph_button" name="list"> View as Graph </button>
+		</div>		
+	
+	<script type="text/javascript">
+	$('#graph_button').bind('click', get_graph);
+	var graph_data_fetched = false;
+	
+	function get_graph(){
+		if ($('#graph_button').attr("name") == "list") {
+			$('#graph').css("display", "");
+			if (graph_data_fetched == false) {
+				//Dajaxice.inevent.get_graph(function(data){display_graph(data, true);},{'error_callback': display_graph_error});
+				$('#graph').html('<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>');
+				//$('#graph_button').prop('disabled', true);
+			}
+			$('#graph_button').attr("name","graph");
+			$('#list').css("display", "none");
+			$('#graph_button').html("View as List")
+		}
+		else {
+			$('#graph_button').attr("name","list");
+			$('#list').css("display", "");
+			$('#graph').css("display", "none");
+			$('#graph_button').html("View as Graph")
+		}
+		
+	}
+
+	$(document).ready(function() {
+		Dajaxice.inevent.get_graph_head(function(data){display_graph_head(data /*SD/ HERE WE CAN USER DATA*/);},{'error_callback': display_graph_error});
+	});
+	
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	if ($(e.target).attr('href').indexOf("tab1")!=-1)
+		$('#graph_button').css("display", "");
+	else
+		$('#graph_button').css("display", "none");
+})
+	
+</script>
+
+{% endblock%}
+

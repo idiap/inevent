@@ -15,13 +15,17 @@ function Graph() {
 		this.svg = d3.select("#" + this.graph_id).append("svg")
 			.attr("width", this.graph_width)
 			.attr("height", this.graph_height);
-			
+		
 		this.color = {	black:"black",
 						grey:"grey"} ;
+		
+		this.queue = [] ;
+		this.excluded = [] ; //SD/ to store node who already displays neighbours
+		this.input_links = [] ;
 	}
 
 	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
-	
+		//SD/ Set parameters in local vars
 		this.input_nodes = data ;
 
 		this.graph_id = graph_id ;
@@ -34,14 +38,10 @@ function Graph() {
 		this.max_depth = max_depth ;
 		this.max_neighbours = max_neighbours ;
 
+		//SD/ Set optional parameters with default values in local vars
 		this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 
-		this.queue = [] ;
-		this.excluded = [] ; //SD/ to store node who already displays neighbours
-
 		this.initVars();
-
-		this.input_links = [] ;
 		
 		this.force = d3.layout.force()
 			.linkDistance(150)
@@ -54,10 +54,8 @@ function Graph() {
 			.start();
 
 		
-		 this.displayNodes();
-		 this.displayLinks();
-		
-		 
+		this.displayNodes();
+		this.displayLinks();
 	}
 	
 	this.updateGraph = function(new_data) {
@@ -98,6 +96,7 @@ function Graph() {
 				}
 			}
 		}
+		
 		this.displayNodes();
 		this.displayLinks();
 	

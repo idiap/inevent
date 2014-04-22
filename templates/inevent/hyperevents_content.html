@@ -58,7 +58,13 @@
 				{% endfor %}
 				{% endif %}
 				{% endwith %} </small>
+				
+			<div class="btn-group pull-right actions">
+				{# SD/ TODO Check right to edit #}
+				<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
+			</div>
 		</div>
+		
 		<div class="row-fluid container-fluid hyperevent-metadata">
 			<small> {% with tags=hyperevent.tags %}
 				{% if tags %} <i class="icon-tag"></i> {{ tags }}

@@ -122,6 +122,8 @@
 			
 			{% if has_video and has_slide %}
 				<a class="btn btn-info btn-small" href="{% url alignment_index id %}">Edit Slides</a>
+			{% else %}
+				<a class="btn btn-info btn-small disabled">Edit Slides</a>
 			{% endif %}
 		</div>
 	</div>

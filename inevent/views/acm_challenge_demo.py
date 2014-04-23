@@ -1,5 +1,4 @@
 import json
-import settings
 import os
 import sys
 from django.conf import settings 

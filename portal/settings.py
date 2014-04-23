@@ -7,6 +7,7 @@ import os.path
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies" 
 
 TIME_ZONE = 'Europe/Zurich'
 
@@ -74,6 +75,7 @@ MIDDLEWARE_CLASSES = (
     #'django.middleware.gzip.GZipMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'raven.contrib.django.middleware.Sentry404CatchMiddleware',
     'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
 )
@@ -93,6 +95,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
+    'django.contrib.sessions',
     'inevent',
     'endless_pagination', # testing
     'dajaxice',

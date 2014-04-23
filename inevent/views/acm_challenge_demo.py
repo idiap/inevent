@@ -13,7 +13,7 @@ from django.template import RequestContext
 
 def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id = 0):
 
-    all_videos = json.loads(open(settings.SERVER_PATH + "/acm/data/acm_data.json").read())
+    all_videos = json.loads(open(settings.SERVER_PATH + "acm/data/acm_data.json").read())
     nodes = []
     segment_id_converter = {}
     segment_start_time = {}
@@ -114,7 +114,7 @@ def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id
     
     
 
-    url_file = open(settings.SERVER_PATH + "/acm/data/videos_urls.txt", "r")
+    url_file = open(settings.SERVER_PATH + "acm/data/videos_urls.txt", "r")
     for column,video_url in enumerate ( raw.strip().split() for raw in url_file ): 
         video_="video_"+str(column)
         video_urls[video_]=video_url[2]
@@ -137,8 +137,8 @@ def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id
                   "image_height":central_video_size * image_ratio[1], 
                   "cloud_width": cloud_size_central_video[0], 
                   "cloud_height": cloud_size_central_video[1], 
-                  "word_cloud":"/acm/media/"+str(central_video['word_cloud']), 
-                  "snapshot":"/acm/media/"+ str(central_video['thumbnail']).split("/")[0]+"/"+str(central_video['thumbnail']).split("/")[1]+"/thumbnail_8.jpg",
+                  "word_cloud":"acm/media/"+str(central_video['word_cloud']), 
+                  "snapshot":"acm/media/"+ str(central_video['thumbnail']).split("/")[0]+"/"+str(central_video['thumbnail']).split("/")[1]+"/thumbnail_8.jpg",
                   "slides":all_slides_per_video[video_id],
                   "name":"video"+ str(video_id),
                   "title":titles[video_id],
@@ -157,7 +157,7 @@ def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id
         if video['video_id'] in video_links:
 #            print "added " +  str(video['video_id'])
             video_node_id = len(nodes)
-            nodes.append({"duration":video_duration[video['video_id']], "title":titles[video['video_id']],"slides":all_slides_per_video[video['video_id']], "id": video_node_id, 'url':video_urls['video_'+str(video['video_id'])], "group":peripheral_video_group, "image_width": peripheral_video_size * image_ratio[0], "image_height":peripheral_video_size * image_ratio[1], "size": peripheral_video_size, "radius": peripheral_video_radius, "cloud_width": cloud_size_video[0], "cloud_height": cloud_size_video[1], "word_cloud":"/acm/media/"+str(video['word_cloud']) , "snapshot":"/acm/media/"+str(video['thumbnail']).split("/")[0]+"/"+str(video['thumbnail']).split("/")[1]+"/thumbnail_8.jpg", "name":"video"+ str(video['video_id'])})
+            nodes.append({"duration":video_duration[video['video_id']], "title":titles[video['video_id']],"slides":all_slides_per_video[video['video_id']], "id": video_node_id, 'url':video_urls['video_'+str(video['video_id'])], "group":peripheral_video_group, "image_width": peripheral_video_size * image_ratio[0], "image_height":peripheral_video_size * image_ratio[1], "size": peripheral_video_size, "radius": peripheral_video_radius, "cloud_width": cloud_size_video[0], "cloud_height": cloud_size_video[1], "word_cloud":"acm/media/"+str(video['word_cloud']) , "snapshot":"acm/media/"+str(video['thumbnail']).split("/")[0]+"/"+str(video['thumbnail']).split("/")[1]+"/thumbnail_8.jpg", "name":"video"+ str(video['video_id'])})
             video_id_converter.update({""+str(video['video_id']):video_node_id})
             response = add_video_segments(video, video_node_id, segment_group, peripheral_segment_size, video['video_segments'], nodes, segment_id_converter, cloud_size, image_ratio_segment,segment_start_time)
             nodes = response[0]
@@ -181,7 +181,7 @@ def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id
             if (segment_id_converter.has_key(str(related_segment_id)) == False):
 #                print "ENTERED for " + str(related_segment_id)
                 related_segment_node_id = len(nodes)
-                child_node = {"group":segment_group, "size": peripheral_segment_size, "id":    related_segment_node_id, "image_width":  peripheral_segment_size * image_ratio_segment[0], "image_height": peripheral_segment_size * image_ratio_segment[1], "cloud_width": cloud_size[0], "cloud_height": cloud_size[1],"word_cloud":"/acm/media"+str(related_segment['word_cloud']) , "snapshot":"/acm/media/"+str(related_segment['thumbnail']), "name":"segment"+str(related_segment_id)}
+                child_node = {"group":segment_group, "size": peripheral_segment_size, "id":    related_segment_node_id, "image_width":  peripheral_segment_size * image_ratio_segment[0], "image_height": peripheral_segment_size * image_ratio_segment[1], "cloud_width": cloud_size[0], "cloud_height": cloud_size[1],"word_cloud":"acm/media"+str(related_segment['word_cloud']) , "snapshot":"acm/media/"+str(related_segment['thumbnail']), "name":"segment"+str(related_segment_id)}
                 child_node.update({'start_time': segment_start_time[related_segment_id]})
                 child_node.update({'duration': related_segment['segment_duration_size']})
                 nodes.append(child_node)
@@ -191,7 +191,7 @@ def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id
                 parent = all_videos[parent_index_in_json_file]
                 parent_id = parent['video_id']
 #                print "parent_id "+str(parent_id) + "for " + str(related_segment_id)
-                parent_node = {"group":peripheral_video_group, "size": peripheral_video_size, "radius": peripheral_video_radius, "image_width": peripheral_video_size * image_ratio[0], "image_height":peripheral_video_size * image_ratio[1], "cloud_width": cloud_size[0], "cloud_height": cloud_size[1], "word_cloud":"/acm/media"+str(parent['word_cloud']), "snapshot":"/acm/media/"+ str(parent['thumbnail']).split("/")[0]+"/"+str(parent['thumbnail']).split("/")[1]+"/thumbnail_8.jpg", "name":"video"+ str(parent['video_id'])}
+                parent_node = {"group":peripheral_video_group, "size": peripheral_video_size, "radius": peripheral_video_radius, "image_width": peripheral_video_size * image_ratio[0], "image_height":peripheral_video_size * image_ratio[1], "cloud_width": cloud_size[0], "cloud_height": cloud_size[1], "word_cloud":"acm/media"+str(parent['word_cloud']), "snapshot":"acm/media/"+ str(parent['thumbnail']).split("/")[0]+"/"+str(parent['thumbnail']).split("/")[1]+"/thumbnail_8.jpg", "name":"video"+ str(parent['video_id'])}
                 
                 if video_id_converter.has_key(str(parent_id)) == True:
                     parent_node_id = video_id_converter[str(parent_id)]    
@@ -225,7 +225,7 @@ def get_segmented_videos (request, central_video_input_id = 4, chosen_segment_id
                         if (segment_id_converter.has_key(str(peripheral_segment_id)) == False):
 #                            print "adding peripheral segments" + peripheral_segment_id
                             peripheral_segment_node_id = len(nodes)
-                            new_node = {"group":segment_group, "size": peripheral_segment_size, "image_width":  peripheral_segment_size * image_ratio_segment[0], "image_height":  peripheral_segment_size * image_ratio_segment[1], "parent": parent_node_id, "id":peripheral_segment_node_id, "cloud_width": cloud_size[0], "cloud_height": cloud_size[1],"word_cloud":"/acm/media/"+str(peripheral_segment['word_cloud']), "snapshot":"/acm/media/"+str(peripheral_segment['thumbnail']), "name":"segment"+str(peripheral_segment_id)}
+                            new_node = {"group":segment_group, "size": peripheral_segment_size, "image_width":  peripheral_segment_size * image_ratio_segment[0], "image_height":  peripheral_segment_size * image_ratio_segment[1], "parent": parent_node_id, "id":peripheral_segment_node_id, "cloud_width": cloud_size[0], "cloud_height": cloud_size[1],"word_cloud":"acm/media/"+str(peripheral_segment['word_cloud']), "snapshot":"acm/media/"+str(peripheral_segment['thumbnail']), "name":"segment"+str(peripheral_segment_id)}
                             child_node.update({'start_time': segment_start_time[peripheral_segment_id]})
                             child_node.update({'duration': peripheral_segment['segment_duration_size']})
                             nodes[parent_node_id]['children'].append(new_node)
@@ -257,7 +257,7 @@ def add_video_segments(video, video_node_id, segment_group, segment_size, segmen
         test = float (segment_size * image_ratio[1])
 
         segment_id_converter.update({""+str(segment_id):len(nodes)})
-        new_node = {"group":segment_group, "size": segment_size, "image_width": segment_size * image_ratio[0], "image_height":  segment_size * image_ratio[1], "parent": video_node_id, "id":len(nodes), "cloud_width": cloud_size[0], "cloud_height": cloud_size[1], "word_cloud":"/acm/media/"+str(segment['word_cloud']), "snapshot":"/acm/media/"+str(segment['thumbnail']), "name":"segment"+str(segment_id)}
+        new_node = {"group":segment_group, "size": segment_size, "image_width": segment_size * image_ratio[0], "image_height":  segment_size * image_ratio[1], "parent": video_node_id, "id":len(nodes), "cloud_width": cloud_size[0], "cloud_height": cloud_size[1], "word_cloud":"acm/media/"+str(segment['word_cloud']), "snapshot":"acm/media/"+str(segment['thumbnail']), "name":"segment"+str(segment_id)}
         new_node.update({'start_time': segment_start_time[segment_id]})
         new_node.update({'duration': segment['segment_duration_size']})
 #        first segment to be added
@@ -273,9 +273,9 @@ def add_video_segments(video, video_node_id, segment_group, segment_size, segmen
 
             
 def extract_title(folder_name):
-    path=settings.SERVER_PATH+"/acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/"+folder_name
+    path=settings.SERVER_PATH+"acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/"+folder_name
     if os.path.exists(path)==False:
-        path=settings.SERVER_PATH+"/acm/media/om_final_Video_with_subtitles_with_all_features_Big_segments_20130619/"+folder_name
+        path=settings.SERVER_PATH+"acm/media/om_final_Video_with_subtitles_with_all_features_Big_segments_20130619/"+folder_name
         if os.path.exists(path)==False:
             return ""
 
@@ -294,7 +294,7 @@ def extract_title(folder_name):
 def extract_slides(folder_name):
     words = "author: published: views: Categories Description Slides"
     word_set = set(words.split())
-    path=settings.SERVER_PATH+"/acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/"+folder_name
+    path=settings.SERVER_PATH+"acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/"+folder_name
     if os.path.exists(path)==False:
         print 'Video has no slides, folder does not exist ----------------------------Breaking-----------------------' + path
         return []
@@ -327,7 +327,7 @@ def extract_slides(folder_name):
                         slide_hash = dict(zip(labels_collected_slid_lines, line.split(' ',1) ))
                         slide_hash["slide_printout"] = slide_hash["slide_start_time"] 
                         slide_hash["slide_start_time"] = getSec(slide_hash["slide_start_time"])
-                        image_path = "/acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/"+ folder_name + "/images"
+                        image_path = "acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/"+ folder_name + "/images"
                         slide_hash["image_path"] =  str(image_path + "/slide-%d.png" % len(collected_slid_lines))
 
 
@@ -341,7 +341,7 @@ def extract_slides(folder_name):
 
             """        
             #print collected_slid_lines
-            input = PdfFileReader(file('/acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/kolokviji_ekaykin_drilling/sduqoir3au4ug4gzpj6kd56en7vz3x3c.pdf', "rb"))    
+            input = PdfFileReader(file('acm/media/om_final_Video_with_slides_with_all_features_Big_segments_20130619/kolokviji_ekaykin_drilling/sduqoir3au4ug4gzpj6kd56en7vz3x3c.pdf', "rb"))    
             for counter,page in enumerate(input.pages):    
                 if counter < len(collected_slid_lines):
                     print collected_slid_lines[counter]['slide_start_time']

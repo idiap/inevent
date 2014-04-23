@@ -27,9 +27,9 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 #USE_TZ = True
 
-#PROJECT_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
+PROJECT_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
 
-SERVER_PATH = 'inevent.klewel.com/static/'
+SERVER_PATH = PROJECT_ROOT+'/static/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files

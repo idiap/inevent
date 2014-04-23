@@ -350,10 +350,13 @@ function Graph() {
 
 	this.setWidth = function(new_width) {
 		this.width = new_width ;
-		this.graph_width = this.width - this.margin.left - this.margin.right ;
+		if (this.margin!=undefined) {
+			this.graph_width = this.width - this.margin.left - this.margin.right ;
 		
-		this.svg.attr("width", this.graph_width) ;
-		this.force.start();
+			this.svg.attr("width", this.graph_width) ;
+			this.force.start();
+		}
+		
 	}
 
 	//SD/ FROM HERE queue management where we could use a jQuery Queue Object (http://api.jquery.com/jquery.queue/)

@@ -127,7 +127,7 @@
 
             var current_slide_id = find_slide_at(event.jPlayer.status.currentTime);
             var displayed_slide_id = parseInt($('#displayed-slide-id').text(), 10);
-            if (displayed_slide_id != current_slide_id) {
+            if (displayed_slide_id != current_slide_id && current_slide_id > 0) {
                 update_displayed_slide(current_slide_id);
                 scroll_slides_to(current_slide_id);
             }
@@ -354,11 +354,26 @@
                     .attr('width', '95%')
                     .appendTo(li);
                 add_start_time(li, {{slide.startTime}}, 0);
-                li.appendTo('#ordered-slides');
+                
+				//SD/ Replace loading spinner if first slide
+				if(get_nb_ordered_slides() <= 0) {
+					$('#ordered-slides').css('text-align', 'left') ;
+					$('#ordered-slides').html('') ;
+				}
+				
+				li.appendTo('#ordered-slides');
+                
                 var new_li = li.clone();
                 new_li.find('.slide-start-time').remove();
                 new_li.find('.slide-start-time-str').remove();
-                new_li.appendTo('#all-slides');
+                
+				if($($('ul#all-slides')[0]).find('li').length <= 0) {
+					$('ul#all-slides').css('text-align', 'left') ;
+					$('ul#all-slides').html('') ;
+				}
+				
+				new_li.appendTo('ul#all-slides');
+                
                 setup_simple_click(list_element);
                 setup_simple_click(new_li.find('.slide'));
                 setup_double_click(new_li.find('.slide'));
@@ -552,7 +567,7 @@
 					</div>
 
 					<div id='answer'></div>
-					<div id='displayed-slide'></div>
+					<div id='displayed-slide' class='text-center'><img src="/static/inevent/images/spinner.gif"></div>
 
 				{% else %}
 
@@ -583,10 +598,10 @@
 
 					<div class="row-fluid drag-container">
 						<div class="span8">
-							<ul id="ordered-slides" class="draggable sortable"></ul>
+							<ul id="ordered-slides" class="draggable sortable text-center"><img src="/static/inevent/images/spinner.gif"></ul>
 						</div>
 						<div class="span3">
-							<ul id="all-slides" class="draggable"></ul>
+							<ul id="all-slides" class="draggable text-center"><img src="/static/inevent/images/spinner.gif"></ul>
 						</div>
 						<div class="span1"></div>
 					</div>

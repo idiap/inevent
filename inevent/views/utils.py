@@ -211,3 +211,8 @@ def do_update_hyperevent(new_data):
     url = 'updateHyperEvent'
     result = get_inEvent_data(url, post_data=json.dumps(new_data), rest_base=rest_url_management)
     return result
+
+def do_delete_hyperevent(request, event_id) :
+	if request.session.get('login') :
+		if event_id > 0 :
+			print "I want to delete hyperevent: " + str(event_id)

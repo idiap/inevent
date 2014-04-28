@@ -59,9 +59,16 @@
 				{% endif %}
 				{% endwith %} </small>
 				
-			<div class="btn-group pull-right actions">
-				{# SD/ TODO Check right to edit #}
-				<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
+			<div class="pull-right actions">
+				{% if allow_edit %}
+					{% if hyperevent.slides and hyperevent.video_url %}
+						<a class="btn btn-mini" href="{% url alignment_view hyperevent.id %}">Align Slides</a>
+					{% endif %}
+				
+					<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
+					
+					<a class="btn btn-mini btn-danger" href="{% url hyperevent_delete hyperevent.id %}">Delete</a>
+				{% endif %}
 			</div>
 		</div>
 		

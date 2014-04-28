@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 import os
 import json
-from inevent.views.utils import get_event, get_some_events, do_update_hyperevent
+from inevent.views.utils import get_event, get_some_events, do_update_hyperevent, do_delete_hyperevent
 
 SLIDE_ID_IDX = 0
 START_TIME_IDX = 1
@@ -86,6 +86,12 @@ def edit(request, hyperevent_id):
 
     template = 'inevent/edit.html'
     return render_to_response(template, data, context_instance=RequestContext(request))
+
+def delete(request, hyperevent_id) :
+	if(hyperevent_id > 0) :
+		do_delete_hyperevent(request, hyperevent_id)
+	
+	return redirect('views.alignment_index')
 
 def align(request, video_id):
 

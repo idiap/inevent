@@ -397,8 +397,7 @@ function Graph() {
 }
 
 graph = new Graph();
-var static_url = "{{ static_url }}";
-console.log(static_url);
+var static_url;
 
 
 /*SD/ ==========================================================================
@@ -437,7 +436,7 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 	var static_url = data['static_url']
 	params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
 	Dajaxice.inevent.get_graph_neighbours(
-		function(data){display_graph(events, display_graph);}, params) ;
+		function(data){display_graph(data, display_graph);}, params) ;
 
 	//$('#graph_button').prop('disabled', false);
 }

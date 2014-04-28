@@ -12,34 +12,16 @@ AUTOMATIC_IDX = 2
 
 def alignment_index(request, hyperevent_id=None):
     data = {}
-    if hyperevent_id:
-        hyperevent = get_event(hyperevent_id, only_basic_info=False)
-        data['hyperevent_id'] = hyperevent_id
-        data['hyperevent_title'] = hyperevent['title']
-        data['video_url'] = hyperevent['video_url']
-        if hyperevent['mime_type'] == 'video/x-flv':
-            data['video_type'] = 'flv'
-        elif hyperevent['mime_type'] == 'video/mp4':
-            data['video_type'] = 'm4v'
-        else:
-            data['video_type'] = 'PROBLEM'
-        data['slides'] = [{'url': slide['slide_url'], 'startTime': slide['startTime'] / 1000}
-                          for slide in hyperevent['slides']]
-        if len(set ([d['startTime'] for d in data['slides']])) > 1:
-            data['slides'].sort(key=lambda slide: slide['startTime'])
-        else:
-            data['slides'].sort(key=lambda slide: slide['url'])
-    else:
-        hyperevents = get_some_events(
-            num=10
-            ##search_query={
-            ##    'startDate': 1355314332000,
-            ##    'endDate': 1355314332000
-            ##}
-        )
-        data['hyperevent_ids'] = []
-        for hyperevent in hyperevents.get('hyperevents', []):
-            data['hyperevent_ids'].append(hyperevent)
+    hyperevents = get_some_events(
+        num=10
+        ##search_query={
+        ##    'startDate': 1355314332000,
+        ##    'endDate': 1355314332000
+        ##}
+    )
+    data['hyperevent_ids'] = []
+    for hyperevent in hyperevents.get('hyperevents', []):
+        data['hyperevent_ids'].append(hyperevent)
 
     template = 'inevent/alignment_index.html'
     return render_to_response(template, data, context_instance=RequestContext(request))
@@ -63,17 +45,6 @@ def alignment_view(request, hyperevent_id=None):
             data['slides'].sort(key=lambda slide: slide['startTime'])
         else:
             data['slides'].sort(key=lambda slide: slide['url'])
-    else:
-        hyperevents = get_some_events(
-            num=10
-            ##search_query={
-            ##    'startDate': 1355314332000,
-            ##    'endDate': 1355314332000
-            ##}
-        )
-        data['hyperevent_ids'] = []
-        for hyperevent in hyperevents.get('hyperevents', []):
-            data['hyperevent_ids'].append(hyperevent)
 
     template = 'inevent/alignment_view.html'
     return render_to_response(template, data, context_instance=RequestContext(request))

@@ -79,42 +79,41 @@ def get_graph_head(request,num_of_events=5):
     response = get_most_recent_events(num_of_events, True, False)
     if response.has_key('hyperevents'):
         all_events = date_convert(response['hyperevents'])
-        return json.dumps({"hyperevents":all_events, "static_url":settings.STATIC_URL})
+        return json.dumps(all_events)
 
 #SD/ Get one specific event
 @dajaxice_register
 def get_event_head(request, id):
-	response = get_event(id, only_basic_info=True, graph_mode=False, raw_data=False)
-	response = date_convert([response])
-	return json.dumps({"hyperevents":response, "static_url":settings.STATIC_URL})
+    response = get_event(id, only_basic_info=True, graph_mode=False, raw_data=False)
+    response = date_convert([response])
+    return json.dumps(response)
 
 #SD/ Get event neighbours
 @dajaxice_register
 def get_graph_neighbours(request, event_id, count, depth, num_of_similar=4):
-	returned_data = get_similar_events(event_id, num_of_similar)
-	new_links = []
-#    print returned_data.keys()
-#    print returned_data['links'][0].keys()
-	if returned_data.has_key('links'):
-		hyperevents = parse_hyperevents(returned_data['links'], True, False)
-	#print "build links"
-	for event in hyperevents:
-	
-		new_links.append({"target": str(event['id']), "source": str(event_id), "weight": str(event['relevance'])})
-	
-	all_events = date_convert(hyperevents)
+    returned_data = get_similar_events(event_id, num_of_similar)
+    new_links = []
+    all_events = []
+    if returned_data.has_key('links'):
+        hyperevents = parse_hyperevents(returned_data['links'], True, False)
+        for event in hyperevents:
+            new_links.append({"target": str(event['id']), "source": str(event_id), "weight": str(event['relevance'])})
+    
+        all_events = date_convert(hyperevents)
 
-	#add depth
-	for i in range(0, len(all_events)):
-		all_events[i]['depth'] = depth
-	
-	output = {'caller_id':event_id, 'count':count, 'depth':depth, 'nodes':all_events,'links':new_links}
-	
-	return json.dumps(output)
+        #add depth
+        for i in range(0, len(all_events)):
+            all_events[i]['depth'] = depth
+    
+        output = {'caller_id':event_id, 'count':count, 'depth':depth, 'nodes':all_events,'links':new_links}
+    
+        return json.dumps(output)
 
 #SD/ Convert dates for json export
 def date_convert(all_events):
-    if all_events[0].has_key("linkedEvent"):
+    if len(all_events) == 0:
+        return []
+    elif all_events[0].has_key("linkedEvent"):
         for i in range(0, len(all_events)):
             if all_events[i].has_key("date") and type(all_events[i]['linkedEvent']['date']) == datetime.datetime:
                 all_events[i]['linkedEvent']['date'] = all_events[i]['linkedEvent']['date_ms']

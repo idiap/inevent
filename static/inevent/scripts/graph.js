@@ -397,7 +397,7 @@ function Graph() {
 }
 
 graph = new Graph();
-var static_url = "{{ STATIC_URL }}";
+
 
 
 /*SD/ ==========================================================================
@@ -423,12 +423,13 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 	//SD/ Create first graph without any data
 	$('#graph').html("");
 	position = $('#graph').position();
-	events = data['hyperevents']
-	graph.loadGraph(events, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+
+	graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
 	//SD/ Prepare queue for nodes
-	static_url = data['static_url']
-	events[0]['depth'] = 0 ;
+	
+	
+	data[0]['depth'] = 0 ;
 	graph.enQueue(data) ;
 
 	//SD/ Get first neighbours

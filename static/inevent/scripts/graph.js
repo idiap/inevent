@@ -397,7 +397,7 @@ function Graph() {
 }
 
 graph = new Graph();
-var static_url;
+var static_url = "{{ STATIC_URL }}";
 
 
 /*SD/ ==========================================================================
@@ -427,13 +427,13 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 	graph.loadGraph(events, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
 	//SD/ Prepare queue for nodes
-	
+	static_url = data['static_url']
 	events[0]['depth'] = 0 ;
 	graph.enQueue(data) ;
 
 	//SD/ Get first neighbours
 	var first = graph.firstQueue() ;
-	var static_url = data['static_url']
+	
 	params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
 	Dajaxice.inevent.get_graph_neighbours(
 		function(data){display_graph(data, display_graph);}, params) ;

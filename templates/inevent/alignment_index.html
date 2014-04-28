@@ -11,27 +11,8 @@
 			</h1>
 		</div>
 
-		<div class="row-fluid">
-			<div class="span6">
-
-				<ul>
-					{% for hyperevent in hyperevent_ids %}
-						<li> 
-						#{{hyperevent.id}} - {{hyperevent.date}}:
-							{% if hyperevent.title %}
-								{{hyperevent.title}}
-							{% else %}
-								(no name)
-							{% endif %}
-							{% if hyperevent.slides and hyperevent.video_url %}
-								<a href="{% url alignment_view hyperevent.id %}">align slides</a> - 
-							{% endif %}
-							<a href="{% url hyperevent_edit hyperevent.id %}">edit</a>
-						</li>
-					{% endfor %}
-				</ul>
-
-			</div>
+		<div class="row-fluid well well-small">
+			<div id="list">{% include "inevent/hyperevents_content.html" with hyperevents=hyperevent_ids allow_edit=1 %}</div>
 		</div>
 
 	</div>

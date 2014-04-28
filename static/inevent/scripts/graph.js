@@ -260,7 +260,7 @@ function Graph() {
 				.attr('x', -this.image_rect[0]/2)
 				.attr('y', 90)
 				.on("click", function(d) { d3.event.stopPropagation(); _this.setCenter(d);})
-				.attr("xlink:href", function(d) { return "/static/inevent/images/play_button.png"});
+				.attr("xlink:href", function(d) { return "{{ STATIC_URL }}inevent/images/play_button.png"});
 
 			this.nodeEnter.append('image')
 				.attr("id", function(d) { return "close"+d.id})
@@ -270,7 +270,7 @@ function Graph() {
 				.attr('x', -this.image_rect[0]/2 + 180)
 				.attr('y', 90)
 				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
-				.attr("xlink:href", function(d) { return "/static/inevent/images/close_button.png"});
+				.attr("xlink:href", function(d) { return "{{ STATIC_URL }}inevent/images/close_button.png"});
 			}
 
 

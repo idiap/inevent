@@ -10,6 +10,7 @@ from django.template import RequestContext
 from time import clock, time
 import re
 import datetime
+from django.conf import settings
 
 
 #################################IMPORTANT ################################################
@@ -78,14 +79,14 @@ def get_graph_head(request,num_of_events=5):
     response = get_most_recent_events(num_of_events, True, False)
     if response.has_key('hyperevents'):
         all_events = date_convert(response['hyperevents'])
-        return json.dumps(all_events)
+        return json.dumps({"hyperevents":all_events, "static_url":settings.STATIC_URL})
 
 #SD/ Get one specific event
 @dajaxice_register
 def get_event_head(request, id):
 	response = get_event(id, only_basic_info=True, graph_mode=False, raw_data=False)
 	response = date_convert([response])
-	return json.dumps(response)
+	return json.dumps({"hyperevents":response, "static_url":settings.STATIC_URL})
 
 #SD/ Get event neighbours
 @dajaxice_register

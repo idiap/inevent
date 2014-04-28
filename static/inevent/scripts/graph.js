@@ -260,7 +260,7 @@ function Graph() {
 				.attr('x', -this.image_rect[0]/2)
 				.attr('y', 90)
 				.on("click", function(d) { d3.event.stopPropagation(); _this.setCenter(d);})
-				.attr("xlink:href", function(d) { return "{{ STATIC_URL }}inevent/images/play_button.png"});
+				.attr("xlink:href", static_url + "inevent/images/play_button.png");
 
 			this.nodeEnter.append('image')
 				.attr("id", function(d) { return "close"+d.id})
@@ -270,7 +270,7 @@ function Graph() {
 				.attr('x', -this.image_rect[0]/2 + 180)
 				.attr('y', 90)
 				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
-				.attr("xlink:href", function(d) { return "{{ STATIC_URL }}inevent/images/close_button.png"});
+				.attr("xlink:href", static_url + "inevent/images/close_button.png");
 			}
 
 
@@ -397,6 +397,9 @@ function Graph() {
 }
 
 graph = new Graph();
+var static_url = "{{ static_url }}";
+console.log(static_url);
+
 
 /*SD/ ==========================================================================
 Function called to display graph and get data
@@ -421,19 +424,20 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 	//SD/ Create first graph without any data
 	$('#graph').html("");
 	position = $('#graph').position();
-	
-	graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+	events = data['hyperevents']
+	graph.loadGraph(events, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
 	//SD/ Prepare queue for nodes
-	data[0]['depth'] = 0 ;
+	
+	events[0]['depth'] = 0 ;
 	graph.enQueue(data) ;
 
 	//SD/ Get first neighbours
 	var first = graph.firstQueue() ;
-	
+	var static_url = data['static_url']
 	params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
 	Dajaxice.inevent.get_graph_neighbours(
-		function(data){display_graph(data, display_graph);}, params) ;
+		function(data){display_graph(events, display_graph);}, params) ;
 
 	//$('#graph_button').prop('disabled', false);
 }

@@ -139,7 +139,7 @@
                 } else {
                     $('#register-btn').hide();
                     $('#login-btn').hide();
-                    $('#logout-btn span').text(value.login);
+                    $('#logout-btn span.login').text(value.login);
                     $('#logout-btn').show();
                     $(loginFormSelector).modal('hide');
                 }
@@ -156,7 +156,7 @@
             style="display: none;"
         {% endif %}
     >
-        <span>{{ request.session.login }}</span> <span class="caret"></span>
+        <span class="login">{{ request.session.login }}</span> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu pull-right">
         <li><a href="#">Profile</a></li>

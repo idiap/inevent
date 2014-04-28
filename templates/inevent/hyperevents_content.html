@@ -66,6 +66,8 @@
 					{% endif %}
 				
 					<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
+					
+					<a class="btn btn-mini btn-danger" href="{% url hyperevent_delete hyperevent.id %}">Delete</a>
 				{% endif %}
 			</div>
 		</div>

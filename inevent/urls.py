@@ -3,12 +3,13 @@ from django.conf.urls.defaults import patterns, url, include, handler404, handle
 from django.contrib.auth import views as auth_views
 from inevent.email_auth import MyAuthenticationForm
 from inevent.views.portal import portal, get_hyperevent
-from inevent.views.alignment import alignment_index, alignment_view, align, edit, update 
+from inevent.views.alignment import alignment_index, alignment_view, align, edit, delete, update 
 from inevent.views.acm_challenge_demo import get_segmented_videos
 
 urlpatterns = patterns('',
   url(r'^inevent_portal/hyperevent/(?P<id>\d+)', get_hyperevent, name='get_hyperevent'),
   url(r'^inevent_portal/alignment/(.*)/edit$', edit, name='hyperevent_edit'),
+  url(r'^inevent_portal/alignment/(.*)/delete$', delete, name='hyperevent_delete'),
   url(r'^inevent_portal/alignment/(.*)/update$', update, name='hyperevent_update'),
   url(r'^inevent_portal/alignment/(.*)/align$', align, name='hyperevent_align'),
   url(r'^inevent_portal/alignment/(.*)/view$', alignment_view, name='alignment_view'),

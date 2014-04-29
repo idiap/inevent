@@ -22,7 +22,7 @@ function Graph() {
 			.attr("height", this.graph_height);
 		
 		this.color = {	black:"black",
-						blue:"blue",
+						blue:"#0088cc",
 						grey:"grey"} ;
 		
 	}
@@ -56,9 +56,8 @@ function Graph() {
 			.on("tick", this.boundedTick.bind(this))
 			.start();
 
-		
-		this.displayNodes();
 		this.displayLinks();
+		this.displayNodes();
 	}
 	
 	this.updateGraph = function(new_data) {
@@ -99,9 +98,9 @@ function Graph() {
 				}
 			}
 		}
-		
-		this.displayNodes();
+
 		this.displayLinks();
+		this.displayNodes();
 	
 		this.force.start();
 	}
@@ -134,12 +133,6 @@ function Graph() {
 	
 		this.input_nodes.push(candidate_node) ;
 	}
-
-	this.mouseover = function(d, display_class, title_id){
-		zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
-		display_title(d.title, "video_title" + d.id);
-	}
-
 	
 	this.displayNodes = function() {
 
@@ -292,8 +285,7 @@ function Graph() {
 		this.nodeEnter.append("title")
 			.text(function(d) { return d.title; });
 			
-					
-		this.node.exit().remove();		
+		this.node.exit().remove();
 	}
 
 
@@ -487,6 +479,11 @@ function display_graph(data, callback) {
 		else {
 			console.log("End of queue after exclusion with " + graph.input_nodes.length + " nodes") ;
 			graph.svg.selectAll(".link").moveToBack();
+			
+			graph.mouseover = function(d, display_class, title_id){
+			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
+			display_title(d.title, "video_title" + d.id);
+	}
 		}
 	}
 }

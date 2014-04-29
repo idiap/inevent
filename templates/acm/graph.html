@@ -314,7 +314,7 @@
 
 		node.append("image")
 		.attr("id", function(d) { return "image"+d.id})
-		.attr("xlink:href", function(d) { return {{ STATIC_URL  }} + d.snapshot })
+		.attr("xlink:href", function(d) { return "{{ STATIC_URL  }}"+d.snapshot })
 		.attr("height", function(d) { return d.image_height})
 		.attr("width", function(d) { return d.image_width})
 		.attr("class","node")
@@ -361,7 +361,7 @@
 		node.append("image")
 		.attr("id", function(d) { return "cloud"+d.id})
 		.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
-		.attr("xlink:href", function(d) { return {{ STATIC_URL  }} + d.snapshot})
+		.attr("xlink:href", function(d) { return "{{ STATIC_URL  }}" + d.snapshot})
 		.attr('x', function(d) { return -d.cloud_width/2 + 13;})
 		.attr('y', function(d) { return  -d.cloud_height/2 + 68;})
 
@@ -422,7 +422,7 @@
 		.attr('x', function(d) { return -d.cloud_width/2 + 20;})
 		.attr('y', function(d) { return d.cloud_height/2 + 60;})
 		.on("click", function(d) { d3.event.stopPropagation(); if (d.group == 2 || d.group == 3) setCenter(d); else playVideo(d);})
-		.attr("xlink:href", function(d) { return {{ STATIC_URL  }} +  "inevent/images/play_button.png"});
+		.attr("xlink:href", function(d) { return "{{ STATIC_URL }}" +  "inevent/images/play_button.png"});
 
 		node.append('image')
 		.attr("id", function(d) { return "close"+d.id})
@@ -432,7 +432,7 @@
 		.attr('x', function(d) { return d.cloud_width/2 - 93;})
 		.attr('y', function(d) { return d.cloud_height/2 + 60;})
 		.on("click", function(d) {d3.event.stopPropagation(); mouseout(d, "word_cloud_"+d.id); return false})
-		.attr("xlink:href", function(d) { return {{ STATIC_URL  }} +  "inevent/images/close_button.png"});
+		.attr("xlink:href", function(d) { return "{{ STATIC_URL  }}" +  "inevent/images/close_button.png"});
 
 		}
 

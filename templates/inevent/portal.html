@@ -57,7 +57,12 @@
 	}
 
 	$(document).ready(function() {
-		Dajaxice.inevent.get_graph_head(function(data){display_graph_head(data /*SD/ HERE WE CAN USER DATA*/);},{'error_callback': display_graph_error});
+		video_switch = true ;
+		max_neighbours = 2;
+		max_depth = 1;
+		max_size = 100;
+	
+		Dajaxice.inevent.get_graph_head(function(data){display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},{'error_callback': display_graph_error});
 	});
 	
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

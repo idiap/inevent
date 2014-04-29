@@ -167,8 +167,13 @@
 	}
 	
 	$(document).ready(function() {
+		video_switch = true ;
+		max_neighbours = 1;
+		max_depth = 7;
+		max_size = 100;
+	
 		Dajaxice.inevent.get_event_head(
-			function(data){display_graph_head(data,true,5,2);},
+			function(data){display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
 			{'id': {{ hyperevent.id }}, 'error_callback': display_graph_error});
 	});
 </script>

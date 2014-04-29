@@ -97,7 +97,7 @@ def get_graph_neighbours(request, event_id, count, depth, num_of_similar=4):
     if returned_data.has_key('links'):
         hyperevents = parse_hyperevents(returned_data['links'], True, False)
         for event in hyperevents:
-            new_links.append({"target": str(event['id']), "source": str(event_id), "weight": str(event['relevance'])})
+            new_links.append({"target": str(event['id']), "source": str(event_id), "weight": str(event['relevance']), "depth": str(depth)})
     
         all_events = date_convert(hyperevents)
 

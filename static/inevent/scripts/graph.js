@@ -22,6 +22,7 @@ function Graph() {
 			.attr("height", this.graph_height);
 		
 		this.color = {	black:"black",
+						blue:"blue",
 						grey:"grey"} ;
 		
 	}
@@ -161,8 +162,11 @@ function Graph() {
 			.attr("height", this.small_rect[1] - 10)
 			.attr("width", this.small_rect[0])
 			.style("stroke", function(d) {
-				//SD/ Color in black first node only
-				if(d.depth < 1) { return _this.color.black } else { return _this.color.grey }
+				//SD/ Color in blue first node only
+				color = _this.color.grey ;
+				if(d.depth < 1) { color = _this.color.blue }
+				console.log(d.depth + " " + color)
+				return color ;
 			})
 			.attr("rx", "5")
 			.attr('x', -this.small_rect[0] / 2)
@@ -195,8 +199,8 @@ function Graph() {
 			.attr("height", this.big_rect[1])
 			.attr("width", this.big_rect[0])
 			.style("stroke", function(d) {
-				//SD/ Color in black first node only
-				if(d.depth < 1) { return _this.color.black } else { return _this.color.grey } 
+				//SD/ Color in blue first node only
+				if(d.depth < 1) { return _this.color.blue } else { return _this.color.grey } 
 			})
 			.style("fill","white") // Make the nodes hollow looking
 			.style("stroke-width", 2) // Give the node strokes some thickness
@@ -302,8 +306,8 @@ function Graph() {
 			.attr("class", "link")
 			.style("stroke-width",function(d) {return  d.weight})
 			.style("stroke", function(d) { 
-				//SD/ Color in black links of first node only
-				if(d.depth < 2) { return _this.color.black } else { return _this.color.grey }
+				//SD/ Color in blue links of first node only
+				if(d.depth < 2) { return _this.color.blue } else { return _this.color.grey }
 			})
 			.attr("x1", function(d) { return d.source.x})
 			.attr("y1", function(d) { return d.source.y})
@@ -312,7 +316,7 @@ function Graph() {
 		
 		this.link.exit().remove();
 		//SD/ Push lines to background
-		this.svg.selectAll(".link").moveToBack();
+		//this.svg.selectAll(".link").moveToBack();
 	}
 
 	this.boundedTick = function() {
@@ -424,12 +428,12 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 	$('#graph').html("");
 	position = $('#graph').position();
 
+	//SD/ Prepare queue for nodes
+	for(var i=0 ; i < data.length ; i++)
+		data[i]['depth'] = 0 ;
+
 	graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
-	//SD/ Prepare queue for nodes
-	
-	
-	data[0]['depth'] = 0 ;
 	graph.enQueue(data) ;
 
 	//SD/ Get first neighbours

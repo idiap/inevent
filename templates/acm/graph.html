@@ -786,7 +786,7 @@
 
 		clip = {autoPlay:true};
 		playlist = [];
-		static_url = {{ STATIC_URL }}
+		static_url = "{{ STATIC_URL }}"
 		url_snapshot = static_url + input_nodes[0]['snapshot']
 		playlist.push({url: url_snapshot, scaling:'scale'});
 

@@ -165,7 +165,6 @@ function Graph() {
 				//SD/ Color in blue first node only
 				color = _this.color.grey ;
 				if(d.depth < 1) { color = _this.color.blue }
-				console.log(d.depth + " " + color)
 				return color ;
 			})
 			.attr("rx", "5")
@@ -440,15 +439,15 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 	var first = graph.firstQueue() ;
 	
 	params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
-	Dajaxice.inevent.get_graph_neighbours(
-		function(data){display_graph(data, display_graph);}, params) ;
+	Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph);}, params) ;
 
 	//$('#graph_button').prop('disabled', false);
 }
 
 //SD/ update graph with children data
 function display_graph(data, callback) {
-	if(data['depth'] <= graph.max_depth) //SD/ Check for depth
+
+	if(data['nodes'] != undefined)
 	{
 		var rest = graph.max_size - graph.input_nodes.length ;
 		var cuted = false ;
@@ -463,7 +462,8 @@ function display_graph(data, callback) {
 			}
 			
 			//SD/ Enqueue neighbours
-			graph.enQueue(data['nodes']) ;
+			if(data['depth'] < graph.max_depth)
+				graph.enQueue(data['nodes']) ;
 		}
 		
 		//SD/ Graph node and prepare its links for next neighbours
@@ -477,15 +477,17 @@ function display_graph(data, callback) {
 		if(graph.sizeQueue() > 0 && !cuted) {
 			var first = graph.firstQueue() ;
 			
-			if(callback) {
+			if(callback != undefined) {
 				params = {'event_id': first[0]['id'], 'count': data['count'] + 1, 'depth': first[0]['depth'] + 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
 				callback(
 					Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph); }, params)
 				) ;
 			}
 		}
-		else
+		else {
 			console.log("End of queue after exclusion with " + graph.input_nodes.length + " nodes") ;
+			graph.svg.selectAll(".link").moveToBack();
+		}
 	}
 }
 

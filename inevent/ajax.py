@@ -107,7 +107,7 @@ def get_graph_neighbours(request, event_id, count, depth, num_of_similar=4):
     
         output = {'caller_id':event_id, 'count':count, 'depth':depth, 'nodes':all_events,'links':new_links}
     
-        return json.dumps(output)
+    return json.dumps(output)
 
 #SD/ Convert dates for json export
 def date_convert(all_events):

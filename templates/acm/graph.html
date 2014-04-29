@@ -557,7 +557,7 @@
 		}
 
 		function switch_snapshot(d) {
-		static_url = {{ STATIC_URL }}
+		static_url = "{{ STATIC_URL }}"
 
 		current_image = $("#cloud" + d.id).attr("href")
 		if (current_image.indexOf("cloud")!=-1) {

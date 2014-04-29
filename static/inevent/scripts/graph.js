@@ -78,8 +78,8 @@ function Graph() {
 		links = new_data['links'] ;
 		if(typeof new_data['links'] !== undefined && new_data['links'] != null) {
 			for (var s = 0; s < links.length; s++) {
-				target = this.find_node_index(links[s]['target']);
-				source = this.find_node_index(links[s]['source']);
+				var target = this.find_node_index(links[s]['target']);
+				var source = this.find_node_index(links[s]['source']);
 				if (target!=-1 && source!=-1) {
 					this.input_links.push({
 						"target":target,

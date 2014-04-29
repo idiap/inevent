@@ -105,7 +105,7 @@ def get_graph_neighbours(request, event_id, count, depth, num_of_similar=4):
         for i in range(0, len(all_events)):
             all_events[i]['depth'] = depth
     
-        output = {'caller_id':event_id, 'count':count, 'depth':depth, 'nodes':all_events,'links':new_links}
+    output = {'caller_id':event_id, 'count':count, 'depth':depth, 'nodes':all_events,'links':new_links}
     
     return json.dumps(output)
 

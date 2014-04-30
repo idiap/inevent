@@ -216,3 +216,8 @@ def do_delete_hyperevent(request, event_id) :
 	if request.session.get('login') :
 		if event_id > 0 :
 			print "I want to delete hyperevent: " + str(event_id)
+			headers = {'content-type': 'application/json'}
+			url = rest_url_management + 'deleteHyperEvent?hyperEventId=' + str(event_id)
+			
+			result = requests.post(url, headers = headers)
+			return result

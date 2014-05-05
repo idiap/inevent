@@ -76,10 +76,11 @@ def get_recommendations(request,event_id):
 #SD/Get last events (by default 10 last)
 @dajaxice_register
 def get_graph_head(request,num_of_events=5):
-    response = get_most_recent_events(num_of_events, True, False)
-    if response.has_key('hyperevents'):
-        all_events = date_convert(response['hyperevents'])
-        return json.dumps(all_events)
+	response = get_most_recent_events(num_of_events, True, False)
+	all_events = []
+	if response.has_key('hyperevents'):
+		all_events = date_convert(response['hyperevents'])
+	return json.dumps(all_events)
 
 #SD/ Get one specific event
 @dajaxice_register

@@ -408,32 +408,40 @@ function display_graph_error(error) {
 
 //SD/ Initiate the first graph and call dynamically next data
 function display_graph_head(data, video_switch, max_neighbours, max_depth, max_size) {
-	graph_data_fetched = true;
+	if(data.length > 0)
+	{
+		graph_data_fetched = true;
 
-	video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
-	max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
-	max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
-	max_size = typeof max_size !== 'undefined' ? max_size : 100;
+		video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
+		max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
+		max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
+		max_size = typeof max_size !== 'undefined' ? max_size : 100;
 	
-	//SD/ Create first graph without any data
-	$('#graph').html("");
-	position = $('#graph').position();
+		//SD/ Create first graph without any data
+		$('#graph').html("");
+		position = $('#graph').position();
 
-	//SD/ Prepare queue for nodes
-	for(var i=0 ; i < data.length ; i++)
-		data[i]['depth'] = 0 ;
+		//SD/ Prepare queue for nodes
+		for(var i=0 ; i < data.length ; i++)
+			data[i]['depth'] = 0 ;
 
-	graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+		graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
-	graph.enQueue(data) ;
+		graph.enQueue(data) ;
 
-	//SD/ Get first neighbours
-	var first = graph.firstQueue() ;
+		//SD/ Get first neighbours
+		var first = graph.firstQueue() ;
 	
-	params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
-	Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph);}, params) ;
+		params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
+		Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph);}, params) ;
 
-	//$('#graph_button').prop('disabled', false);
+		//$('#graph_button').prop('disabled', false);
+	}
+	else
+	{
+		graph_data_fetched = true;
+		$('#graph').html('<div class="alert alert-danger" style ="margin-top:100px;position:relative;margin-bottom:100px">Server error.<br>No data returned from server.</div>');
+	}
 }
 
 //SD/ update graph with children data

@@ -13,7 +13,7 @@ function Graph() {
 		this.graph_left = this.left;
 		
 		
-		this.queue = [] ;
+		this.queue = new Queue() ;
 		this.excluded = [] ; //SD/ to store node who already displays neighbours
 		this.input_links = [] ;
 		
@@ -288,7 +288,6 @@ function Graph() {
 		this.node.exit().remove();
 	}
 
-
 	this.displayLinks = function() {
 		_this = this ;
 		
@@ -311,25 +310,21 @@ function Graph() {
 	}
 
 	this.boundedTick = function() {
-	
-	node = this.svg.selectAll(".node");
-	link = this.svg.selectAll(".link");
-	var g = this;
-	
-	
-	node.attr("cx", function(d) { return d.x; })
-	node.attr("cy", function(d) { return d.y; })
-	
-	
-//	node.attr("cx", function(d) { return d.x = Math.max(g.small_rect[0], Math.min(g.graph_width - g.small_rect[0], d.x)); })
-//	node.attr("cy", function(d) { return d.y = Math.max(g.small_rect[1] - 10, Math.min(g.graph_height - g.small_rect[1] + 10, d.y)); })
+		node = this.svg.selectAll(".node");
+		link = this.svg.selectAll(".link");
+		var g = this;
+
+		node.attr("cx", function(d) { return d.x; })
+		node.attr("cy", function(d) { return d.y; })
+		//	node.attr("cx", function(d) { return d.x = Math.max(g.small_rect[0], Math.min(g.graph_width - g.small_rect[0], d.x)); })
+		//	node.attr("cy", function(d) { return d.y = Math.max(g.small_rect[1] - 10, Math.min(g.graph_height - g.small_rect[1] + 10, d.y)); })
 		
-	link.attr("x1", function(d) { return d.source.x; })
+		link.attr("x1", function(d) { return d.source.x; })
 			.attr("y1", function(d) { return d.source.y; })
 			.attr("x2", function(d) { return d.target.x; })
 			.attr("y2", function(d) { return d.target.y; });
 
-	node.attr("transform", function(d) {
+		node.attr("transform", function(d) {
 			return "translate(" + d.x + "," + d.y + ")";
 		});
 	}
@@ -343,6 +338,14 @@ function Graph() {
 			this.excluded.push(event_id) ;
 	}
 
+	this.isExcluded = function(id) {
+		for(var i = 0 ; i < this.excluded.length ; i++) {
+			if(id == this.excluded[i])
+				return true ;
+		}
+		return false ;
+	}
+
 	this.setWidth = function(new_width) {
 		this.width = new_width ;
 		if (this.margin!=undefined) {
@@ -351,25 +354,56 @@ function Graph() {
 			this.svg.attr("width", this.graph_width) ;
 			this.force.start();
 		}
-		
 	}
-
-	//SD/ FROM HERE queue management where we could use a jQuery Queue Object (http://api.jquery.com/jquery.queue/)
-
-	//SD/ Enqueue if not excluded
-	this.enQueue = function(nodes) {
+	
+	this.pickElement = function() {
+		node = this.queue.firstQueue() ;
+		this.queue.deQueue() ;
+		
+		return node[0] ;
+	}
+	
+	this.addElement = function(nodes) {
 		if(typeof nodes !== undefined && nodes != null) {
-			for(var i = 0 ; i < nodes.length ; i++)
-				this.checkAndQueue(nodes[i]) ;
+			//SD/ Remove some neighbours if nodes limit reached
+			var rest = this.max_size - this.input_nodes.length ;
+			if(nodes.length > rest)
+				nodes.splice(rest , nodes.length - rest) ;
+			
+			//SD/ Enqueue neighbours
+			for(var i = 0 ; i < nodes.length ; i++) {
+				if(!this.isExcluded(nodes[i]['id']) && (nodes[i]['depth'] <= this.max_depth))
+					this.queue.enQueue(nodes[i]) ;
+			}
 		}
 	}
-
-	this.checkAndQueue = function(node) {
-		for(var i = 0 ; i < this.excluded.length ; i++)
-			if(node['id'] == this.excluded[i])
-				return ;
 	
-		this.queue.push(node) ;
+	this.stillElement = function() {
+		if(this.queue.sizeQueue() > 0)
+			return true ;
+		else
+			return false ;
+	}
+	
+	this.finalizeGraph = function() {
+		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes") ;
+	
+		this.svg.selectAll(".link").moveToBack();
+		
+		this.mouseover = function(d, display_class, title_id){
+			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
+			display_title(d.title, "video_title" + d.id);
+		}
+	}
+}
+
+function Queue() {
+	this.queue = [] ;
+
+	//SD/ Enqueue if not excluded
+	this.enQueue = function(node) {
+		if(typeof node !== undefined && node != null)
+			this.queue.push(node) ;
 	}
 	
 	this.deQueue = function() {
@@ -380,20 +414,12 @@ function Graph() {
 		return [this.queue[0]] ;
 	}
 
-	this.firstQueueID = function() {
-		if (this.queue.length > 0)
-			return this.queue[0]['id'] ;
-	}
-	
 	this.sizeQueue = function() {
 		return this.queue.length ;
 	}
-	//SD/ END FROM HERE queue management
 }
 
 graph = new Graph();
-
-
 
 /*SD/ ==========================================================================
 Function called to display graph and get data
@@ -427,12 +453,10 @@ function display_graph_head(data, video_switch, max_neighbours, max_depth, max_s
 
 		graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
-		graph.enQueue(data) ;
-
-		//SD/ Get first neighbours
-		var first = graph.firstQueue() ;
-	
-		params = {'event_id': graph.firstQueueID(), 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
+		graph.addElement(data)
+		var first = graph.pickElement() ;
+		
+		params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
 		Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph);}, params) ;
 
 		//$('#graph_button').prop('disabled', false);
@@ -449,49 +473,25 @@ function display_graph(data, callback) {
 
 	if(data['nodes'] != undefined)
 	{
-		var rest = graph.max_size - graph.input_nodes.length ;
-		var cuted = false ;
 		graph.addExclusion(data['caller_id']) ;
-		
-		if(typeof data['nodes'] !== undefined && data['nodes'] != null) {
-			//SD/ Remove some neighbours if nodes limit reached
-			if(data['nodes'].length > rest) {
-				
-				data['nodes'].splice(rest , data['nodes'].length - rest) ;
-				cuted = true ;
-			}
-			
-			//SD/ Enqueue neighbours
-			if(data['depth'] < graph.max_depth)
-				graph.enQueue(data['nodes']) ;
-		}
+		graph.addElement(data['nodes']) ;
 		
 		//SD/ Graph node and prepare its links for next neighbours
-		//$('#graph').html("");
 		graph.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
-		
-		//SD/ Dequeue first node
-		graph.deQueue() ;
 
 		//SD/ Check exclusion for next node
-		if(graph.sizeQueue() > 0 && !cuted) {
-			var first = graph.firstQueue() ;
+		if(graph.stillElement()) {
+			var first = graph.pickElement() ;
 			
 			if(callback != undefined) {
-				params = {'event_id': first[0]['id'], 'count': data['count'] + 1, 'depth': first[0]['depth'] + 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
+				params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
 				callback(
 					Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph); }, params)
 				) ;
 			}
 		}
 		else {
-			console.log("End of queue after exclusion with " + graph.input_nodes.length + " nodes") ;
-			graph.svg.selectAll(".link").moveToBack();
-			
-			graph.mouseover = function(d, display_class, title_id){
-			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
-			display_title(d.title, "video_title" + d.id);
-	}
+			graph.finalizeGraph() ;
 		}
 	}
 }

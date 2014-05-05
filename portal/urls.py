@@ -3,10 +3,11 @@ from django.conf import settings
 #from django.contrib import admin
 #from django.conf.urls.static import static
 from django.conf.urls.defaults import url
-
+from inevent.views.portal import portal, get_hyperevent
 
 urlpatterns = patterns('',
-     url(r'^', include('inevent.urls')),
+	url(r'^', include('inevent.urls')),
+	url(r'^$', portal, name='inevent'),
 )
 
 from dajaxice.core import dajaxice_autodiscover

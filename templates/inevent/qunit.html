@@ -1,0 +1,58 @@
+{% extends "inevent/base.html" %}
+{% load staticfiles %}
+
+{% block content_inevent_page %}
+
+<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/qunit.css">
+<script src="{{ STATIC_URL }}inevent/scripts/qunit.js"></script>
+<script src="{{ STATIC_URL }}inevent/scripts/graph.js"></script>
+
+<script>
+	test("graph", function() {
+		var position = $('#graph').position();
+
+		var video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
+		var max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
+		var max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
+		var max_size = typeof max_size !== 'undefined' ? max_size : 100;
+
+		var data = [] ;
+
+		var _graph = new Graph() ;
+		_graph.loadGraph([{id:11, depth:0}], "graph", max_size, max_depth, max_neighbours, 500, 500, position['top'], position['left'], video_switch);
+		
+		var graph = _graph ;
+		graph.setWidth("800") ;
+		equal(graph.width, 800, "setWidth method");
+		
+		graph.addExclusion(123) ;
+		graph.addExclusion(456) ;
+		propEqual(graph.getExcludedEvent(), [123, 456], "addExclusion and getExclusion method");
+		ok(graph.isExcluded(456), "isExluded method on exclusion");
+		equal(graph.isExcluded(789), false, "isExluded method on new id");
+		
+		var new_data = [{id:11, depth:0}, {id:123, depth:1}, {id:10, depth:1}, {id:13, depth:2}, {id:12, depth:3}] ;
+		
+		graph.addElement(new_data)
+		propEqual(graph.queue.queue, [{id:11, depth:0}, {id:10, depth:1}, {id:13, depth:2}], "addElement with one exculded");
+		var first = graph.pickElement() ;
+		propEqual(first, {id:11, depth:0}, "pickElement with correct data");
+		propEqual(graph.queue.queue, [{id:10, depth:1}, {id:13, depth:2}], "pickElement erease correctly");
+		ok(graph.stillElement(), "Check if stillElement work with data");
+		graph.pickElement() ;
+		graph.pickElement() ;
+		equal(graph.stillElement(), false, "And check if stillElement work with nothing") ;
+		
+		equal(graph.mouseover, undefined, "Mouseover couldn't exist before finalizeGraph") ;
+		graph.finalizeGraph() ;
+		notEqual(graph.mouseover, undefined, "Mouseover is created in finalizeGraph") ;
+	});
+</script>
+
+<div id="qunit"></div>
+
+<div class="well">
+	<div id="graph"></div>
+</div>
+
+{% endblock %}

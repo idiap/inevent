@@ -475,35 +475,6 @@
 
 {% block content_inevent_page %}
 
-<script>
-    $(document).ready(function(){
-        var addHyperEventSelector = '#addHyperEventForm';
-        initForm(addHyperEventSelector, function(){
-            var value = getFormValue(addHyperEventSelector);
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: "http://inevent.haifa.il.ibm.com/rest/archiving/newHyperEvent",
-                contentType:"application/json; charset=utf-8",
-                data: '{'
-                      + '"type": "Lecture"'
-                      + ',"name": "' + value.name + '"'
-                      + ',"title": "' + value.title + '"'
-                      + ',"description": "' + value.description + '"'
-                      + ',"date": "2012-12-12T12:12:12"'
-                      + ',"tracks": []'
-                      + ',"mediaProvider": {"id": 2}'
-                      + '}',
-                success: function(result) {
-                    alert('OK');
-                    console.log(result);
-                    //alert('Error: ' + result['error'] + ". Content: " + result['content'] + ". Firstname: " + result['firstName']);
-                }
-            });
-        });
-    });
-</script>
-
 <div class="container-fluid">
 	{% block content %}
 		<div class="row-fluid">

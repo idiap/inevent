@@ -477,7 +477,8 @@ function display_graph(data, callback) {
 		graph.addElement(data['nodes']) ;
 		
 		//SD/ Graph node and prepare its links for next neighbours
-		graph.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
+		if(data['nodes'][0]['depth'] <= graph.max_depth)
+			graph.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
 
 		//SD/ Check exclusion for next node
 		if(graph.stillElement()) {

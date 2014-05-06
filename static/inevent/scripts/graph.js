@@ -151,7 +151,7 @@ function Graph() {
 		this.defs.append("rect")
 			.attr("id", function(d) { return "rect_node" + d.id})
 			.style("stroke-width", 4)
-			.style("fill", "none") // Make the nodes hollow looking
+			.style("fill", "white") // Make the nodes hollow looking
 			.attr("height", this.small_rect[1] - 10)
 			.attr("width", this.small_rect[0])
 			.style("stroke", function(d) {

@@ -58,12 +58,11 @@ def _start_time_of(slide):
 def update(request, hyperevent_id):
     new_data = {
         'id': hyperevent_id,
-        'title': request.POST['title'],
         'name': request.POST['name'],
         'description': request.POST['description'],
     }
     do_update_hyperevent(new_data)
-    return redirect(reverse('alignment_view', args=['']))
+    return redirect(reverse('alignment_index', args=['']))
 
 def edit(request, hyperevent_id):
     data = {}
@@ -89,9 +88,9 @@ def edit(request, hyperevent_id):
 
 def delete(request, hyperevent_id) :
 	if(hyperevent_id > 0) :
-		do_delete_hyperevent(request, hyperevent_id)
+		print do_delete_hyperevent(request, hyperevent_id)
 	
-	return redirect('views.alignment_index')
+	return redirect('/inevent_portal/alignment/')
 
 def align(request, video_id):
 

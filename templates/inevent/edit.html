@@ -59,13 +59,6 @@
 		
 		<form class="form updateForm" action="{% url hyperevent_update id %}" method="post">{% csrf_token %}
 			<div class="row-fluid">
-				<div class="col-fluid span1">Title:</div>
-				<div class="col-fluid span1">
-					<input type="text" class="form-control" name="title" value="{% if title %}{{title}}{% endif %}" required />
-				</div>
-			</div>
-		
-			<div class="row-fluid">
 				<div class="col-fluid span1">Name:</div>
 				<div class="col-fluid span1">
 					<input type="text" class="form-control" name="name" value="{% if name %}{{name}}{% endif %}" required />

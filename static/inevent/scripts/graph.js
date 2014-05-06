@@ -372,7 +372,7 @@ function Graph() {
 			
 			//SD/ Enqueue neighbours
 			for(var i = 0 ; i < nodes.length ; i++) {
-				if(!this.isExcluded(nodes[i]['id']) && (nodes[i]['depth'] <= this.max_depth))
+				if(!this.isExcluded(nodes[i]['id']) && (nodes[i]['depth'] <= this.max_depth || this.max_depth == 6))
 					this.queue.enQueue(nodes[i]) ;
 			}
 		}
@@ -477,7 +477,7 @@ function display_graph(data, callback) {
 		graph.addElement(data['nodes']) ;
 		
 		//SD/ Graph node and prepare its links for next neighbours
-		if(data['nodes'][0]['depth'] <= graph.max_depth)
+		if(data['nodes'][0]['depth'] <= graph.max_depth || graph.max_depth == 6)
 			graph.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
 
 		//SD/ Check exclusion for next node

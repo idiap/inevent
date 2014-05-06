@@ -3,7 +3,7 @@
 }*/
 
 .hyperevent {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .hyperevent-title, .hyperevent-metadata {
@@ -17,17 +17,16 @@
 
 .snap {
 	height: auto;
-	overflow: hidden;
+	max-width: 80%;
 }
-
 
 .provider {
 	position: relative;
-    font-size: 8px;
-    bottom: 20px;
-    left: 0px;
- }  
-    
+	font-size: 8px;
+	bottom: 20px;
+	left: 0px;
+}
+
 .provider-center {
 	left: 5px;
 	position: relative;
@@ -39,8 +38,7 @@
 }
 
 .recording {
-    /*  */
-    height: 100px;
+	height: 100px;
 }
 
 .snapshot, .duration {
@@ -62,4 +60,11 @@
 	color:#680000;
 }
 
+#blocOption {
+	margin-left: 4px;
+}
+
+.form-horizontal .control-label {
+	text-align: left;
+}
 

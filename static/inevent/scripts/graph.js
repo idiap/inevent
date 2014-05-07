@@ -24,7 +24,8 @@ function Graph() {
 		this.color = {	black:"black",
 						blue:"#0088cc",
 						grey:"grey"} ;
-		
+						
+		this.endOfGraph = false ;
 	}
 
 	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
@@ -385,15 +386,20 @@ function Graph() {
 			return false ;
 	}
 	
+	this.mouseover = function(d, display_class, title_id){
+		if(this.endOfGraph && d != undefined) {
+			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
+			//display_title(d.title, "video_title" + d.id);
+			return true ;
+		}
+		else
+			return false ;
+	}
+	
 	this.finalizeGraph = function() {
 		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes") ;
-	
 		this.svg.selectAll(".link").moveToBack();
-		
-		this.mouseover = function(d, display_class, title_id){
-			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
-			display_title(d.title, "video_title" + d.id);
-		}
+		this.endOfGraph = true ;
 	}
 }
 

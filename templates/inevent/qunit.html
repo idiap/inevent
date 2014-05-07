@@ -16,10 +16,10 @@
 		var max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
 		var max_size = typeof max_size !== 'undefined' ? max_size : 100;
 
-		var data = [] ;
+		var data = [{video_url:"http://inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/CandyChang_2012G-480p.mp4?trackId=2167", providerName:"TED", tags:"Arts ", snapshot_url:"http://inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167", title:"Candy Chang: Before I die I want to...", date_ms:1341090000000, presenters:["Candy Chang"], date:1341090000000, id:940, mime_type:"video/mp4", depth:0}] ;
 
 		var _graph = new Graph() ;
-		_graph.loadGraph([{id:11, depth:0}], "graph", max_size, max_depth, max_neighbours, 500, 500, position['top'], position['left'], video_switch);
+		_graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, 500, 500, position['top'], position['left'], video_switch);
 		
 		var graph = _graph ;
 		graph.setWidth("800") ;
@@ -31,21 +31,21 @@
 		ok(graph.isExcluded(456), "isExluded method on exclusion");
 		equal(graph.isExcluded(789), false, "isExluded method on new id");
 		
-		var new_data = [{id:11, depth:0}, {id:123, depth:1}, {id:10, depth:1}, {id:13, depth:2}, {id:12, depth:3}] ;
+		var new_data = [data[0], {id:123, depth:1}, {id:10, depth:1}, {id:13, depth:2}, {id:12, depth:3}] ;
 		
 		graph.addElement(new_data)
-		propEqual(graph.queue.queue, [{id:11, depth:0}, {id:10, depth:1}, {id:13, depth:2}], "addElement with one exculded");
+		propEqual(graph.queue.queue, [data[0], {id:10, depth:1}, {id:13, depth:2}], "addElement with one exculded");
 		var first = graph.pickElement() ;
-		propEqual(first, {id:11, depth:0}, "pickElement with correct data");
+		propEqual(first, data[0], "pickElement with correct data");
 		propEqual(graph.queue.queue, [{id:10, depth:1}, {id:13, depth:2}], "pickElement erease correctly");
 		ok(graph.stillElement(), "Check if stillElement work with data");
 		graph.pickElement() ;
 		graph.pickElement() ;
 		equal(graph.stillElement(), false, "And check if stillElement work with nothing") ;
 		
-		equal(graph.mouseover, undefined, "Mouseover couldn't exist before finalizeGraph") ;
+		equal(graph.mouseover(), false, "Mouseover couldn't exist before finalizeGraph") ;
 		graph.finalizeGraph() ;
-		notEqual(graph.mouseover, undefined, "Mouseover is created in finalizeGraph") ;
+		notEqual(graph.mouseover(), true, "Mouseover is created in finalizeGraph") ;
 	});
 </script>
 

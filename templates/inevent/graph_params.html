@@ -1,4 +1,4 @@
-<div id="graph_form" style="display:none;">
+<div id="{{ div_id }}_form" style="display:none;">
 
 	<div class="nav-header">Graph parameters</div>
 
@@ -24,21 +24,21 @@
 		<div class="control-group">
 			<label class="control-label" for="fader">Graph size</label>
 			<div class="controls">
-				<input onchange="start_graph()" id="user_size" class="input-medium" placeholder=".input-medium" type="range" min="50" max="500" step="50" value="50" id="fader2" list="volsettings"> <span id="user_size_text">0</span></input>
+				<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="50" max="500" step="50" value="50" id="fader2" list="volsettings"> <span class="user_size_text">0</span></input>
 			</div>
 		</div>
 
 		<div class="control-group">
 			<label class="control-label" for="fader2">Depth</label>
 			<div class="controls">
-				<input onchange="start_graph()" id="user_depth" class="input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"> <span id="user_depth_text">0</span></input>
+				<input onchange="start_graph('{{ div_id }}')" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"> <span class="user_depth_text">0</span></input>
 			</div>
 		</div>
 
 		<div class="control-group">
 			<label class="control-label" for="fader2">Neighbours</label>
 			<div class="controls">
-				<input onchange="start_graph()" id="user_neighbours" class="input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"> <span id="user_neighbours_text">0</span></input>
+				<input onchange="start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"> <span class="user_neighbours_text">0</span></input>
 			</div>
 		</div>
 

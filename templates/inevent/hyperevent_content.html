@@ -75,17 +75,25 @@
 				<iframe id='hePlayer' width="100%" height="700px" src='http://inevent.haifa.il.ibm.com/player.jsp?hyperEventId={{ hyperevent.id }}'style='border:none;'> </iframe>
 				
 				<div id="graph_container">
-					<div class="tab-content well" style="display:none">
-						<div id="graph"></div>
+					<div class="tab-content well" style="display:none;">
+						<div id="graph1"></div>
 					</div>
+					
+					<!--
+					<div class="tab-content well">
+						<div id="graph2"></div>
+					</div>
+					-->
 				</div>
 			</div>
 
 			<div id="graph_params" class="col-fluid span4 well">
 				
-				{% include "inevent/graph_params.html" %}
+				{% include "inevent/graph_params.html" with div_id="graph1" %}
 				
-				<div class="row-fluid" id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id  %}</div>
+				{# include "inevent/graph_params.html" with div_id="graph2" #}
+				
+				<div class="row-fluid" id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id %}</div>
 			</div>
 		</div>
 	</div>
@@ -140,7 +148,7 @@
 			$('#graph_container div.tab-content').css("display", "");
 			if (graph_data_fetched == false) {
 				//Dajaxice.inevent.get_graph(function(data){display_graph(data, true);},{'error_callback': display_graph_error});
-				$('#graph').html('<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>');
+				$('#graph1').html('<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>');
 				//$('#graph_button').prop('disabled', true);
 			}
 			$('#graph_button').attr("name","graph");
@@ -148,7 +156,7 @@
 			
 			//SD/ Toogle params/talks
 			$('#related_talks').css("display", "none");
-			$('#graph_form').css("display", "");
+			$('#graph1_form').css("display", "");
 			
 			$('#graph_button').html("Intra-event Navitation")
 		}
@@ -161,37 +169,37 @@
 			
 			//SD/ Toogle params/talks
 			$('#related_talks').css("display", "");
-			$('#graph_form').css("display", "none");
+			$('#graph1_form').css("display", "none");
 			
 			$('#graph_button').html("Inter-event Navigation")
 		}
 	}
 	
-	function start_graph() {
+	function start_graph(div_id) {
+		var graph = new Graph(div_id);
 		video_switch = true ;
 	
-		max_neighbours = $("#user_neighbours").val() ;
-		max_depth = $("#user_depth").val() ;
-		max_size = $("#user_size").val() ;
+		max_neighbours = $("#" + div_id + "_form .user_neighbours").val() ;
+		max_depth = $("#" + div_id + "_form .user_depth").val() ;
+		max_size = $("#" + div_id + "_form .user_size").val() ;
 		
-		$("#user_neighbours_text").text(max_neighbours) ;
-		$("#user_size_text").html(max_size) ;
+		$("#" + div_id + "_form .user_neighbours_text").text(max_neighbours) ;
+		$("#" + div_id + "_form .user_size_text").html(max_size) ;
 		if(max_depth == 6)
-			$("#user_depth_text").html(max_depth + "+") ;
+			$("#" + div_id + "_form .user_depth_text").html(max_depth + "+") ;
 		else
-			$("#user_depth_text").html(max_depth) ;
-		
+			$("#" + div_id + "_form .user_depth_text").html(max_depth) ;
+
 		Dajaxice.inevent.get_event_head(
-			function(data){display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
+			function(data){graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
 			{'id': {{ hyperevent.id }}, 'error_callback': display_graph_error});
 	}
-	
+
 	$(document).ready(function() {
-		start_graph() ;
+		start_graph("graph1") ;
+		//start_graph("graph2") ;
 	});
 </script>
 
 
-{% endblock%}    
-
-    
+{% endblock%}

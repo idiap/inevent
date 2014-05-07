@@ -56,22 +56,28 @@
 		
 	}
 
-	$(document).ready(function() {
+	function start_graph(div_id) {
+		var graph = new Graph(div_id);
 		video_switch = true ;
 		max_neighbours = 3;
 		max_depth = 3;
 		max_size = 100;
 	
-		Dajaxice.inevent.get_graph_head(function(data){display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},{'error_callback': display_graph_error});
+		Dajaxice.inevent.get_graph_head(function(data){graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},{'error_callback': display_graph_error});
+	}
+
+	$(document).ready(function() {
+		start_graph("graph") ;
+		//start_graph("graph2") ;
 	});
-	
+
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 	if ($(e.target).attr('href').indexOf("tab1")!=-1)
 		$('#graph_button').css("display", "");
 	else
 		$('#graph_button').css("display", "none");
 })
-	
+
 </script>
 
 {% endblock%}

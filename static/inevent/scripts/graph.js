@@ -1,5 +1,7 @@
 // CLASS WIDGET MANAGER
-function Graph() {
+function Graph(div_id) {
+	this.div_id = div_id ;
+
 	this.initVars = function() {
 		this.small_rect = [75.0, 56.0] ;
 		this.big_rect = [300.0, 250.0] ;
@@ -401,6 +403,74 @@ function Graph() {
 		this.svg.selectAll(".link").moveToBack();
 		this.endOfGraph = true ;
 	}
+	
+	//SD/ Initiate the first graph and call dynamically next data
+	this.display_graph_head = function(data, video_switch, max_neighbours, max_depth, max_size) {
+		var _this = this
+		
+		if(data.length > 0)
+		{
+			graph_data_fetched = true;
+
+			video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
+			max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
+			max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
+			max_size = typeof max_size !== 'undefined' ? max_size : 100;
+	
+			//SD/ Create first graph without any data
+			$('#' + this.div_id).html("");
+			position = $('#' + this.div_id).position();
+
+			//SD/ Prepare queue for nodes
+			for(var i=0 ; i < data.length ; i++)
+				data[i]['depth'] = 0 ;
+
+			this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+
+			this.addElement(data)
+			var first = this.pickElement() ;
+		
+			params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+			Dajaxice.inevent.get_graph_neighbours(function(data){_this.display_graph(data, _this.display_graph);}, params) ;
+
+			//$('#graph_button').prop('disabled', false);
+		}
+		else
+		{
+			graph_data_fetched = true;
+			$('#graph').html('<div class="alert alert-danger" style ="margin-top:100px;position:relative;margin-bottom:100px">Server error.<br>No data returned from server.</div>');
+		}
+	}
+	
+	//SD/ update graph with children data
+	this.display_graph = function(data, callback) {
+		var _this = this
+
+		if(data['nodes'] != undefined)
+		{
+			this.addExclusion(data['caller_id']) ;
+			this.addElement(data['nodes']) ;
+		
+			//SD/ Graph node and prepare its links for next neighbours
+			if(data['nodes'][0]['depth'] <= this.max_depth || this.max_depth == 6)
+				this.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
+
+			//SD/ Check exclusion for next node
+			if(this.stillElement()) {
+				var first = this.pickElement() ;
+			
+				if(callback != undefined) {
+					params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+					callback(
+						Dajaxice.inevent.get_graph_neighbours(function(data){_this.display_graph(data, _this.display_graph); }, params)
+					) ;
+				}
+			}
+			else {
+				this.finalizeGraph() ;
+			}
+		}
+	}
 }
 
 function Queue() {
@@ -425,8 +495,6 @@ function Queue() {
 	}
 }
 
-graph = new Graph();
-
 /*SD/ ==========================================================================
 Function called to display graph and get data
 ==============================================================================*/
@@ -438,73 +506,9 @@ function display_graph_error(error) {
 	$('#graph_button').prop('disabled', false);
 }
 
-//SD/ Initiate the first graph and call dynamically next data
-function display_graph_head(data, video_switch, max_neighbours, max_depth, max_size) {
-	if(data.length > 0)
-	{
-		graph_data_fetched = true;
-
-		video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
-		max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
-		max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
-		max_size = typeof max_size !== 'undefined' ? max_size : 100;
-	
-		//SD/ Create first graph without any data
-		$('#graph').html("");
-		position = $('#graph').position();
-
-		//SD/ Prepare queue for nodes
-		for(var i=0 ; i < data.length ; i++)
-			data[i]['depth'] = 0 ;
-
-		graph.loadGraph(data, "graph", max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
-
-		graph.addElement(data)
-		var first = graph.pickElement() ;
-		
-		params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
-		Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph);}, params) ;
-
-		//$('#graph_button').prop('disabled', false);
-	}
-	else
-	{
-		graph_data_fetched = true;
-		$('#graph').html('<div class="alert alert-danger" style ="margin-top:100px;position:relative;margin-bottom:100px">Server error.<br>No data returned from server.</div>');
-	}
-}
-
-//SD/ update graph with children data
-function display_graph(data, callback) {
-
-	if(data['nodes'] != undefined)
-	{
-		graph.addExclusion(data['caller_id']) ;
-		graph.addElement(data['nodes']) ;
-		
-		//SD/ Graph node and prepare its links for next neighbours
-		if(data['nodes'][0]['depth'] <= graph.max_depth || graph.max_depth == 6)
-			graph.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
-
-		//SD/ Check exclusion for next node
-		if(graph.stillElement()) {
-			var first = graph.pickElement() ;
-			
-			if(callback != undefined) {
-				params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': graph.max_neighbours, 'error_callback': display_graph_error} ;
-				callback(
-					Dajaxice.inevent.get_graph_neighbours(function(data){display_graph(data, display_graph); }, params)
-				) ;
-			}
-		}
-		else {
-			graph.finalizeGraph() ;
-		}
-	}
-}
-
 //SD/ If windows is resized
 $( window ).resize(function() {
 	//SD/ adapt graph size with container width
-	graph.setWidth($("#graph_container").width()) ;
+	//graph.setWidth($("#graph_container").width()) ;
+	//graph2.setWidth($("#graph_container").width()) ;
 });

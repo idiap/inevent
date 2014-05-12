@@ -62,9 +62,9 @@
 		
 	}
 
-	function start_graph(graph) {
-		graph = new Graph(div_id);
+	function start_graph(div_id) {
 		video_switch = false ;
+		var graph = new Graph(div_id);
 
 		max_neighbours = $("#" + div_id + "_form .user_neighbours").val() ;
 		max_depth = $("#" + div_id + "_form .user_depth").val() ;
@@ -81,14 +81,13 @@
 	}
 
 	$(document).ready(function() {
-		graph ;
 		div_id = "graph"
 		
 		$("#" + div_id + "_form .user_neighbours").val(3) ;
 		$("#" + div_id + "_form .user_depth").val(3) ;
 		$("#" + div_id + "_form .user_size").val(100) ;
 	
-		start_graph(graph) ;
+		start_graph(div_id) ;
 		$('#graph_form').show() ;
 	});
 

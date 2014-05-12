@@ -1,4 +1,6 @@
 // CLASS WIDGET MANAGER
+INCREMENT_ID = 0 ;
+
 function Graph(div_id) {
 	this.div_id = div_id ;
 
@@ -31,6 +33,9 @@ function Graph(div_id) {
 	}
 
 	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
+		INCREMENT_ID++ ;
+		this.increment_id = INCREMENT_ID ;
+		
 		//SD/ Set parameters in local vars
 		this.input_nodes = data ;
 
@@ -432,7 +437,6 @@ function Graph(div_id) {
 		
 			params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
 			Dajaxice.inevent.get_graph_neighbours(function(data){
-				console.log("_this in head " + _this) ;
 				_this.display_graph(data, _this.display_graph);}, params) ;
 
 			//$('#graph_button').prop('disabled', false);
@@ -447,7 +451,6 @@ function Graph(div_id) {
 	//SD/ update graph with children data
 	this.display_graph = function(data, callback) {
 		var _this = this ;
-		console.log("_this in callback begin : " + _this ) ;
 
 		if(data['nodes'] != undefined)
 		{
@@ -462,12 +465,11 @@ function Graph(div_id) {
 			if(this.stillElement()) {
 				var first = this.pickElement() ;
 			
-				if(callback != undefined) {
+				if(callback != undefined && this.increment_id == INCREMENT_ID) {
 					params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
 					callback(
 						Dajaxice.inevent.get_graph_neighbours(function(data){
-							console.log("_this in callbak" + _this) ;
-							_this.display_graph(data, _this.display_graph.bind(_this)); }, params)
+							_this.display_graph(data, _this.display_graph.bind(this)); }, params)
 					) ;
 				}
 			}

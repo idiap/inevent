@@ -46,10 +46,11 @@
 			<label class="control-label" for="radioButtonType">Relation Type</label>
 			<div class="controls">
 				<div class="btn-group" data-toggle="buttons-checkbox">
-					<button type="button" class="btn btn-small">Content</button>
-					<button type="button" class="btn btn-small">Emotions</button>
+					<button type="button" class="user_content btn btn-small active">Content</button>
+					<button type="button" class="user_emotion btn btn-small" onclick="$('#emo-warn').show();">Emotions</button>
 					<!--<button type="button" class="btn btn-primary">Popularit&eacute;</button>-->
 				</div>
+				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>
 			</div>
 		</div>
 		

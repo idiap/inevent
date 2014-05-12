@@ -10,7 +10,7 @@
 {% endblock %}
 {% block content_inevent_page %}
 		<div class="col-fluid">
-			<div id="graph_container" class="tabbable well well-small span10"> <!-- Only required for left/right tabs -->
+			<div id="graph_container" class="tabbable well well-small span8"> <!-- Only required for left/right tabs -->
   				<div class="tab-content">
     				<div class="tab-pane active" id="tab1">
     						<div class="row-fluid" id="recency">
@@ -27,9 +27,13 @@
   				</div>
 			</div>	
 		</div>
-		<div class="col-fluid span2">
-			<button class="btn btn-info btn-small" id="graph_button" name="list"> View as Graph </button>
-		</div>		
+		<div class="col-fluid span4">
+			<button class="btn btn-info btn-small" id="graph_button" name="list"> View as Graph </button><br/><br/>
+
+			<div id="graph_params" class="well" style="display:none;">
+				{% include "inevent/graph_params.html" with div_id="graph" %}
+			</div>
+		</div>
 	
 	<script type="text/javascript">
 	$('#graph_button').bind('click', get_graph);
@@ -45,30 +49,47 @@
 			}
 			$('#graph_button').attr("name","graph");
 			$('#list').css("display", "none");
-			$('#graph_button').html("View as List")
+			$('#graph_button').html("View as List") ;
+			$('#graph_params').show() ;
 		}
 		else {
 			$('#graph_button').attr("name","list");
 			$('#list').css("display", "");
 			$('#graph').css("display", "none");
-			$('#graph_button').html("View as Graph")
+			$('#graph_button').html("View as Graph");
+			$('#graph_params').hide() ;
 		}
 		
 	}
 
-	function start_graph(div_id) {
-		var graph = new Graph(div_id);
-		video_switch = true ;
-		max_neighbours = 3;
-		max_depth = 3;
-		max_size = 100;
-	
+	function start_graph(graph) {
+		graph = new Graph(div_id);
+		video_switch = false ;
+
+		max_neighbours = $("#" + div_id + "_form .user_neighbours").val() ;
+		max_depth = $("#" + div_id + "_form .user_depth").val() ;
+		max_size = $("#" + div_id + "_form .user_size").val() ;
+		
+		$("#" + div_id + "_form .user_neighbours_text").text(max_neighbours) ;
+		$("#" + div_id + "_form .user_size_text").html(max_size) ;
+		if(max_depth == 6)
+			$("#" + div_id + "_form .user_depth_text").html(max_depth + "+") ;
+		else
+			$("#" + div_id + "_form .user_depth_text").html(max_depth) ;
+
 		Dajaxice.inevent.get_graph_head(function(data){graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},{'error_callback': display_graph_error});
 	}
 
 	$(document).ready(function() {
-		start_graph("graph") ;
-		//start_graph("graph2") ;
+		graph ;
+		div_id = "graph"
+		
+		$("#" + div_id + "_form .user_neighbours").val(3) ;
+		$("#" + div_id + "_form .user_depth").val(3) ;
+		$("#" + div_id + "_form .user_size").val(100) ;
+	
+		start_graph(graph) ;
+		$('#graph_form').show() ;
 	});
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

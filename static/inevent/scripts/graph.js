@@ -406,7 +406,7 @@ function Graph(div_id) {
 	
 	//SD/ Initiate the first graph and call dynamically next data
 	this.display_graph_head = function(data, video_switch, max_neighbours, max_depth, max_size) {
-		var _this = this
+		var _this = this ;
 		
 		if(data.length > 0)
 		{
@@ -431,7 +431,9 @@ function Graph(div_id) {
 			var first = this.pickElement() ;
 		
 			params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
-			Dajaxice.inevent.get_graph_neighbours(function(data){_this.display_graph(data, _this.display_graph);}, params) ;
+			Dajaxice.inevent.get_graph_neighbours(function(data){
+				console.log("_this in head " + _this) ;
+				_this.display_graph(data, _this.display_graph);}, params) ;
 
 			//$('#graph_button').prop('disabled', false);
 		}
@@ -444,7 +446,8 @@ function Graph(div_id) {
 	
 	//SD/ update graph with children data
 	this.display_graph = function(data, callback) {
-		var _this = this
+		var _this = this ;
+		console.log("_this in callback begin : " + _this ) ;
 
 		if(data['nodes'] != undefined)
 		{
@@ -462,7 +465,9 @@ function Graph(div_id) {
 				if(callback != undefined) {
 					params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
 					callback(
-						Dajaxice.inevent.get_graph_neighbours(function(data){_this.display_graph(data, _this.display_graph); }, params)
+						Dajaxice.inevent.get_graph_neighbours(function(data){
+							console.log("_this in callbak" + _this) ;
+							_this.display_graph(data, _this.display_graph.bind(_this)); }, params)
 					) ;
 				}
 			}

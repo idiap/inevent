@@ -156,6 +156,7 @@ function Graph(div_id) {
 
 		this.defs = this.nodeEnter.append("defs") ;
 
+		//SD/ Define node picture STARTS =======================================
 		this.defs.append("rect")
 			.attr("id", function(d) { return "rect_node" + d.id})
 			.style("stroke-width", 4)
@@ -189,10 +190,9 @@ function Graph(div_id) {
 			.attr('x', -this.small_rect[0] / 2)
 			.attr('y', -this.small_rect[1] / 2)
 			.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
-		
+		//SD/ Define node picture ENDS =========================================
 
-
-		//SD/ Define window
+		//SD/ Define window STARTS =============================================
 		var rect = this.nodeEnter.append("rect")
 			.attr("id", function(d) { return "rect"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -275,8 +275,8 @@ function Graph(div_id) {
 				.attr('y', 90)
 				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
 				.attr("xlink:href", static_url + "inevent/images/close_button.png");
-			}
-
+		}
+		//SD/ Define window ENDS ===============================================
 
 		//SD/ Define title
 		node_text = this.nodeEnter.append('text')

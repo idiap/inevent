@@ -33,16 +33,18 @@ function display_title(node_title, title_id) {
 function zoom_in(d,ref_id, rect_id, min_x, max_x, min_y, max_y,display_class) {
 	shift_rect(ref_id, rect_id, min_x, max_x, min_y, max_y, display_class);
 	$("." + display_class).each(function() {
-  		$("#" + this.id).show();
- });
+		$("#" + this.id).show();
+	});
+	
+	$("#image" + d.id).hide() ;
 	d3.selectAll("." + display_class).moveToFront(true);
 }
 
 function mouseout(d, display_class) {
 	$("." + display_class).each(function() {
-  		$("#" + this.id).hide();
- });
- 
+		$("#" + this.id).hide();
+		$("#image" + d.id).show() ;
+});
 
 }
 

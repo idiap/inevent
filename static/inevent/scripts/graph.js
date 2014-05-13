@@ -396,7 +396,7 @@ function Graph(div_id) {
 	this.mouseover = function(d, display_class, title_id){
 		if(this.endOfGraph && d != undefined) {
 			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
-			//display_title(d.title, "video_title" + d.id);
+			display_title(d.title, "video_title" + d.id);
 			return true ;
 		}
 		else

@@ -1,11 +1,25 @@
 <script>
 	function update_{{div_id}}_value(){
-		$("#{{div_id}}_form .user_neighbours_text").text($("#{{div_id}}_form .user_neighbours").val()) ;
-		$("#{{div_id}}_form .user_size_text").html($("#{{div_id}}_form .user_size").val()) ;
-		if($("#{{div_id}}_form .user_depth").val() == 6)
-			$("#{{div_id}}_form .user_depth_text").html($("#{{div_id}}_form .user_depth").val()) ;
-		else
-			$("#{{div_id}}_form .user_depth_text").html($("#{{div_id}}_form .user_depth").val()) ;
+		var range = $("#{{div_id}}_form .user_size") ;
+		var text = $("#{{div_id}}_form .user_size_text") ;
+		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
+		text.html(range.val()) ; if(range.val() == 500) {text.html(text.html() + "+") ;}
+		var left = (percent * range.width()) - (percent * text.width()) ;
+		text.css({'margin-left': left + 'px'}) ;
+
+		var range = $("#{{div_id}}_form .user_depth") ;
+		var text = $("#{{div_id}}_form .user_depth_text") ;
+		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
+		text.html(range.val()) ; if(range.val() == 6) {text.html(text.html() + "+") ;}
+		var left = (percent * range.width()) - (percent * text.width()) ;
+		text.css({'margin-left': left + 'px'}) ;
+
+		var range = $("#{{div_id}}_form .user_neighbours") ;
+		var text = $("#{{div_id}}_form .user_neighbours_text") ;
+		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
+		text.html(range.val()) ;
+		var left = (percent * range.width()) - (percent * text.width()) ;
+		text.css({'margin-left': left + 'px'}) ;
 	}
 
 </script>
@@ -36,21 +50,36 @@
 		<div class="control-group">
 			<label class="control-label" for="fader">Graph size</label>
 			<div class="controls">
-				<input onchange="window['update_{{div_id}}_value']();" class="user_size input-medium" placeholder=".input-medium" type="range" min="50" max="500" step="50" value="50" id="fader2" list="volsettings"> <span class="user_size_text">0</span></input>
+				<div class="min-label">0</div>
+				<div class="user-value">
+					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="500" step="10" value="50" id="fader2" list="volsettings"></input><br>
+					<div class="user_size_text user_text">0</div>
+				</div>
+				<div class="max-label">500+</div>
 			</div>
 		</div>
 
 		<div class="control-group">
 			<label class="control-label" for="fader2">Depth</label>
 			<div class="controls">
-				<input onchange="window['update_{{div_id}}_value']();" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"> <span class="user_depth_text">0</span></input>
+				<div class="min-label">1</div>
+				<div class="user-value">
+					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
+					<div class="user_depth_text user_text">0</div>
+				</div>
+				<div class="max-label">6+</div>
 			</div>
 		</div>
 
 		<div class="control-group">
 			<label class="control-label" for="fader2">Neighbours</label>
 			<div class="controls">
-				<input onchange="window['update_{{div_id}}_value']();" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"> <span class="user_neighbours_text">0</span></input>
+				<div class="min-label">1</div>
+				<div class="user-value">
+					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"></input><br>
+					<div class="user_neighbours_text user_text">0</div>
+				</div>
+				<div class="max-label">10</div>
 			</div>
 		</div>
 
@@ -58,17 +87,19 @@
 			<label class="control-label" for="radioButtonType">Relation Type</label>
 			<div class="controls">
 				<div class="btn-group" data-toggle="buttons-checkbox">
-					<button type="button" onchange="window['update_{{div_id}}_value']();" class="user_content btn btn-small active">Content</button>
-					<button type="button" onchange="window['update_{{div_id}}_value']();" class="user_emotion btn btn-small" onclick="$('#emo-warn').show();">Emotions</button>
+					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_content btn btn-small active">Content</button>
+					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_emotion btn btn-small" onclick="$('#emo-warn').show();">Emotions</button>
 					<!--<button type="button" class="btn btn-primary">Popularit&eacute;</button>-->
 				</div>
 				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>
 			</div>
 		</div>
 		
+		<!--
 		<div class="control-group">
 			<buttom type="submit" class="btn btn-info" onclick="start_graph('{{ div_id }}')">Update graph</button>
 		</div>
+		-->
 		
 		<!--
 		<div class="control-group">

@@ -68,3 +68,7 @@
 	text-align: left;
 }
 
+#graph_params .user_text { float:left; }
+#graph_params .min-label { float:left;text-align:right;width:20px; }
+#graph_params .user-value { float:left;margin:0 10px; }
+#graph_params .max-label { float:left;text-align:left;width:50px; }

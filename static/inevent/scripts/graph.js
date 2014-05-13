@@ -1,6 +1,6 @@
-// CLASS WIDGET MANAGER
-INCREMENT_ID = 0 ;
+INCREMENT_ID = 0 ; //SD/ Unique ID for each graph object call needed to stop callbak from old objects
 
+// CLASS WIDGET MANAGER
 function Graph(div_id) {
 	this.div_id = div_id ;
 
@@ -374,9 +374,11 @@ function Graph(div_id) {
 	this.addElement = function(nodes) {
 		if(typeof nodes !== undefined && nodes != null) {
 			//SD/ Remove some neighbours if nodes limit reached
-			var rest = this.max_size - this.input_nodes.length ;
-			if(nodes.length > rest)
-				nodes.splice(rest , nodes.length - rest) ;
+			if(this.max_size < 500) {
+				var rest = this.max_size - this.input_nodes.length ;
+				if(nodes.length > rest)
+					nodes.splice(rest , nodes.length - rest) ;
+			}
 			
 			//SD/ Enqueue neighbours
 			for(var i = 0 ; i < nodes.length ; i++) {
@@ -452,14 +454,18 @@ function Graph(div_id) {
 	this.display_graph = function(data, callback) {
 		var _this = this ;
 
-		if(data['nodes'] != undefined)
+		if(data['nodes'] != undefined && (typeof data != "XMLHttpRequest"))
 		{
+			console.log("data: " + data) ;
+		
 			this.addExclusion(data['caller_id']) ;
 			this.addElement(data['nodes']) ;
-		
-			//SD/ Graph node and prepare its links for next neighbours
-			if(data['nodes'][0]['depth'] <= this.max_depth || this.max_depth == 6)
-				this.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
+
+			if(data['nodes'].length > 0) {
+				//SD/ Graph node and prepare its links for next neighbours
+				if(data['nodes'][0]['depth'] <= this.max_depth || this.max_depth == 6)
+					this.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
+			}
 
 			//SD/ Check exclusion for next node
 			if(this.stillElement()) {

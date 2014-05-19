@@ -6,12 +6,12 @@
 				{% if hyperevent.snapshot_url %}
 					<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
 						<img class="snap img-polaroid" width="50px" src="{{ hyperevent.snapshot_url }}"/> 
-						<span class="hyperevent-name"> {{ hyperevent.title|truncatechars:30 }} </span>
+						<span class="hyperevent-name"> {{ hyperevent.title|truncatechars:55 }} </span>
 					</a>
 				{% else  %}
 					<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
 						<img class="snap img-polaroid" width="50px" src="{{ STATIC_URL }}klewelportal/images/not-available.jpg"/> 
-						<span class="hyperevent-name"> {{ hyperevent.title|truncatechars:30 }} </span>
+						<span class="hyperevent-name"> {{ hyperevent.title|truncatechars:55 }} </span>
 					</a>
 				{% endif %}
 			</div>

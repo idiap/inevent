@@ -1,77 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load i18n %}
-{% load staticfiles %}
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>	Inevent | Portal </title>
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap.min.css" type="text/css" />
-	<style type="text/css">
-	.body {
-		padding-top: 60px;
-		padding-bottom: 40px;
-	}
-	</style>
+	{% load i18n %}
+	{% load staticfiles %}
 	
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css" />
-	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-	    <!--[if lt IE 9]>
-	      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/hyperevent.css" type="text/css" />
-    <link rel="stylesheet" href='{{ STATIC_URL }}inevent/styles/graph.css' type="text/css"/>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>	Inevent | Portal </title>
 		
-	{% block extrastyle_inevent_page %} {% endblock %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap.min.css" type="text/css" />
+		<style type="text/css">
+			.body {
+				padding-top: 60px;
+				padding-bottom: 40px;
+			}
+			
+			#footer {
+				background-color:#f5f5f5;
+				height:60px;
+				text-align:center;
+			}
+			
+			#footer .container p {
+				margin:20px 0px;
+			}
+		</style>
+		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css" />
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+			<!--[if lt IE 9]>
+				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/hyperevent.css" type="text/css" />
+		<link rel="stylesheet" href='{{ STATIC_URL }}inevent/styles/graph.css' type="text/css"/>
+		{% block extrastyle_inevent_page %} {% endblock %}
 	
-    <script src="{{ STATIC_URL }}inevent/scripts/jquery.js"></script>
-	<script src="{{ STATIC_URL }}inevent/scripts/spin.min.js"></script>
-	<script src="{{ STATIC_URL }}inevent/scripts/jquery.spin.js"></script>
-	<script src="{{ STATIC_URL }}inevent/scripts/bootstrap.min.js" type="text/javascript"></script>
-	<script src="{{ STATIC_URL }}scripts/search.js"></script>
+		<script src="{{ STATIC_URL }}inevent/scripts/jquery.js"></script>
+		<script src="{{ STATIC_URL }}inevent/scripts/spin.min.js"></script>
+		<script src="{{ STATIC_URL }}inevent/scripts/jquery.spin.js"></script>
+		<script src="{{ STATIC_URL }}inevent/scripts/bootstrap.min.js" type="text/javascript"></script>
+		<script src="{{ STATIC_URL }}scripts/search.js"></script>
+		<script src="{{ STATIC_URL }}inevent/scripts/d3.v3.min.js"></script>
+		<script type="text/javascript" src='{{ STATIC_URL }}inevent/scripts/graph_extension.js'></script>
+		<script type="text/javascript" src='{{ STATIC_URL }}inevent/scripts/graph.js'></script>
 
+		{% block extrascripts_inevent_page %} {% endblock %}
 	
-	
+		{% block extrahead %}{% endblock %}
+		{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+	</head>
 
-	<script src="{{ STATIC_URL }}inevent/scripts/d3.v3.min.js"></script>
-	<script type="text/javascript" src='{{ STATIC_URL }}inevent/scripts/graph_extension.js'></script>
-	<script type="text/javascript" src='{{ STATIC_URL }}inevent/scripts/graph.js'></script>
+	{% load my_tags %}
+	{% load dajaxice_templatetags %}
 
-	{% block extrascripts_inevent_page %} {% endblock %}
-	
-	{% block extrahead %}{% endblock %}
-	{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+	<body>
+		<div id="wrap"></div>
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a href="/inevent_portal" class="nav nav-pills pull-left" style="margin-left:10px;cursor:pointer">
+						<img src="http://www.inevent-project.eu/logo.png" style="height:80px;" alt="Home"></img> 
+					</a> 
+					<div style="margin-top:40px;margin-left:40px"> {% block menu_inevent_page %} {% endblock %} </div>  
 
+					<div id='loginWidget' class="pull-right">
+						{% include "inevent/login.html" %}
+					</div>
+				</div>
+			</div>
 
-</head>
-{% load my_tags %}
-{% load dajaxice_templatetags %}
-<body>
-
-	<div class="navbar">
-		<div class="navbar-inner">
-			<a href="/inevent_portal" class="nav nav-pills pull-left" style="margin-left:10px;cursor:pointer">
-				<img src="http://www.inevent-project.eu/logo.png" style="height:80px;" alt="Home"></img> 
-			</a> 
-            <div style="margin-top:40px;margin-left:40px"> {% block menu_inevent_page %} {% endblock %} </div>  
-
-            <div id='loginWidget' class="pull-right">
-                {% include "inevent/login.html" %}
-            </div>
+			<div class="container-fluid">
+				<div class='row-fluid'>{% block content_inevent_page %} {% endblock %}</div>
+				{% include "advanced_form.html" with search_form=search_form from="inevent" %}
+			</div>
 		</div>
-	</div>
-
-	<div class="container-fluid">
-	    <div class='row-fluid'>{% block content_inevent_page %} {% endblock %}</div>
-			{% include "advanced_form.html" with search_form=search_form from="inevent" %}
+		
+		<div id="footer">
+			<div class="container">
+				<p>
+					<a href="/inevent_portal/api/">API Documentation</a> -
+					<a href="http://www.inevent-project.eu/">About us</a>
+				</p>
+			</div>
 		</div>
-	{% dajaxice_js_import %}
-	
-</body>
+		
+		{% dajaxice_js_import %}
+	</body>
 </html>
+
 <script>
 var static_url;
 	$(document).ready(function() {
 		static_url = "{{ STATIC_URL }}";
 	})
-</script>		
+</script>

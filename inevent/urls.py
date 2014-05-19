@@ -8,6 +8,7 @@ from inevent.views.acm_challenge_demo import get_segmented_videos
 from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
+  url(r'^inevent_portal/api/(.*)$', TemplateView.as_view(template_name='api.html')),
   url(r'^inevent_portal/qunit/(.*)$', TemplateView.as_view(template_name='inevent/qunit.html')),
   url(r'^inevent_portal/hyperevent/(?P<id>\d+)', get_hyperevent, name='get_hyperevent'),
   url(r'^inevent_portal/alignment/(.*)/edit$', edit, name='hyperevent_edit'),

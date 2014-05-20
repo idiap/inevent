@@ -13,10 +13,13 @@
 			<div id="graph_container" class="tabbable well well-small span8"> <!-- Only required for left/right tabs -->
   				<div class="tab-content">
     				<div class="tab-pane active" id="tab1">
-    						<div class="row-fluid" id="recency">
-    							<div id="list">{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}</div>
-    							<div id="graph" style="display:none"></div>
-    						</div>
+						<div class="row-fluid" id="recency">
+							<div id="list">
+								<p class="lead">Most Recent Talks</p>
+								{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}
+							</div>
+							<div id="graph" style="display:none"></div>
+						</div>
     				</div>
     				<!--<div class="tab-pane" id="tab2">
     					<p> Coming Soon </p>

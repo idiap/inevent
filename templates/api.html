@@ -29,7 +29,7 @@
 
 <p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve Hyper-events</p>
 
-<h2>Hyper-event data transfer object definition</h2>
+<h2>Hyper-event DTO definition</h2>
 
 <p>Following table describes fields of Hyper-event data transfer object (HyperEventDTO):</p>
 
@@ -905,7 +905,7 @@ Example of track might be:
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json<br/>(HyperEventSearchResultDTO object)</td>
+		<td>application/json (HyperEventSearchResultDTO object)</td>
 	</tr>
 </table>
 
@@ -951,7 +951,7 @@ Example of track might be:
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json<br/>(HyperEventLinkResultDTO object)</td>
+		<td>application/json (HyperEventLinkResultDTO object)</td>
 	</tr>
 </table>
 
@@ -994,7 +994,7 @@ Example of track might be:
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json<br/>(HyperEventSearchResultDTO object)</td>
+		<td>application/json (HyperEventSearchResultDTO object)</td>
 	</tr>
 </table>
 
@@ -1128,7 +1128,7 @@ Example of track might be:
 
 <p>http://inevent.haifa.il.ibm.com/rest/getTrackFileRaw/{fileName}?trackId={trackId}</p>
 
-<h2>Interface with WP2</h2>
+<h1>Interface with WP2</h1>
 
 <p>Segmentation is represented here in JSON format:</p>
 
@@ -1212,7 +1212,7 @@ Example of track might be:
 ]}
 </pre>
 
-<h3>Process file</h3>
+<h2>Process file</h2>
 
 <p>Processes video file and returns analytic's result.</p>
 
@@ -1233,7 +1233,7 @@ Example of track might be:
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json<br/>(analytic's processing output in JSON format)</td>
+		<td>application/json (analytic's processing output in JSON format)</td>
 	</tr>
 </table>
 
@@ -1253,7 +1253,7 @@ Example of track might be:
 	</tr>
 </table>
 
-<h3>Process file</h3>
+<h2>Process file</h2>
 
 <p>Processes video file using Segmentation object received by calling to diarization service. Returns aggregated ASR result containing merged ASR and diarization data.</p>
 
@@ -1299,7 +1299,7 @@ Example of track might be:
 	</tr>
 </table>
 
-<h3>Get thumbnails</h3>
+<h2>Get thumbnails</h2>
 
 <p>Returns thumbnail files produced by video analytic service.</p>
 

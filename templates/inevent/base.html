@@ -24,6 +24,7 @@
 				margin:20px 0px;
 			}
 		</style>
+		
 		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css" />
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 			<!--[if lt IE 9]>
@@ -32,7 +33,9 @@
 		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/hyperevent.css" type="text/css" />
 		<link rel="stylesheet" href='{{ STATIC_URL }}inevent/styles/graph.css' type="text/css"/>
 		{% block extrastyle_inevent_page %} {% endblock %}
-	
+
+		<link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}inevent/images/favicon.ico" />
+
 		<script src="{{ STATIC_URL }}inevent/scripts/jquery.js"></script>
 		<script src="{{ STATIC_URL }}inevent/scripts/spin.min.js"></script>
 		<script src="{{ STATIC_URL }}inevent/scripts/jquery.spin.js"></script>
@@ -56,9 +59,9 @@
 			<div class="navbar">
 				<div class="navbar-inner">
 					<a href="/inevent_portal" class="nav nav-pills pull-left" style="margin-left:10px;cursor:pointer">
-						<img src="http://www.inevent-project.eu/logo.png" style="height:80px;" alt="Home"></img> 
+						<img src="http://www.inevent-project.eu/logo.png" style="margin:20px 20px 20px 0;" alt="Home"></img> 
 					</a> 
-					<div style="margin-top:40px;margin-left:40px"> {% block menu_inevent_page %} {% endblock %} </div>  
+					<div style="margin-top:60px;margin-left:40px"> {% block menu_inevent_page %} {% endblock %} </div>  
 
 					<div id='loginWidget' class="pull-right">
 						{% include "inevent/login.html" %}

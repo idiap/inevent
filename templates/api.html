@@ -2,8 +2,26 @@
 
 {% block content_inevent_page %}
 
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/jquery.tocify.css" />
+<script src="{{ STATIC_URL }}inevent/scripts/jquery-ui-widget.min.js"></script>
+<script src="{{ STATIC_URL }}inevent/scripts/jquery.tocify.min.js"></script>
+
 <div class="row-fluid">
-	<div class="span8 offset2">
+	<div class="span3 bs-docs-sidebar">
+		<!--
+		<ul class="nav nav-list bs-docs-sidenav affix-top">
+			<li>
+				<a href="#WP3 Backend API"></a>
+			</li><li>
+				<a href="#WP3 Backend API"></a>
+			</li>
+		</ul>
+		-->
+		
+		<div id="toc"></div>
+	</div>
+
+	<div class="span9">
 
 <h1>WP3 Backend API</h1>
 
@@ -1324,5 +1342,15 @@ Example of track might be:
 
 	</div>
 </div>
+
+<script>
+//Executes your code when the DOM is ready. Acts the same as $(document).ready().
+$(function() {
+	//Calls the tocify method on your HTML div.
+	$("#toc").tocify({
+		selectors: "h1, h2, h3, h4",
+	}) ;
+});
+</script>
 
 {% endblock %}

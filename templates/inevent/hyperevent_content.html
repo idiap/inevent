@@ -4,19 +4,13 @@
 	{% load dajaxice_templatetags %}
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="http://releases.flowplayer.org/5.3.2/skin/functional.css" />
-	
-	
-	
-{% endblock %}	
-		
-{% block extrascripts_inevent_page %}		
+{% endblock %}
+
+{% block extrascripts_inevent_page %}
 	<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51d54192080b635d"></script>
-    <!-- <script src="{{ STATIC_URL }}klewelportal/scripts/bootstrap.min.js" type="text/javascript"></script> -->
+	<!-- <script src="{{ STATIC_URL }}klewelportal/scripts/bootstrap.min.js" type="text/javascript"></script> -->
 	<script src="http://releases.flowplayer.org/js/flowplayer-3.2.12.min.js"></script>
-	
-
-
 {% endblock %}
 
 {% load seconds %}
@@ -24,10 +18,11 @@
 {% block menu_inevent_page %}
 	<ul class="nav nav-pills">
 		<li class="active">
-			<a href="/inevent_portal">Home</a>
+			<a href="/">Home</a>
 		</li>
 	</ul>	
 {% endblock %}
+
 {% block content_inevent_page %}
 <div class="row-fluid nihilo">
 	<div class="container-fluid span12">
@@ -101,7 +96,7 @@
 
 
 <script type="text/javascript">
- /*	$(document).ready(function() {
+	/*	$(document).ready(function() {
 		if ($("#toggle_transcript").length>0){
 			Dajaxice.inevent.get_transcript(display_transcript, {'transcript_url': "{{ hyperevent.transcript_url }}" },{'error_callback': 'error'});
 			$("#toggle_transcript").click({label: 'toggle_transcript', target:'transcript' }, toggle_element);
@@ -113,21 +108,18 @@
 			
 	});*/
 	
-	function toggle_element(event)   { 
-	$("#"+event.data.target).toggleClass('hide');
-	current_image = $("#"+event.data.label+" i");
-	if (current_image.hasClass('icon-chevron-down')){
-		current_image.removeClass('icon-chevron-down');
-		current_image.addClass('icon-chevron-up');
+	function toggle_element(event) {
+		$("#"+event.data.target).toggleClass('hide');
+		current_image = $("#"+event.data.label+" i");
+		if (current_image.hasClass('icon-chevron-down')){
+			current_image.removeClass('icon-chevron-down');
+			current_image.addClass('icon-chevron-up');
+		}
+		else{
+				current_image.removeClass('icon-chevron-up');
+				current_image.addClass('icon-chevron-down');
+		}
 	}
-	else{
-			current_image.removeClass('icon-chevron-up');
-			current_image.addClass('icon-chevron-down');
-	}		
-}	
-
-
-	
 
 	function display_transcript(data) {
 		if ($('#transcript').length>0){
@@ -136,9 +128,6 @@
 		}
 	
 	}
-
-
-	
 
 	$('#graph_button').bind('click', get_graph);
 	var graph_data_fetched = false;

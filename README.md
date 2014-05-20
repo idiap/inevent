@@ -41,4 +41,4 @@ Run server with the following command
 ./manage runserver 127.0.0.1:8000
 ```
 
-To access in a web browser under 127.0.0.1:8000/inevent_portal
+To access in a web browser under 127.0.0.1:8000

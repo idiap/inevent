@@ -8,18 +8,14 @@ from inevent.views.acm_challenge_demo import get_segmented_videos
 from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
-  url(r'^inevent_portal/api/(.*)$', TemplateView.as_view(template_name='api.html')),
-  url(r'^inevent_portal/qunit/(.*)$', TemplateView.as_view(template_name='inevent/qunit.html')),
-  url(r'^inevent_portal/hyperevent/(?P<id>\d+)', get_hyperevent, name='get_hyperevent'),
-  url(r'^inevent_portal/alignment/(.*)/edit$', edit, name='hyperevent_edit'),
-  url(r'^inevent_portal/alignment/(.*)/delete$', delete, name='hyperevent_delete'),
-  url(r'^inevent_portal/alignment/(.*)/update$', update, name='hyperevent_update'),
-  url(r'^inevent_portal/alignment/(.*)/align$', align, name='hyperevent_align'),
-  url(r'^inevent_portal/alignment/(.*)/view$', alignment_view, name='alignment_view'),
-  url(r'^inevent_portal/alignment/(.*)$', alignment_index, name='alignment_index'),
-  url(r'^inevent_portal', portal, name='inevent'),
-  url(r'^graph/(?P<central_video_input_id>\d+)/seek/(?P<chosen_segment_id>\d+)', get_segmented_videos),
-  url(r'^graph/(?P<central_video_input_id>\d+)', get_segmented_videos),
-  url(r'^graph/', get_segmented_videos),
+  url(r'^api/(.*)$', TemplateView.as_view(template_name='api.html')),
+  url(r'^qunit/(.*)$', TemplateView.as_view(template_name='inevent/qunit.html')),
+  url(r'^hyperevent/(?P<id>\d+)', get_hyperevent, name='get_hyperevent'),
+  url(r'^alignment/(.*)/edit$', edit, name='hyperevent_edit'),
+  url(r'^alignment/(.*)/delete$', delete, name='hyperevent_delete'),
+  url(r'^alignment/(.*)/update$', update, name='hyperevent_update'),
+  url(r'^alignment/(.*)/align$', align, name='hyperevent_align'),
+  url(r'^alignment/(.*)/view$', alignment_view, name='alignment_view'),
+  url(r'^alignment/(.*)$', alignment_index, name='alignment_index'),
 )
 

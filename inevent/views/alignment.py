@@ -90,7 +90,7 @@ def delete(request, hyperevent_id) :
 	if(hyperevent_id > 0) :
 		print do_delete_hyperevent(request, hyperevent_id)
 	
-	return redirect('/inevent_portal/alignment/')
+	return redirect('/alignment/')
 
 def align(request, video_id):
 

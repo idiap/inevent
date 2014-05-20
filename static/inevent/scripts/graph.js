@@ -120,7 +120,7 @@ function Graph(div_id) {
 		}
 			
 		else
-			document.location.href = document.location.href.split("inevent_portal")[0] + "inevent_portal/hyperevent/" + d.id;
+			document.location.href = "/hyperevent/" + d.id;
 	}
 
 	this.find_node_index = function(node_id) {

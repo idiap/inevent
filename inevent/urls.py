@@ -4,7 +4,6 @@ from django.contrib.auth import views as auth_views
 from inevent.email_auth import MyAuthenticationForm
 from inevent.views.portal import portal, get_hyperevent
 from inevent.views.alignment import alignment_index, alignment_view, align, edit, delete, update 
-from inevent.views.acm_challenge_demo import get_segmented_videos
 from django.views.generic import TemplateView
 
 urlpatterns = patterns('',

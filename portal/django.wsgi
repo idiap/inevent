@@ -29,9 +29,6 @@ from raven.contrib.django.middleware.wsgi import Sentry
 from django.core.wsgi import get_wsgi_application
 application = Sentry(get_wsgi_application())
 
-import monitor
-monitor.start(interval=1.0)
-
 os.environ["CELERY_LOADER"] = "django"
 
 ALLDIRS = ['/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages']

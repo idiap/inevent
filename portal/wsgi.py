@@ -32,10 +32,6 @@ sys.path.append(BASE_DIR)
 
 sys.path.append(PROJECT_DIR)
 
-import monitor
-monitor.start(interval=1.0)
-
-
 ALLDIRS = ['/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages']
 
 os.environ["PATH"] += ":/opt/local/bin:/opt/local/sbin"

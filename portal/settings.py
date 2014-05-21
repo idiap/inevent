@@ -77,8 +77,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'raven.contrib.django.middleware.Sentry404CatchMiddleware',
-    'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
 )
 
 
@@ -100,8 +98,6 @@ INSTALLED_APPS = (
     'inevent',
     'endless_pagination', # testing
     'dajaxice',
-    'raven.contrib.django',
-
 )
 
 DAJAXICE_MEDIA_PREFIX="dajaxice"

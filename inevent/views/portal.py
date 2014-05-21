@@ -8,7 +8,7 @@ from inevent.views.utils import get_most_recent_events, get_event
 
 
 from django.conf import settings
-from inevent.views.extract_slides import extract_slides, extract_title
+#from inevent.views.extract_slides import extract_slides, extract_title
 
 
 def portal(request,num_of_events=10):

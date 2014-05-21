@@ -6,19 +6,19 @@
 					<button class="btn" id="search_icon">
 						<i class="icon-search"> </i>
 					</button>
-					<!-- Advanced Search Button-->				
-		 			<button class="btn" data-target="#adv_search"  data-toggle="modal"> 
-		 				<i class="icon-cog" data-original-title="Advanced Search"> </i>
-		 			</button>
+					<!-- Advanced Search Button-->
+					<button class="btn" data-target="#adv_search"  data-toggle="modal"> 
+						<i class="icon-cog" data-original-title="Advanced Search"> </i>
+					</button>
 			
 				</div>
-	 		</div>	
- 	</div>
- </form>
+			</div>	
+	</div>
+</form>
 
 <script type="text/javascript">
-	$('#search_input').bind('keypress',{ from: '{{ from }}', form: 'search_form' },  on_key_press);
+	$('#search_input').bind('keypress',{ from: '{{ from }}', form: 'search_form' }, on_key_press);
 	$('#search_input').bind('click', clear_search_box);
 	$('#search_icon').bind('click', { from: '{{ from }}', form: 'search_form' }, on_click);
-	$('.icon-cog').tooltip({ placement: "bottom"})		
+	$('.icon-cog').tooltip({ placement: "bottom"})
 </script>

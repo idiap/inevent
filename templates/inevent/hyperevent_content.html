@@ -16,26 +16,18 @@
 {% load seconds %}
 
 {% block menu_inevent_page %}
-	<ul class="nav nav-pills">
-		<li class="active">
-			<a href="/">Home</a>
+	<ul class="tabbable nav">
+		<li>
+			<a data-toggle="tab" href="/">Most Recent Talks</a>
 		</li>
-	</ul>	
+	</ul>
 {% endblock %}
 
 {% block content_inevent_page %}
 <div class="row-fluid nihilo">
 	<div class="container-fluid span12">
 		<div class="row-fluid">
-			<div class="col-fluid span9">
-				<h1 id="center-element"> {{ hyperevent.title }} </h1>
-			</div>
-
-			<div class="col-fluid event-date pull-right span3" style="margin-top:25px;">
-				{% if hyperevent.date %}
-					<small class="pull-right"> <i class="icon-calendar"></i> {{ hyperevent.date|date:"D d M Y" }} </small>
-				{% endif %}
-			</div>
+			<h2 id="center-element">{{ hyperevent.title }}</h2>
 		</div>
 
 		<div class="row-fluid">
@@ -50,8 +42,10 @@
 				<!-- AddThis Button END -->
 			
 
-				<div class="col-fluid event-date pull-right span4">
-					<button class="btn btn-info btn-small pull-right" id="graph_button" name="list"> Inter-event Navigation </button>
+				<div class="col-fluid event-date pull-right span3">
+					{% if hyperevent.date %}
+						<small class="pull-right"> <i class="icon-calendar"></i> {{ hyperevent.date|date:"D d M Y" }} </small>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -61,6 +55,10 @@
 				{% if hyperevent.description %}
 					<p>{{ hyperevent.description }}</p>
 				{% endif %}
+			</div>
+			
+			<div class="col-fluid event-date span4">
+				<button class="btn btn-info btn-small" id="graph_button" name="list"> Inter-event Navigation </button>
 			</div>
 		</div>
 

@@ -27,45 +27,44 @@
 		    else{
 		     send_search_request(page_num, from, form);
             }   
-    }     
+    }
 
-	function send_search_request(page_num, from, form){	  
-	$('#graph_button').css("display", "none"); 
-	if ($("#search_list") !='undefined'){
-        $('#search_list').spin(true);
-	    $('#search_option_button').addClass('disabled')
+	function send_search_request(page_num, from, form) {
+		$('#graph_button').css("display", "none");
+		$('#graph_params').css("display", "none");
+		
+		if ($("#search_list") !='undefined'){
+			$('#search_list').spin(true);
+			$('#search_option_button').addClass('disabled')
+		}
+		
+		switch(from) {
+			case 'inevent':
+				search_form = $('#'+form).serializeObject();
+				Dajaxice.inevent.call_inevent_search(display_results, {'form': search_form, 'page_num' : page_num },{'error_callback': search_ajax_error});
+				break ;
+		}
 	}
-	
- 		switch(from)
-			{
-				case 'inevent':
-	                search_form = $('#'+form).serializeObject();
-		            Dajaxice.inevent.call_inevent_search(display_results, {'form': search_form, 'page_num' : page_num },{'error_callback': search_ajax_error});
-		            break;
-
-		}		
-					
-	}
-	
-
 
 	function display_results(data) {
-      //  $('#search_list').css('display', '');
-      //  $('#search_list').html("");
-        $('#search_list').spin(false);
-        $('#search_option_button').removeClass('disabled')
-        $('#search_list').html(data);
-        if ($('#adv_search')!=undefined)
-    		$('#adv_search').modal('hide');
-       // $( "input[name='speaker']" ).val("");
+		//  $('#search_list').css('display', '');
+		//  $('#search_list').html("");
+		$('#search_list').spin(false);
+		$('#search_option_button').removeClass('disabled');
+		
+		$('#search_list').html(data);
+		
+		if ($('#adv_search')!=undefined)
+			$('#adv_search').modal('hide');
+		// $( "input[name='speaker']" ).val("");
 	}
-	
+
 	function search_ajax_error() {
 		alert('Due to some technical problems, we could not process your request. Please try again later');
 		$('#search_list').spin(false);
 		$('#search_option_button').removeClass('disabled');
 	}
-	
+
 	function validate_input(inputValue){
    		if(inputValue== '' || inputValue.length<2 || !inputValue.match(/^[a-zA-Z0-9-_ ]+$/))
              return false;

@@ -4,43 +4,48 @@
 <div class="container-fluid hyperevent">
 	<div class="span2">
 		{% if hyperevent.snapshot_url %}
-		<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
-			<img class="snap img-polaroid"src="{{ hyperevent.snapshot_url }}"/> </a>
+			<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
+				<img class="snap img-polaroid"src="{{ hyperevent.snapshot_url }}"/>
+			</a>
 		{% else %}
-		<img class="snap" src="{{ STATIC_URL }}inevent/images/not-available.jpg"/>
+			<img class="snap" src="{{ STATIC_URL }}inevent/images/not-available.jpg"/>
 		{% endif %}
+		
 		{% if hyperevent.duration %}
-		<span class="duration label label-inverse">{{ hyperevent.duration|seconds:"G:H" }}</span>
+			<span class="duration label label-inverse">{{ hyperevent.duration|seconds:"G:H" }}</span>
 		{%endif %}
+		
 		{% if hyperevent.providerName %}
 			<div class=" label provider">{{ hyperevent.providerName }}</div>
 		{%endif %}
-		
 	</div>
 	<div class="metadata span10">
 		<div class="row-fluid container-fluid">
-			<div class="pull-left hyperevent-big-title span5">
+			<div class="pull-left hyperevent-big-title span8">
 				{% if hyperevent.title %}
-				{% if hyperevent.video_url %}
-				<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">{{ hyperevent.title }}</a>
+					{% if hyperevent.video_url %}
+						<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">{{ hyperevent.title }}</a>
+					{% else %}
+						{{ hyperevent.title }}
+					{% endif%}
 				{% else %}
-				{{ hyperevent.title }}
-				{% endif%}
-				{% else %}
-				{% if hyperevent.video_url %}
-				<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">{{ hyperevent.date|date:"D d M Y - G:i" }}</a>
-				{% else %}
-				{{ hyperevent.date|date:"D d M Y" }}
-				{% endif %}
+					{% if hyperevent.video_url %}
+						<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">{{ hyperevent.date|date:"D d M Y - G:i" }}</a>
+					{% else %}
+						{{ hyperevent.date|date:"D d M Y" }}
+					{% endif %}
 				{% endif %}
 			</div>
 			
 			
 			<div class="pull-right event-date hyperevent-metadata">
-				<small> {% if hyperevent.date %} <i class="icon-calendar"></i> {{ hyperevent.date|date:"D d M Y" }}
-					{% endif %} </small>
-
+				<small>
+					{% if hyperevent.date %}
+						<i class="icon-calendar"></i>{{ hyperevent.date|date:"D d M Y" }}
+					{% endif %}
+				</small>
 			</div>
+			
 			<!--  <div class="btn-group pull-right actions">
 			{% if hyperevent.video_url %}
 			<a class="btn btn-mini" rel="shadowbox;" href="{% url get_hyperevent hyperevent.id %}">
@@ -51,22 +56,23 @@
 		</div>
 
 		<div class="row-fluid container-fluid hyperevent-metadata">
-			<small> {% with presenters=hyperevent.presenters %}
-				{% if presenters %} <i class="icon-user"></i> 
-				{% for presenter in presenters %} <!-- 						    	{{ presenter.display_name }}, {{ presenter.affiliation }} --> <!--                        	         
-					only contains the display name --> {{ presenter }} - 
-				{% endfor %}
-				{% endif %}
-				{% endwith %} </small>
-				
+			<small>
+				{% with presenters=hyperevent.presenters %}
+					{% if presenters %} <i class="icon-user"></i> 
+						{% for presenter in presenters %} <!-- 						    	{{ presenter.display_name }}, {{ presenter.affiliation }} --> <!--                        	         
+							only contains the display name --> {{ presenter }} - 
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+			</small>
+			
 			<div class="pull-right actions">
 				{% if allow_edit %}
 					{% if hyperevent.slides and hyperevent.video_url %}
 						<a class="btn btn-mini" href="{% url alignment_view hyperevent.id %}">Align Slides</a>
 					{% endif %}
-				
-					<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
 					
+					<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
 					<a class="btn btn-mini btn-danger" href="{% url hyperevent_delete hyperevent.id %}">Delete</a>
 				{% endif %}
 			</div>

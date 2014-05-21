@@ -20,12 +20,6 @@ Run pip to resolve dependencies with command
 sudo pip install -r requirements.txt
 ```
 
-Other optional or to be removed dependencies
-
-```
-django-debug-toolbar==0.9.4
-```
-
 Starting
 --------
 

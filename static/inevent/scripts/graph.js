@@ -414,16 +414,16 @@ function Graph(div_id) {
 	//SD/ Initiate the first graph and call dynamically next data
 	this.display_graph_head = function(data, video_switch, max_neighbours, max_depth, max_size) {
 		var _this = this ;
-		
+
+		video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
+		max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
+		max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
+		max_size = typeof max_size !== 'undefined' ? max_size : 100;
+
 		if(data.length > 0)
 		{
 			graph_data_fetched = true;
 
-			video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
-			max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
-			max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
-			max_size = typeof max_size !== 'undefined' ? max_size : 100;
-	
 			//SD/ Create first graph without any data
 			$('#' + this.div_id).html("");
 			position = $('#' + this.div_id).position();
@@ -432,15 +432,20 @@ function Graph(div_id) {
 			for(var i=0 ; i < data.length ; i++)
 				data[i]['depth'] = 0 ;
 
+			if(max_size == 0)
+				data = [] ;
+
 			this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
 
-			this.addElement(data)
-			var first = this.pickElement() ;
+			if(max_size > 0) {
+				this.addElement(data)
+				var first = this.pickElement() ;
 		
-			params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
-			Dajaxice.inevent.get_graph_neighbours(function(data){
-				_this.display_graph(data, _this.display_graph);}, params) ;
-
+				params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+				Dajaxice.inevent.get_graph_neighbours(function(data){
+					_this.display_graph(data, _this.display_graph);}, params) ;
+			}
+			
 			//$('#graph_button').prop('disabled', false);
 		}
 		else

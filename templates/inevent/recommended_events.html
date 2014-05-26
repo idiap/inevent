@@ -3,17 +3,15 @@
 	{% for hyperevent in hyperevents %}
 		{% if hyperevent.video_url  %}
 			<div class="row-fluid pull-left">
-				{% if hyperevent.snapshot_url %}
-					<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
-						<img class="snap img-polaroid" width="50px" src="{{ hyperevent.snapshot_url }}"/> 
-						<span class="hyperevent-name"> {{ hyperevent.title|truncatechars:55 }} </span>
-					</a>
-				{% else  %}
-					<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
-						<img class="snap img-polaroid" width="50px" src="{{ STATIC_URL }}klewelportal/images/not-available.jpg"/> 
-						<span class="hyperevent-name"> {{ hyperevent.title|truncatechars:55 }} </span>
-					</a>
-				{% endif %}
+				<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">
+					{% if hyperevent.snapshot_url %}
+						<img class="snap img-polaroid" src="{{ hyperevent.snapshot_url }}"/>
+					{% else  %}
+						<img class="snap img-polaroid" src="{{ STATIC_URL }}klewelportal/images/not-available.jpg"/>
+					{% endif %}
+					
+					<span class="hyperevent-name"> {{ hyperevent.title }} </span>
+				</a>
 			</div>
 		{% endif %}
 	{% endfor %}

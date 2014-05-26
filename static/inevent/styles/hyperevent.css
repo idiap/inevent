@@ -52,6 +52,16 @@
 	cursor: pointer;
 }
 
+#related_talks .img-polaroid {
+	float:left;
+	margin-right:10px;
+	width:50px;
+}
+
+#related_talks .img-polaroid, #related_talks .hyperevent-name {
+	margin-bottom:10px;
+}
+
 /*.event-date, #toggle_transcript,  #toggle_slides  {
 }*/
 

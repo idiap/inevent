@@ -100,6 +100,8 @@ html, body {
 
 #graph_params .nav-header { margin-bottom:20px; padding-left:0; }
 #graph_params .user_text { float:left; }
-#graph_params .min-label { float:left;text-align:right;width:20px; }
-#graph_params .user-value { float:left;margin:0 10px; }
-#graph_params .max-label { float:left;text-align:left;width:50px; }
+#graph_params .min-label { float:left;text-align:right;margin-right:10px; }
+#graph_params .user-value { float:left; width:65%; }
+#graph_params .max-label { float:left;text-align:right;margin-left:10px; }
+#graph_params input[type=range] { width:100%; }
+#graph_params label { clear:both; }

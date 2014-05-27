@@ -103,7 +103,9 @@
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 			if ($(e.target).attr('href').indexOf("tab1")!=-1){
 				$('#graph_button').css("display", "block");
-				$('#graph_params').css("display", "block");
+				
+				if($('#graph').css("display") == "block")
+					$('#graph_params').css("display", "block");
 			}
 			else
 				$('#graph_button').css("display", "none");

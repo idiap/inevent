@@ -45,4 +45,7 @@
 	pointer-events: none;
 }
 
-
+#graph_container .tab-content {
+	overflow-x:hidden;
+	overflow-y:auto;
+}

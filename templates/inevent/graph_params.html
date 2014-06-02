@@ -2,8 +2,8 @@
 	function update_{{div_id}}_value(){
 		var range = $("#{{div_id}}_form .user_size") ;
 		var text = $("#{{div_id}}_form .user_size_text") ;
-		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
 		text.html(range.val()) ; if(range.val() == 500) {text.html(text.html() + "+") ;}
+		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
 		var left = (percent * range.width()) - (percent * text.width()) ;
 		text.css({'margin-left': left + 'px'}) ;
 
@@ -20,11 +20,13 @@
 		text.html(range.val()) ;
 		var left = (percent * range.width()) - (percent * text.width()) ;
 		text.css({'margin-left': left + 'px'}) ;
+		
+		if($("#{{div_id}}").html() == '')
+			$("#{{div_id}}_form").css('display', 'none');
 	}
-
 </script>
 
-<div id="{{ div_id }}_form" style="display:none;">
+<div id="{{ div_id }}_form" style="display:block;">
 
 	<div class="nav-header">Graph parameters</div>
 
@@ -57,8 +59,7 @@
 				<div class="max-label">500+</div>
 			</div>
 
-
-			<label>Depth</label>
+			<label>Distance from starting node(s)</label>
 			<div>
 				<div class="min-label">1</div>
 				<div class="user-value">
@@ -68,8 +69,8 @@
 				<div class="max-label">6+</div>
 			</div>
 
-			<label>Neighbours</label>
-			<div class="controls">
+			<label>Neighbours per node</label>
+			<div>
 				<div class="min-label">1</div>
 				<div class="user-value">
 					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"></input><br>
@@ -79,7 +80,7 @@
 			</div>
 
 			<label>Relation Type</label>
-			<div class="controls">
+			<div>
 				<div class="btn-group" data-toggle="buttons-checkbox">
 					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_content btn btn-small active">Content</button>
 					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_emotion btn btn-small" onclick="$('#emo-warn').show();">Emotions</button>
@@ -87,7 +88,6 @@
 				</div>
 				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>
 			</div>
-
 		
 		<!--
 		<div class="control-group">

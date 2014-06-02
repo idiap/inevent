@@ -143,7 +143,7 @@
 			
 			//SD/ Toogle params/talks
 			$('#related_talks').css("display", "none");
-			$('#graph1_form').css("display", "");
+			$('#graph1_form').show();
 			
 			$('#graph_button').html("Intra-event Navitation")
 		}
@@ -156,19 +156,20 @@
 			
 			//SD/ Toogle params/talks
 			$('#related_talks').css("display", "");
-			$('#graph1_form').css("display", "none");
+			$('#graph1_form').hide() ;
 			
 			$('#graph_button').html("Inter-event Navigation")
 		}
 	}
 	
 	function start_graph(div_id) {
-		video_switch = true ;
 		var graph = new Graph(div_id);
-	
+
+		video_switch = true ;
 		max_neighbours = $("#" + div_id + "_form .user_neighbours").val() ;
 		max_depth = $("#" + div_id + "_form .user_depth").val() ;
 		max_size = $("#" + div_id + "_form .user_size").val() ;
+
 		window["update_" + div_id + "_value"]() ;
 
 		Dajaxice.inevent.get_event_head(

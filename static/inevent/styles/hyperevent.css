@@ -103,6 +103,5 @@ html, body {
 #graph_params .min-label { float:left;text-align:right;margin-right:3%;width:10%; }
 #graph_params .user-value { float:left; width:65%; }
 #graph_params .max-label { float:left;text-align:left;margin-left:3%;width:10%; }
-#graph_params label { margin-top:10px; clear:both; }
+#graph_params .control-group { margin-bottom:20px; clear:both; overflow:auto; }
 #graph_params input[type=range] { width:100%; }
-#graph_params label { clear:both; }

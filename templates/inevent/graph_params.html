@@ -48,9 +48,9 @@
 			</div>
 		</div>
 		-->
-
-			<label>Graph size</label>
-			<div>
+			
+			<div class="control-group">
+				<label>Graph size</label>
 				<div class="min-label">0</div>
 				<div class="user-value">
 					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="500" step="10" value="50" id="fader2" list="volsettings"></input><br>
@@ -59,8 +59,8 @@
 				<div class="max-label">500+</div>
 			</div>
 
-			<label>Distance from starting node(s)</label>
-			<div>
+			<div class="control-group">
+				<label>Distance from starting node(s)</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
 					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
@@ -69,8 +69,8 @@
 				<div class="max-label">6+</div>
 			</div>
 
-			<label>Neighbours per node</label>
-			<div>
+			<div class="control-group">
+				<label>Neighbours per node</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
 					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"></input><br>
@@ -79,8 +79,8 @@
 				<div class="max-label">10</div>
 			</div>
 
-			<label>Relation Type</label>
-			<div>
+			<div class="control-group">
+				<label>Relation Type</label>
 				<div class="btn-group" data-toggle="buttons-checkbox">
 					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_content btn btn-small active">Content</button>
 					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_emotion btn btn-small" onclick="$('#emo-warn').show();">Emotions</button>

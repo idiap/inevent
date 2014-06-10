@@ -57,7 +57,7 @@
 			</h3>
 		</div>
 		
-		<form class="form updateForm" action="{% url hyperevent_update id %}" method="post">{% csrf_token %}
+		<form class="form updateForm" action="{% url "hyperevent_update" id %}" method="post">{% csrf_token %}
 			<div class="row-fluid">
 				<div class="col-fluid span1">Name:</div>
 				<div class="col-fluid span1">
@@ -114,7 +114,7 @@
 			<button class="btn btn-info btn-small btn-lg" data-toggle="modal" data-target="#uploadTrackForm">Add Track</button>
 			
 			{% if has_video and has_slide %}
-				<a class="btn btn-info btn-small" href="{% url alignment_index id %}">Edit Slides</a>
+				<a class="btn btn-info btn-small" href="{% url "alignment_index" id %}">Edit Slides</a>
 			{% else %}
 				<a class="btn btn-info btn-small disabled">Edit Slides</a>
 			{% endif %}

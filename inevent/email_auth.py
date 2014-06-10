@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.core.validators import email_re
+#from django.core.validators import email_re
+from django.core import mail
 
 class BasicBackend:
     
@@ -16,7 +17,7 @@ class BasicBackend:
 class EmailBackend(BasicBackend):
     def authenticate(self, username=None, password=None):
         #If username is an email address, then try to pull it up
-        if email_re.search(username): #@UndefinedVariable
+        if email.search(username): #@UndefinedVariable
             try:
                 user = User.objects.get(email=username)
             except User.DoesNotExist:

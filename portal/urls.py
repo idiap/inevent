@@ -1,8 +1,7 @@
-from django.conf.urls.defaults import patterns, include, handler404, handler500 #@UnusedImport
+from django.conf.urls import patterns, include, handler404, handler500, url #@UnusedImport
 from django.conf import settings
 #from django.contrib import admin
 #from django.conf.urls.static import static
-from django.conf.urls.defaults import url
 from inevent.views.portal import portal, get_hyperevent
 
 urlpatterns = patterns('',

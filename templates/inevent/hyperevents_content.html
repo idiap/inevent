@@ -4,7 +4,7 @@
 <div class="container-fluid hyperevent">
 	<div class="span2">
 		{% if hyperevent.snapshot_url %}
-			<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> 
+			<a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;"> 
 				<img class="snap img-polaroid"src="{{ hyperevent.snapshot_url }}"/>
 			</a>
 		{% else %}
@@ -24,13 +24,13 @@
 			<div class="pull-left hyperevent-big-title span8">
 				{% if hyperevent.title %}
 					{% if hyperevent.video_url %}
-						<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">{{ hyperevent.title }}</a>
+						<a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;">{{ hyperevent.title }}</a>
 					{% else %}
 						{{ hyperevent.title }}
 					{% endif%}
 				{% else %}
 					{% if hyperevent.video_url %}
-						<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">{{ hyperevent.date|date:"D d M Y - G:i" }}</a>
+						<a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;">{{ hyperevent.date|date:"D d M Y - G:i" }}</a>
 					{% else %}
 						{{ hyperevent.date|date:"D d M Y" }}
 					{% endif %}
@@ -48,7 +48,7 @@
 			
 			<!--  <div class="btn-group pull-right actions">
 			{% if hyperevent.video_url %}
-			<a class="btn btn-mini" rel="shadowbox;" href="{% url get_hyperevent hyperevent.id %}">
+			<a class="btn btn-mini" rel="shadowbox;" href="{% url "get_hyperevent" hyperevent.id %}">
 			Preview
 			</a>
 			{% endif %}
@@ -69,11 +69,11 @@
 			<div class="pull-right actions">
 				{% if allow_edit %}
 					{% if hyperevent.slides and hyperevent.video_url %}
-						<a class="btn btn-mini" href="{% url alignment_view hyperevent.id %}">Align Slides</a>
+						<a class="btn btn-mini" href="{% url "alignment_view" hyperevent.id %}">Align Slides</a>
 					{% endif %}
 					
-					<a class="btn btn-mini" href="{% url hyperevent_edit hyperevent.id %}">Edit</a>
-					<a class="btn btn-mini btn-danger" href="{% url hyperevent_delete hyperevent.id %}">Delete</a>
+					<a class="btn btn-mini" href="{% url "hyperevent_edit" hyperevent.id %}">Edit</a>
+					<a class="btn btn-mini btn-danger" href="{% url "hyperevent_delete" hyperevent.id %}">Delete</a>
 				{% endif %}
 			</div>
 		</div>
@@ -86,12 +86,12 @@
 		</div>
 		<div class="row-fluid container-fluid hyperevent-metadata">
 			<small> {% with num_slides=hyperevent.num_slides %}
-				{%if num_slides %} <i class="icon-picture"></i> <a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;"> {{ num_slides }} {{ num_slides|pluralize:"slide, slides"}} </a> &nbsp;&nbsp;&nbsp;
+				{%if num_slides %} <i class="icon-picture"></i> <a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;"> {{ num_slides }} {{ num_slides|pluralize:"slide, slides"}} </a> &nbsp;&nbsp;&nbsp;
 				{%endif%}
 				{% endwith %}
 
 				{% with id=hyperevent.id %}
-				{% if hyperevent.transcript_url %} <a href="{% url get_hyperevent id %}" rel="shadowbox;"> Transcript </a> &nbsp;&nbsp;&nbsp;
+				{% if hyperevent.transcript_url %} <a href="{% url "get_hyperevent" id %}" rel="shadowbox;"> Transcript </a> &nbsp;&nbsp;&nbsp;
 				{% endif %}
 				{% endwith %} </small>
 		</div>

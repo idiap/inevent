@@ -29,12 +29,10 @@ def get_hyperevent(request,id):
 	choices=[(0, 'All'),(1, 'Klewel'), (2, 'Radvision'), (3, 'TED')]
 	form = IneventSearchForm(choices=choices)
 	if response.has_key('id'):
-		  data = {'hyperevent':response, 'search_form':form}
+			data = {'hyperevent':response, 'search_form':form}
 	else:
-		  data = {'error':"Something went wrong"}	
+			data = {'error':"Something went wrong"}
 	
 	data['search_form'] = form
 	template = 'inevent/hyperevent_content.html'
-	return render_to_response(template, data, context_instance=RequestContext(request)) 
-   
-
+	return render_to_response(template, data, context_instance=RequestContext(request))

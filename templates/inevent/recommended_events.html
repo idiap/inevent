@@ -3,7 +3,7 @@
 	{% for hyperevent in hyperevents %}
 		{% if hyperevent.video_url  %}
 			<div class="row-fluid pull-left">
-				<a href="{% url get_hyperevent hyperevent.id %}" rel="shadowbox;">
+				<a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;">
 					{% if hyperevent.snapshot_url %}
 						<img class="snap img-polaroid" src="{{ hyperevent.snapshot_url }}"/>
 					{% else  %}

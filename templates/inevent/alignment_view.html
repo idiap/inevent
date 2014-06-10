@@ -316,7 +316,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '{% url hyperevent_align hyperevent_id %}',
+                url: '{% url "hyperevent_align" hyperevent_id %}',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8',
                 cache: false,
@@ -502,14 +502,17 @@
 		
 			<div class="span6">
 
-				<div class="row-fluid drag-container">
-					<div class="span8">
-						<ul id="ordered-slides" class="draggable sortable text-center"><img src="{{ STATIC_URL }}/inevent/images/spinner.gif"></ul>
+				<div class="row-fluid">
+					<div class=" drag-container">
+						<div class="span6">
+							<ul id="ordered-slides" class="draggable sortable text-center"><img src="{{ STATIC_URL }}/inevent/images/spinner.gif"></ul>
+						</div>
 					</div>
-					<div class="span3">
-						<ul id="all-slides" class="draggable text-center"><img src="{{ STATIC_URL }}/inevent/images/spinner.gif"></ul>
+					<div class="row-fluid drag-container">
+						<div class="span6">
+							<ul id="all-slides" class="draggable text-center"><img src="{{ STATIC_URL }}/inevent/images/spinner.gif"></ul>
+						</div>
 					</div>
-					<div class="span1"></div>
 				</div>
 
 			</div>

@@ -1,4 +1,4 @@
-django==1.4.2
-django-dajaxice==0.5.5
+django==1.6.5
+django-dajaxice==0.6
 django-endless-pagination>=1.1
 requests==2.2.1

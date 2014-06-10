@@ -1,5 +1,5 @@
 # Everything that is not taken by the root URLS, eat it here! 
-from django.conf.urls.defaults import patterns, url, include, handler404, handler500 #@UnusedImport
+from django.conf.urls import patterns, url, include, handler404, handler500 #@UnusedImport
 from django.contrib.auth import views as auth_views
 from inevent.email_auth import MyAuthenticationForm
 from inevent.views.portal import portal, get_hyperevent

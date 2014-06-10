@@ -1,0 +1,1182 @@
+{% extends "inevent/base.html" %}
+
+{% block content_inevent_page %}
+
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/jquery.tocify.css" />
+<script src="{{ STATIC_URL }}inevent/scripts/jquery-ui-widget.min.js"></script>
+<script src="{{ STATIC_URL }}inevent/scripts/jquery.tocify.min.js"></script>
+
+<style>
+	.change { color:red; }
+</style>
+
+<div class="row-fluid">
+	<div class="span3 bs-docs-sidebar">
+		<!--
+		<ul class="nav nav-list bs-docs-sidenav affix-top">
+			<li>
+				<a href="#WP3 Backend API"></a>
+			</li><li>
+				<a href="#WP3 Backend API"></a>
+			</li>
+		</ul>
+		-->
+		
+		<div id="toc"></div>
+	</div>
+
+	<div class="span9">
+
+<h1>WP3 Backend API</h1>
+
+<h2>Description</h2>
+
+<p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve Hyper-events</p>
+
+<h2>Hyper-event DTO definition</h2>
+
+<p>Following table describes fields of Hyper-event data transfer object (HyperEventDTO):</p>
+
+<table class="table change">
+	<tr>
+		<th>Hyper-event</th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr>
+
+	<tr>
+		<th>ID</th>
+		<td>Long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>Name</th>
+		<td>String</td>
+		<td>Name</td>
+	</tr><tr>
+		<th>Description</th>
+		<td>String</td>
+		<td>Description</td>
+	</tr><tr>
+		<th>Date</th>
+		<td>Long</td>
+		<td>Date</td>
+	</tr><tr>
+		<th>Duration</th>
+		<td>Integer</td>
+		<td>Duration</td>
+	</tr><tr>
+		<th>Custom meta</th>
+		<td>List of props</td>
+		<td>Custom meta</td>
+	</tr><tr>
+		<th>
+			Tracks
+		</th>
+		<td>List of tracks</td>
+		<td>Tracks</td>
+	</tr><tr>
+		<th>Participants</th>
+		<td>List of participant mappings (ID, role)</td>
+		<td>Participants</td>
+
+	</tr><tr>
+		<th>Tags</th>
+		<td>List of tags (time, person, offset, value)</td>
+		<td>Tags</td>
+	</tr><tr>
+		<th>Comments</th>
+		<td>List of comments (time, person, value replyTo)</td>
+		<td>Comments</td>
+	</tr><tr>
+		<th>Parent</th>
+		<td>Hyper-event</td>
+		<td>Parent</td>
+	</tr><tr>
+		<th>Children</th>
+		<td>List of hyper-events</td>
+		<td>Children</td>
+	</tr><tr>
+		<th>Links</th>
+		<td>List of hyper-event references (hyper-event ID, type, value, strength)</td>
+		<td>References</td>
+	</tr><tr>
+		<th>Status</th>
+		<td>String</td>
+		<td>Status</td>
+	</tr><tr>
+		<th>Jobs</th>
+		<td>List of jobs</td>
+		<td>Jobs</td>
+	</tr>
+</table>
+
+<p>HyperEventDTO is represented here in JSON format:</p>
+
+<pre class="change">
+{
+	"id": 5,
+	"parentId": 1,
+	"providerName": "Radvision",
+	"name": "Lecture 01",
+	"description": "Algebra",
+	"createdDateTime": "28.06.2012 11:48:14",
+	"duration": 300,
+	"metaData": {},
+	"tags": [],
+	"tracks": [],
+	"childrenIds": [],
+	"status": "ENDED",
+
+}
+</pre>
+
+<p>tracks field of HyperEventDTO is represented by array of TrackDTO objects:</p>
+
+<pre>
+{
+  "id": 1,
+  "mimeType": "video/x-flv",
+  "description": "Video",
+  "recordId": 2,
+  "url": "/tracks/{hyper_event_id}/video",
+  "slides": []
+}
+</pre>
+
+<p>participations field of HyperEventDTO is represented by array of ParticipationDTO objects:</p>
+
+<pre>
+{
+  "id": 0,
+  "participant": {
+    "id": 3,
+    "displayName": "Marry",
+    "firstName": "Marry",
+    "lastName": "Queen",
+    "email": "tt.ff@com"
+  },
+  "hyperEventId": 1,
+  "role": "PARTICIPANT",
+  "idProvider": 0
+}
+</pre>
+
+<p>participant field here is represented by UserDTO object:</p>
+
+<pre>
+{
+  "id": 3,
+  "displayName": "Marry",
+  "firstName": "Marry",
+  "lastName": "Queen",
+  "email": "tt.ff@com"
+}
+</pre>
+
+<p>The type field of HyperEventDTO must be set according to predefined Hyper-event hierarchy. For example: Faculty -> Course -> Lecture.</p>
+<p>HyperEventSearchResultDTO is represented here in JSON format:</p>
+
+<pre>
+{"hyperEvents":[<list of HyperEventDTO>],"count":1000}
+</pre>
+
+<p>HyperEventLinkResultDTO is represented here in JSON format:</p>
+
+<pre>{"links":[<list of HyperEventLinkDTO>],"count":1000}</pre>
+
+<p>HyperEventFilterDTO is represented here in JSON format:</p>
+
+<pre>
+{
+  "providerName":"TED",
+  "title":"A title",
+  "startDate":1398282433812,
+  "endDate":1398282433810,
+  "speaker":"A speaker",
+  "firstResult":0,
+  "maxResults":50,
+  "orderBy":"DATE","asc":false,
+  "startDoc":5
+}
+</pre>
+
+<h2>REST API</h2>
+
+<h3>User management</h3>
+
+<h4>Login</h4>
+
+<p>Login a user into the system.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/user/login</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (UserDTO object)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>Login</td>
+		<td>Login name of the user</td>
+		<td>QueryParam</td>
+		<td>String</td>
+	</tr><tr>
+		<td>Password</td>
+		<td>Password of the user</td>
+		<td>QueryParam</td>
+		<td>String</td>
+	</tr>
+</table>
+
+<h3>Archiving</h3>
+
+<h4>New hyper-event</h4>
+
+<p>Creates new Hyper-Event in database, performs indexing using provided metadata.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/newHyperEvent</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/json</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain (newly created Hyper-event id)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>N/A</td>
+		<td>HyperEventDTO</td>
+		<td>Body</td>
+		<td>application/json</td>
+	</tr>
+</table>
+
+<h4>Update hyper-event</h4>
+
+<p>Updates existing hyper-event.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/updateHyperEvent</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/json</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>N/A</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>N/A</td>
+		<td>HyperEventDTO</td>
+		<td>Body</td>
+		<td>application/json</td>
+	</tr>
+</table>
+
+<h4>Upload track</h4>
+
+<p>Adds provided track to specified Hyper-event. The metadata of the track is described by "trackDTO" parameter and its actual data by "data" parameters.</p>
+
+Example of track might be: 
+<ul>
+	<li>flash video file</li>
+	<li>sequence of slides</li>
+	<li>transcript (ASR result) - the format needs to be discussed with WP2</li>
+</ul>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/uploadTrack</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>multipart/form-data</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain (newly created track id)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackDTO</td>
+		<td>trackDTO</td>
+		<td>FormParam</td>
+		<td>application/json</td>
+	</tr><tr>
+		<td>data</td>
+		<td>Track binary data</td>
+		<td>FormParam</td>
+		<td>application/octet-stream</td>
+	</tr>
+</table>
+
+<h4>Set hyper-event links</h4>
+
+<p>Sets linked hyper-events for provided hyper-event.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/setHyperEventLinks</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/json</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>N/A</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>hyperEventID</td>
+		<td>ID of the hyper event</td>
+		<td>QueryParam</td>
+		<td>long</td>
+	</tr><tr>
+		<td>hyperEventLinks</td>
+		<td>List of linked hyper event IDs</td>
+		<td>Body</td>
+		<td>
+			application/json<br/>
+			(list of long values)
+		</td>
+	</tr>
+</table>
+
+<h4>Asynchronous methods</h4>
+
+<p>The following 4 methods are for modifying hyper events. They are asynchronous and will execute ones the hyper event is in unlocked state. Each hyper event is locked during:</p>
+
+<ol>
+	<li>the “getTrackFile” method (locked only for modifying tasks)</li>
+	<li>One of the modifying methods is invoked (locked for any usage)</li>
+</ol>
+
+<p>When a modifying method is invoked and one or more files of its tracks is used by one or more callers of “getTrackFile”, the hyper event will be marked “prelocked” and no more new callers of “getTrackFile” will be allowed. Ones all the callers are finished, the modifying task will be allowed to execute and will mark the hyper event “locked”. Each asynchronous method returns “id” of the task that was created for it and the task status can be monitored by the “checkTaskStatus” method, described below.</p>
+
+<h4>Update track</h4>
+
+<p>Updates existing track. The request format is same as for uploadTrack. For single file in data: the file will be created or replaced. For mutiple files (zipped data): new files will be created, existing ones replaced.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/updateTrack</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>multipart/form-data</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>N/A</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackDTO</td>
+		<td>TrackDTO</td>
+		<td>FormParam</td>
+		<td>application/json</td>
+	</tr><tr>
+		<td>data</td>
+		<td>Track binary data</td>
+		<td>FormParam</td>
+		<td>application/octet-stream</td>
+	</tr>
+</table>
+
+<h4>Delete hyper-event</h4>
+
+<p>Deletes hyper-event including its tracks and track files in database (metadata) and repository (content)</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/deleteHyperEvent</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain (id of the task which is responsible for hyper-event's deletion)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>hyperEventId</td>
+		<td>ID of the hyper event</td>
+		<td>QueryParam</td>
+		<td>long</td>
+	</tr>
+</table>
+
+<h4>Delete track</h4>
+
+<p>Deletes track including its track files in database (metadata) and repository (content)</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/deleteTrack</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain (id of the task which is responsible for track's deletion)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackID</td>
+		<td>ID of the track</td>
+		<td>QueryParam</td>
+		<td>long</td>
+	</tr>
+</table>
+
+<h4>Delete track file</h4>
+
+<p>Deletes track file in database (metadata) and repository (content)</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/deleteTrackFile</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain (id of the task which is responsible for track file's deletion)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackField</td>
+		<td>ID of the track's file</td>
+		<td>QueryParam</td>
+		<td>long</td>
+	</tr>
+</table>
+
+<h4>Check task status</h4>
+
+<p>Checks status of the task created by one of the following requests: "deleteHyperEvent", "deleteTrack", "deleteTrackFile"</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/checkTaskStatus</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>
+			<p>text/plain</p>
+
+			Represented by on of the following values:
+			<ul>
+				<li>'WAITING' – the task is in waiting state before its execution</li>
+				<li>'RUNNING' – the task is currently being executed</li>
+				<li>'COMPLETED' – the task's execution completed successfully</li>
+				<li>'ERROR' – the task's execution completed with error</li>
+			</ul>
+		</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>taskId</td>
+		<td>ID of the task</td>
+		<td>QueryParam</td>
+		<td>long</td>
+	</tr>
+</table>
+
+<h3>Retrieval</h3>
+
+<h4>Get hyper-event</h4>
+
+<p>Retrieves desired Hyper-event by id.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/retrieval/getHyperEvent</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (HyperEventDTO object)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>hyperEventId</td>
+		<td>ID of hyper event</td>
+		<td>QueryParam</td>
+		<td>long</td>
+	</tr>
+</table>
+
+<h4>Search hyper-events</h4>
+
+<p>Retrieves all Hyper-events which matching the provided search query.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/retrieval/searchHyperEvents</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/json</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (HyperEventSearchResultDTO object)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>searchQuery</td>
+		<td>Free text query condition</td>
+		<td>QueryParam</td>
+		<td>String</td>
+	</tr><tr>
+		<td>filterDTO</td>
+		<td>Filter object containing various fields for query filtering</td>
+		<td>Body</td>
+		<td>HyperEventFilterDTO</td>
+	</tr>
+</table>
+
+<h4>Find similar hyper-events</h4>
+
+<p>Retrieves all hyper-events that similar to the provided one.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/retrieval/findSimilarHyperEvents</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/json</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (HyperEventLinkResultDTO object)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>hyperEventId</td>
+		<td>Filter object containing various fields for query filtering</td>
+		<td>Body</td>
+		<td>HyperEventFilterDTO</td>
+	</tr>
+</table>
+
+<h4>Get recommended hyper-events</h4>
+
+<p>Retrieves recommended hyper-events for currently logged in user.</p>
+
+<p><i>Note: the method works only if user was successfully logged in, otherwise exception is thrown</i></p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/retrieval/getRecommendedHyperEvents</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (HyperEventSearchResultDTO object)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>pageNum</td>
+		<td>Pagination parameter</td>
+		<td>QueryParam</td>
+		<td>Integer</td>
+	</tr>
+</table>
+
+<h4>Get track file</h4>
+
+<p>Retrieves desired track file by track id and file name and returns it with corresponding mime type in order to be played automatically.</p>
+
+<p><i>Note: the method supports HTTP 1.1 Range Request</i></p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/retrieval/getTrackFile</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>*/* (file content)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackId</td>
+		<td>ID of track</td>
+		<td>QueryParam</td>
+		<td>Long</td>
+	</tr><tr>
+		<td>start</td>
+		<td>The starting position the file is downloaded from</td>
+		<td>QueryParam</td>
+		<td>Long</td>
+	</tr><tr>
+		<td>filename</td>
+		<td>Name of the file to retrieve</td>
+		<td>PathParam</td>
+		<td>String</td>
+	</tr>
+</table>
+
+<p>Example:</p>
+
+<p>http://inevent.haifa.il.ibm.com/rest/getTrackFile/{fileName}?trackId={trackId}</p>
+
+<h4>Get track file raw</h4>
+
+<p>Retrieves desired track file by track id and file name and returns it with mime type "application/octet-stream" in order to download it as is.</p>
+
+<p><i>Note: the method supports HTTP 1.1 Range Request</i></p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/retrieval/getTrackFileRaw</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>*/* (file content)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackId</td>
+		<td>ID of track</td>
+		<td>QueryParam</td>
+		<td>Long</td>
+	</tr><tr>
+		<td>start</td>
+		<td>The starting position the file is downloaded from</td>
+		<td>QueryParam</td>
+		<td>Long</td>
+	</tr><tr>
+		<td>filename</td>
+		<td>Name of the file to retrieve</td>
+		<td>PathParam</td>
+		<td>String</td>
+	</tr>
+</table>
+
+<p>Example:</p>
+
+<p>http://inevent.haifa.il.ibm.com/rest/getTrackFileRaw/{fileName}?trackId={trackId}</p>
+
+<h1>Interface with WP2</h1>
+
+<p>Segmentation is represented here in JSON format:</p>
+
+<pre>
+{"segments": [
+  {
+    "startTime":1398287411648,
+    "endTime":1398287416648,
+    "classId":"Class 1",
+    "speakerId":"Speaker 1"
+  },
+  {
+    "startTime":1398287417648,
+    "endTime":1398287421648,
+    "classId":"Class 2",
+    "speakerId":"Speaker 2"
+  }
+]}
+</pre>
+
+<p>AsrResult is represented here in JSON format:</p>
+
+<pre>
+{
+  "id":"id 1",
+  "speakers":["speaker1","speaker2"],
+  "segments":[
+    {
+      "startTime":3.25,
+      "endTime":4.56,
+      "classId":"Class 1",
+      "speakerId":"Speaker 1",
+      "spokenWords":[
+        {
+          "wordStart":5.33,
+          "wordEnd":6.0,
+          "wordId":"inEvent",
+          "wordConfidence":0.9
+        }
+      ]
+    }
+  ]
+}
+</pre>
+
+<p>Video analytics is represented here in JSON format:</p>
+
+<pre>
+{"segments": [
+  {
+    "end": "04:59.966",
+    "interaction_between_participants": "0",
+    "start": "00.000",
+    "stream": [
+      {
+        "activity_level": "0%",
+        "average_num_of_people": "0.4548",
+        "id": "1",
+        "max_num_of_people": "2",
+        "name": "lmiauton",
+        "person": {
+          "average_face_size": "0.2947",
+          "average_horiz_speed": "0.0516",
+          "average_pitch": "-0.0440",
+          "average_speed": "0.0735",
+          "average_vert_speed": "0.1063",
+          "average_yaw": "0.0342",
+          "id": "0",
+          "percentage_of_appearance": "45.4677%"
+        }
+      },
+      {
+        "activity_level": "0%",
+        "average_num_of_people": "0.0059",
+        "id": "2",
+        "max_num_of_people": "1",
+        "name": "Stefano - HHI"
+      }
+    ]
+  }
+]}
+</pre>
+
+<h2>Process file</h2>
+
+<p>Processes video file and returns analytic's result.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/processFile?fileName=&lt;fileName&gt;</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (analytic's processing output in JSON format)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>fileName</td>
+		<td>Name of the file to process</td>
+		<td>QueryParam</td>
+		<td>String</td>
+	</tr>
+</table>
+
+<h2>Process file</h2>
+
+<p>Processes video file using Segmentation object received by calling to diarization service. Returns aggregated ASR result containing merged ASR and diarization data.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/processFile?fileName=<fileName>&lt;fileName&gt;</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/json</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/json (AsrResult object))</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>fileName</td>
+		<td>Name of the file to process</td>
+		<td>QueryParam</td>
+		<td>String</td>
+	</tr><tr>
+		<td>segmentation</td>
+		<td>Segmentation object received by calling to diarization service</td>
+		<td>Body</td>
+		<td>application/json</td>
+	</tr>
+</table>
+
+<h2>Get thumbnails</h2>
+
+<p>Returns thumbnail files produced by video analytic service.</p>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/getThumbnails?fileName=&lt;fileName&gt;</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>application/zip (ZIP file containing thumbnails)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>fileName</td>
+		<td>Name of the file to process</td>
+		<td>QueryParam</td>
+		<td>String</td>
+	</tr>
+</table>
+
+	</div>
+</div>
+
+<script>
+//Executes your code when the DOM is ready. Acts the same as $(document).ready().
+$(function() {
+	//Calls the tocify method on your HTML div.
+	$("#toc").tocify({
+		selectors: "h1, h2, h3, h4",
+	}) ;
+});
+</script>
+
+{% endblock %}

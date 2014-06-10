@@ -8,6 +8,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
   url(r'^api/(.*)$', TemplateView.as_view(template_name='api.html')),
+  url(r'^api-proposal/(.*)$', TemplateView.as_view(template_name='api-proposal.html')),
   url(r'^qunit/(.*)$', TemplateView.as_view(template_name='inevent/qunit.html')),
   url(r'^hyperevent/(?P<id>\d+)', get_hyperevent, name='get_hyperevent'),
   url(r'^alignment/(.*)/edit$', edit, name='hyperevent_edit'),

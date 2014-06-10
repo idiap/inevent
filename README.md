@@ -22,10 +22,11 @@ sudo pip install -r requirements.txt
 Starting
 --------
 
-In your local repository create a settings_local.py file which overwrites DEBUG to True (in development mode). 
+In your local repository create a settings_local.py file which overwrites DEBUG to True (in development mode) and add a secret key like in below example :
 
 ```python
 DEBUG = True
+SECRET_KEY = "fdlet034msd09w4jfqjvl094ujopfaoo43jfa"
 ```
 
 Run server with the following command

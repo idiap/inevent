@@ -19,13 +19,16 @@ Run pip to resolve dependencies with command
 sudo pip install -r requirements.txt
 ```
 
+Installation was successfully completed under Ubuntu 14.04, Ubuntu (Server) 12.04, Debian Sid and MacOS
+
 Starting
 --------
 
-In your local repository create a settings_local.py file which overwrites DEBUG to True (in development mode). 
+In your local repository create a settings_local.py file which overwrites DEBUG to True (in development mode) and add a secret key like in below example :
 
 ```python
 DEBUG = True
+SECRET_KEY = "fdlet034msd09w4jfqjvl094ujopfaoo43jfa"
 ```
 
 Run server with the following command

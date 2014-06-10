@@ -19,6 +19,8 @@ Run pip to resolve dependencies with command
 sudo pip install -r requirements.txt
 ```
 
+Installation was successfully completed under Ubuntu 14.04, Ubuntu (Server) 12.04, Debian Sid and MacOS
+
 Starting
 --------
 

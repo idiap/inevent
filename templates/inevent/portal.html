@@ -14,16 +14,16 @@
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab1">
 			<div class="row-fluid">
-				<div class="col-fluid span8">
+				<div class="col-fluid span9">
 					<h3 id="portal-title">Most Recent Talks</h3>
 				</div>
-				<div class="col-fluid span4">
+				<div class="col-fluid span3">
 					<button class="btn btn-info btn-small" style="margin-top:auto;" id="graph_button" name="list"> View as Graph </button><br/><br/>
 				</div>
 			</div>
 			
 			<div class="row-fluid" id="recency">
-				<div id="graph_container" class="tabbable well well-small span8">
+				<div id="graph_container" class="tabbable well well-small span9">
 					<div id="list">
 						{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}
 					</div>
@@ -31,8 +31,8 @@
 					<div id="graph" style="display:none"></div>
 				</div>
 				
-				<div class="col-fluid span4">
-					<div id="graph_params" class="well" style="display:none;">
+				<div class="col-fluid span3">
+					<div id="graph_params" class="well">
 						{% include "inevent/graph_params.html" with div_id="graph" %}
 					</div>
 				</div>
@@ -77,26 +77,30 @@
 		
 		}
 
-		function start_graph(div_id) {
-			video_switch = false ;
+		function start_graph(div_id, firstRun) {
 			var graph = new Graph(div_id);
+			firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 			
+			video_switch = false ;
 			max_neighbours = $("#" + div_id + "_form .user_neighbours").val() ;
 			max_depth = $("#" + div_id + "_form .user_depth").val() ;
 			max_size = $("#" + div_id + "_form .user_size").val() ;
-			window["update_" + div_id + "_value"]() ;
+			
+			window["update_" + div_id + "_value"](firstRun) ;
 		
-			Dajaxice.inevent.get_graph_head(function(data){graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},{'error_callback': display_graph_error});
+			Dajaxice.inevent.get_graph_head(
+				function(data){graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
+				{'error_callback': display_graph_error});
 		}
 
 		$(document).ready(function() {
-			div_id = "graph"
+			div_id = "graph" ;
 			
 			$("#" + div_id + "_form .user_neighbours").val(3) ;
-			$("#" + div_id + "_form .user_depth").val(3) ;
-			$("#" + div_id + "_form .user_size").val(100) ;
+			$("#" + div_id + "_form .user_depth").val(2) ;
+			$("#" + div_id + "_form .user_size").val(10) ;
 			
-			start_graph(div_id) ;
+			start_graph(div_id, true) ;
 			$('#graph_form').show() ;
 		});
 

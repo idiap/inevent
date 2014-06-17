@@ -416,9 +416,11 @@ function Graph(div_id) {
 		var _this = this ;
 
 		video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
-		max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 5;
+		max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 3;
 		max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
-		max_size = typeof max_size !== 'undefined' ? max_size : 100;
+		max_size = typeof max_size !== 'undefined' ? max_size : 10;
+
+		console.log(data.toSource()) ;
 
 		if(data.length > 0)
 		{
@@ -461,8 +463,6 @@ function Graph(div_id) {
 
 		if(data['nodes'] != undefined && (typeof data != "XMLHttpRequest"))
 		{
-			console.log("data: " + data) ;
-		
 			this.addExclusion(data['caller_id']) ;
 			this.addElement(data['nodes']) ;
 

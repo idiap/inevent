@@ -1,12 +1,14 @@
 <script>
-	function update_{{div_id}}_value(){
+	function update_{{div_id}}_value(firstRun){
+		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
+		
 		var range = $("#{{div_id}}_form .user_size") ;
 		var text = $("#{{div_id}}_form .user_size_text") ;
-		text.html(range.val()) ; if(range.val() == 500) {text.html(text.html() + "+") ;}
+		text.html(range.val()) ; if(range.val() == 40) {text.html(text.html() + "+") ;}
 		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
 		var left = (percent * range.width()) - (percent * text.width()) ;
 		text.css({'margin-left': left + 'px'}) ;
-
+		
 		var range = $("#{{div_id}}_form .user_depth") ;
 		var text = $("#{{div_id}}_form .user_depth_text") ;
 		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
@@ -21,8 +23,9 @@
 		var left = (percent * range.width()) - (percent * text.width()) ;
 		text.css({'margin-left': left + 'px'}) ;
 		
-		if($("#{{div_id}}").html() == '')
-			$("#{{div_id}}_form").css('display', 'none');
+		//if($("#{{div_id}}").html() == '')
+		if(firstRun == true)
+			$("#graph_params").hide();
 	}
 </script>
 
@@ -53,10 +56,10 @@
 				<label>Graph size</label>
 				<div class="min-label">0</div>
 				<div class="user-value">
-					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="500" step="10" value="50" id="fader2" list="volsettings"></input><br>
+					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="40" step="10" value="50" id="fader2" list="volsettings"></input><br>
 					<div class="user_size_text user_text">0</div>
 				</div>
-				<div class="max-label">500+</div>
+				<div class="max-label">40+</div>
 			</div>
 
 			<div class="control-group">
@@ -73,10 +76,10 @@
 				<label>Neighbours per node</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="10" value="2" id="fader2" list="volsettings"></input><br>
+					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>
 					<div class="user_neighbours_text user_text">0</div>
 				</div>
-				<div class="max-label">10</div>
+				<div class="max-label">5</div>
 			</div>
 
 			<div class="control-group">

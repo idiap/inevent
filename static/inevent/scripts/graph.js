@@ -420,8 +420,6 @@ function Graph(div_id) {
 		max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
 		max_size = typeof max_size !== 'undefined' ? max_size : 10;
 
-		console.log(data.toSource()) ;
-
 		if(data.length > 0)
 		{
 			graph_data_fetched = true;

@@ -57,8 +57,9 @@
 				{% endif %}
 			</div>
 			
-			<div class="col-fluid event-date span3">
-				<button class="btn btn-info btn-small" id="graph_button" name="list"> Inter-event Navigation </button>
+			<div class="col-fluid span3 btn-group" style="margin-bottom:15px">
+				<button class="btn btn-info btn-small" id="event_button"><i class="icon-film icon-white"></i> Look inside</button>
+				<button class="btn btn-info btn-small" id="graph_button"><i class="icon-th-large icon-white"></i> Look around</button>
 			</div>
 		</div>
 
@@ -69,7 +70,9 @@
 				
 				<div id="graph_container">
 					<div class="tab-content well" style="display:none;">
-						<div id="graph1"></div>
+						<div id="graph1">
+							<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
+						</div>
 					</div>
 					
 					<!--
@@ -127,39 +130,27 @@
 	
 	}
 
-	$('#graph_button').bind('click', get_graph);
-	var graph_data_fetched = false;
+	$('#graph_button').bind('click', get_graph) ;
+	$('#event_button').bind('click', get_event) ;
 
 	function get_graph(){
-		if ($('#graph_button').attr("name") == "list") {
-			$('#graph_container div.tab-content').css("display", "");
-			if (graph_data_fetched == false) {
-				//Dajaxice.inevent.get_graph(function(data){display_graph(data, true);},{'error_callback': display_graph_error});
-				$('#graph1').html('<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>');
-				//$('#graph_button').prop('disabled', true);
-			}
-			$('#graph_button').attr("name","graph");
-			$('#hePlayer').css("display", "none");
-			
-			//SD/ Toogle params/talks
-			$('#related_talks').css("display", "none");
-			$('#graph_params').show();
-			
-			$('#graph_button').html("Intra-event Navitation")
-		}
-		else {
-			$('#graph_button').attr("name","list");
-			
-			//SD/ Toggle graph/player
-			$('#hePlayer').css("display", "");
-			$('#graph_container div.tab-content').css("display", "none");
-			
-			$('#graph_button').html("Inter-event Navigation") ;
-			$('#graph_params').hide() ;
-			
-			//SD/ Toogle params/talks
-			$('#related_talks').css("display", "");
-		}
+		$('#graph_button').addClass('active') ;
+		$('#event_button').removeClass('active') ;
+	
+		$('#hePlayer').css("display", "none");
+		$('#graph_container div.tab-content').css("display", "");
+		$('#graph_params').show();
+		$('#related_talks').css("display", "none");
+	}
+	
+	function get_event(){
+		$('#event_button').addClass('active') ;
+		$('#graph_button').removeClass('active') ;
+		
+		$('#hePlayer').css("display", "");
+		$('#graph_container div.tab-content').css("display", "none");
+		$('#graph_params').hide() ;
+		$('#related_talks').css("display", "");
 	}
 	
 	function start_graph(div_id, firstRun) {

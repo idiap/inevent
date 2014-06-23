@@ -18,7 +18,12 @@
 					<h3 id="portal-title">Most Recent Talks</h3>
 				</div>
 				<div class="col-fluid span3">
-					<button class="btn btn-info btn-small" style="margin-top:auto;" id="graph_button" name="list"> View as Graph </button><br/><br/>
+					<h3>
+						<div class='btn-group'>
+							<button class="btn btn-info btn-small active" id="list_button"><i class="icon-th-list icon-white"></i> View as List</button>
+							<button class="btn btn-info btn-small" id="graph_button"><i class="icon-th-large icon-white"></i> View as Graph</button>
+						</div>
+					</h3>
 				</div>
 			</div>
 			
@@ -28,7 +33,9 @@
 						{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}
 					</div>
 				
-					<div id="graph" style="display:none"></div>
+					<div id="graph" style="display:none">
+						<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
+					</div>
 				</div>
 				
 				<div class="col-fluid span3">
@@ -51,30 +58,29 @@
 	</div>
 	
 	<script type="text/javascript">
-		$('#graph_button').bind('click', get_graph);
-		var graph_data_fetched = false;
+		$('#graph_button').bind('click', set_graph);
+		$('#list_button').bind('click', set_list);
 
-		function get_graph(){
-			if ($('#graph_button').attr("name") == "list") {
-				$('#graph').css("display", "");
-				if (graph_data_fetched == false) {
-					//Dajaxice.inevent.get_graph(function(data){display_graph(data, true);},{'error_callback': display_graph_error});
-					$('#graph').html('<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>');
-					//$('#graph_button').prop('disabled', true);
-				}
-				$('#graph_button').attr("name","graph");
-				$('#list').css("display", "none");
-				$('#graph_button').html("View as List") ;
-				$('#graph_params').show() ;
-			}
-			else {
-				$('#graph_button').attr("name","list");
-				$('#list').css("display", "");
-				$('#graph').css("display", "none");
-				$('#graph_button').html("View as Graph");
-				$('#graph_params').hide() ;
-			}
+		function set_graph() {
+			//SD/ Switch active button
+			$('#graph_button').addClass('active') ;
+			$('#list_button').removeClass('active') ;
+			
+			//SD/ Switch elements
+			$('#graph').css("display", "");
+			$('#list').css("display", "none");
+			$('#graph_params').show() ;
+		}
 		
+		function set_list() {
+			//SD/ Switch active button
+			$('#list_button').addClass('active') ;
+			$('#graph_button').removeClass('active') ;
+			
+			//SD/ Switch elements
+			$('#list').css("display", "");
+			$('#graph').css("display", "none");
+			$('#graph_params').hide() ;
 		}
 
 		function start_graph(div_id, firstRun) {

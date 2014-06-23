@@ -413,45 +413,48 @@ function Graph(div_id) {
 	
 	//SD/ Initiate the first graph and call dynamically next data
 	this.display_graph_head = function(data, video_switch, max_neighbours, max_depth, max_size) {
-		var _this = this ;
-
-		video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
-		max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 3;
-		max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
-		max_size = typeof max_size !== 'undefined' ? max_size : 10;
-
-		if(data.length > 0)
+		try
 		{
-			graph_data_fetched = true;
+			var _this = this ;
 
-			//SD/ Create first graph without any data
-			$('#' + this.div_id).html("");
-			position = $('#' + this.div_id).position();
+			video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
+			max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 3;
+			max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
+			max_size = typeof max_size !== 'undefined' ? max_size : 10;
 
-			//SD/ Prepare queue for nodes
-			for(var i=0 ; i < data.length ; i++)
-				data[i]['depth'] = 0 ;
+			if(data.length > 0)
+			{
+				//SD/ Create first graph without any data
+				$('#' + this.div_id).html("");
+				position = $('#' + this.div_id).position();
 
-			if(max_size == 0)
-				data = [] ;
+				//SD/ Prepare queue for nodes
+				for(var i=0 ; i < data.length ; i++)
+					data[i]['depth'] = 0 ;
 
-			this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+				if(max_size == 0)
+					data = [] ;
 
-			if(max_size > 0) {
-				this.addElement(data)
-				var first = this.pickElement() ;
+				this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+
+				if(max_size > 0) {
+					this.addElement(data)
+					var first = this.pickElement() ;
 		
-				params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
-				Dajaxice.inevent.get_graph_neighbours(function(data){
-					_this.display_graph(data, _this.display_graph);}, params) ;
-			}
+					params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+					Dajaxice.inevent.get_graph_neighbours(function(data){
+						_this.display_graph(data, _this.display_graph);}, params) ;
+				}
 			
-			//$('#graph_button').prop('disabled', false);
+				//$('#graph_button').prop('disabled', false);
+			}
+			else
+			{
+				display_graph_error('No data returned from server.') ;
+			}
 		}
-		else
-		{
-			graph_data_fetched = true;
-			$('#graph').html('<div class="alert alert-danger" style ="margin-top:100px;position:relative;margin-bottom:100px">Server error.<br>No data returned from server.</div>');
+		catch(e){
+			display_graph_error(e) ;
 		}
 	}
 	
@@ -516,10 +519,7 @@ Function called to display graph and get data
 ==============================================================================*/
 
 function display_graph_error(error) {
-	graph_data_fetched = false;
-	$('#graph_button').html("Show as List")
-	$('#graph').html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px"> Unable to load graph. Please try again later.');
-	$('#graph_button').prop('disabled', false);
+	$('#graph').html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
 }
 
 //SD/ If windows is resized

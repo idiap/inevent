@@ -6,6 +6,7 @@ function Graph(div_id) {
 
 	this.initVars = function() {
 		this.small_rect = [75.0, 56.0] ;
+		this.orig_rect = [100.0, 75.0] ;
 		this.big_rect = [300.0, 250.0] ;
 		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 70] ;
 
@@ -161,8 +162,18 @@ function Graph(div_id) {
 			.attr("id", function(d) { return "rect_node" + d.id})
 			.style("stroke-width", 4)
 			.style("fill", "white") // Make the nodes hollow looking
-			.attr("height", this.small_rect[1] - 10)
-			.attr("width", this.small_rect[0])
+			.attr("height", function(d) {
+				if(d.depth < 1)
+					return _this.orig_rect[1] - 10 ;
+				else
+					return _this.small_rect[1] - 10 ;
+			})
+			.attr("width", function(d) {
+				if(d.depth < 1)
+					return _this.orig_rect[0] - 10 ;
+				else
+					return _this.small_rect[0] - 10 ;
+			})
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
 				color = _this.color.grey ;
@@ -170,8 +181,18 @@ function Graph(div_id) {
 				return color ;
 			})
 			.attr("rx", "5")
-			.attr('x', -this.small_rect[0] / 2)
-			.attr('y', -this.small_rect[1] / 2 + 5);
+			.attr('x', function(d) {
+				if(d.depth < 1)
+					return -_this.orig_rect[0] / 2 ;
+				else
+					return -_this.small_rect[0] / 2 ;
+			})
+			.attr('y', function(d) {
+				if(d.depth < 1)
+					return -_this.orig_rect[1] / 2 ;
+				else
+					return -_this.small_rect[1] / 2 ;
+			});
 
 		this.defs.append("svg:clipPath")
 			.attr("id", function(d) { return "clip" + d.id})
@@ -184,11 +205,31 @@ function Graph(div_id) {
 		this.nodeEnter.append("image")
 			.attr("id", function(d) { return "image" + d.id})
 			.attr("xlink:href", function(d) { return d.snapshot_url })
-			.attr("height", _this.small_rect[1])
-			.attr("width", _this.small_rect[0])
+			.attr("height", function(d) {
+				if(d.depth < 1)
+					return _this.orig_rect[1] - 10 ;
+				else
+					return _this.small_rect[1] - 10 ;
+			})
+			.attr("width", function(d) {
+				if(d.depth < 1)
+					return _this.orig_rect[0] - 10 ;
+				else
+					return _this.small_rect[0] - 10 ;
+			})
 			.attr("class", "graph_images")
-			.attr('x', -this.small_rect[0] / 2)
-			.attr('y', -this.small_rect[1] / 2)
+			.attr('x', function(d) {
+				if(d.depth < 1)
+					return -_this.orig_rect[0] / 2 ;
+				else
+					return -_this.small_rect[0] / 2 ;
+			})
+			.attr('y', function(d) {
+				if(d.depth < 1)
+					return -_this.orig_rect[1] / 2 ;
+				else
+					return -_this.small_rect[1] / 2 ;
+			})
 			.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
 		//SD/ Define node picture ENDS =========================================
 

@@ -111,15 +111,7 @@ function Graph(div_id) {
 		this.displayLinks();
 		this.displayNodes();
 		
-		/*SD/ TODO : Fix this to order node in front/back depending on dept
-			note :	ascending sort seams to work not descending
-			https://github.com/mbostock/d3/wiki/Selections#sort
-		
-		this.svg.selectAll(".node").sort(function (a, b) {
-			if (a.depth < b.depth) return -1;
-			else return 1;
-		});
-		*/
+
 		
 		this.force.start();
 	}
@@ -458,7 +450,15 @@ function Graph(div_id) {
 	
 	this.finalizeGraph = function() {
 		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes") ;
+
+		//SD/ Changing node position to back or front have to be done at end of graph
+		this.svg.selectAll(".node").sort(function (a, b) {
+			if (a.depth > b.depth) return -1;
+			else return 1;
+		});
+
 		this.svg.selectAll(".link").moveToBack();
+
 		this.endOfGraph = true ;
 	}
 	

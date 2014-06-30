@@ -581,6 +581,8 @@ function display_graph_error(error) {
 //SD/ If windows is resized
 $( window ).resize(function() {
 	//SD/ adapt graph size with container width
-	//graph.setWidth($("#graph_container").width()) ;
-	//graph2.setWidth($("#graph_container").width()) ;
+	for(i in graphs) {
+		graphs[i].setWidth($("#graph_container").width()) ;
+		window["update_" + graphs[i].div_id + "_value"](false) ;
+	}
 });

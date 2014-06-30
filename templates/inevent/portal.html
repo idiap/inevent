@@ -69,6 +69,7 @@
 			//SD/ Switch elements
 			$('#graph').css("display", "");
 			$('#list').css("display", "none");
+			
 			$('#graph_params').show() ;
 		}
 		
@@ -80,11 +81,12 @@
 			//SD/ Switch elements
 			$('#list').css("display", "");
 			$('#graph').css("display", "none");
+			
 			$('#graph_params').hide() ;
 		}
 
 		function start_graph(div_id, firstRun) {
-			var graph = new Graph(div_id);
+			
 			firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 			
 			video_switch = false ;
@@ -94,20 +96,28 @@
 			
 			window["update_" + div_id + "_value"](firstRun) ;
 		
-			Dajaxice.inevent.get_graph_head(
-				function(data){graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
-				{'error_callback': display_graph_error});
+			for(i in graphs) {
+				Dajaxice.inevent.get_graph_head(
+					function(data){graphs[i].display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
+					{'error_callback': display_graph_error}
+				);
+			}
 		}
 
+		var graphs = new Array() ;
 		$(document).ready(function() {
-			div_id = "graph" ;
+			graphs.push(new Graph("graph")) ;
 			
-			$("#" + div_id + "_form .user_neighbours").val(3) ;
-			$("#" + div_id + "_form .user_depth").val(2) ;
-			$("#" + div_id + "_form .user_size").val(10) ;
+			for(i in graphs) {
+				div_id = graphs[i].div_id ;
+				
+				$("#" + div_id + "_form .user_neighbours").val(3) ;
+				$("#" + div_id + "_form .user_depth").val(2) ;
+				$("#" + div_id + "_form .user_size").val(10) ;
 			
-			start_graph(div_id, true) ;
-			$('#graph_form').show() ;
+				start_graph(div_id, true) ;
+				$('#' + div_id + '_form').show() ;
+			}
 		});
 
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

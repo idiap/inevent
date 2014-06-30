@@ -139,8 +139,9 @@
 	
 		$('#hePlayer').css("display", "none");
 		$('#graph_container div.tab-content').css("display", "");
-		$('#graph_params').show();
 		$('#related_talks').css("display", "none");
+		
+		$('#graph_params').show() ;
 	}
 	
 	function get_event(){
@@ -149,12 +150,12 @@
 		
 		$('#hePlayer').css("display", "");
 		$('#graph_container div.tab-content').css("display", "none");
-		$('#graph_params').hide() ;
 		$('#related_talks').css("display", "");
+		
+		$('#graph_params').hide() ;
 	}
 	
 	function start_graph(div_id, firstRun) {
-		var graph = new Graph(div_id);
 		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
 		video_switch = true ;
@@ -164,20 +165,26 @@
 
 		window["update_" + div_id + "_value"](firstRun) ;
 
-		Dajaxice.inevent.get_event_head(
-			function(data) {graph.display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
-			{'id': {{ hyperevent.id }}, 'error_callback': display_graph_error});
+		for(i in graphs) {
+			Dajaxice.inevent.get_event_head(
+				function(data) {graphs[i].display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
+				{'id': {{ hyperevent.id }}, 'error_callback': display_graph_error});
+		}
 	}
 
+	var graphs = new Array() ;
 	$(document).ready(function() {
-		var div_id = "graph1" ;
+		graphs.push(new Graph("graph1")) ;
+		
+		for(i in graphs) {
+			div_id = graphs[i].div_id ;
 
-		$("#" + div_id + "_form .user_neighbours").val(3) ;
-		$("#" + div_id + "_form .user_depth").val(2) ;
-		$("#" + div_id + "_form .user_size").val(10) ;
+			$("#" + div_id + "_form .user_neighbours").val(3) ;
+			$("#" + div_id + "_form .user_depth").val(2) ;
+			$("#" + div_id + "_form .user_size").val(10) ;
 
-		start_graph(div_id, true) ;
-		//start_graph("graph2") ;
+			start_graph(div_id, true) ;
+		}
 	});
 </script>
 

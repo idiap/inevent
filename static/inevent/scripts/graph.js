@@ -511,34 +511,39 @@ function Graph(div_id) {
 	
 	//SD/ update graph with children data
 	this.display_graph = function(data, callback) {
-		var _this = this ;
+		try {
+			var _this = this ;
 
-		if(data['nodes'] != undefined && (typeof data != "XMLHttpRequest"))
-		{
-			this.addExclusion(data['caller_id']) ;
-			this.addElement(data['nodes']) ;
+			if(data['nodes'] != undefined && (typeof data != "XMLHttpRequest"))
+			{
+				this.addExclusion(data['caller_id']) ;
+				this.addElement(data['nodes']) ;
 
-			if(data['nodes'].length > 0) {
-				//SD/ Graph node and prepare its links for next neighbours
-				if(data['nodes'][0]['depth'] <= this.max_depth || this.max_depth == 6)
-					this.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
-			}
+				if(data['nodes'].length > 0) {
+					//SD/ Graph node and prepare its links for next neighbours
+					if(data['nodes'][0]['depth'] <= this.max_depth || this.max_depth == 6)
+						this.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
+				}
 
-			//SD/ Check exclusion for next node
-			if(this.stillElement()) {
-				var first = this.pickElement() ;
+				//SD/ Check exclusion for next node
+				if(this.stillElement()) {
+					var first = this.pickElement() ;
 			
-				if(callback != undefined && this.increment_id == INCREMENT_ID) {
-					params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
-					callback(
-						Dajaxice.inevent.get_graph_neighbours(function(data){
-							_this.display_graph(data, _this.display_graph.bind(this)); }, params)
-					) ;
+					if(callback != undefined && this.increment_id == INCREMENT_ID) {
+						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+						callback(
+							Dajaxice.inevent.get_graph_neighbours(function(data){
+								_this.display_graph(data, _this.display_graph.bind(this)); }, params)
+						) ;
+					}
+				}
+				else {
+					this.finalizeGraph() ;
 				}
 			}
-			else {
-				this.finalizeGraph() ;
-			}
+		}
+		catch(e){
+			display_graph_error(e) ;
 		}
 	}
 }

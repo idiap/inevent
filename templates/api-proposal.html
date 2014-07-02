@@ -6,25 +6,8 @@
 <script src="{{ STATIC_URL }}inevent/scripts/jquery-ui-widget.min.js"></script>
 <script src="{{ STATIC_URL }}inevent/scripts/jquery.tocify.min.js"></script>
 
-<style>
-	.change { color:red; }
-</style>
 
 <div class="row-fluid">
-	<div class="span3 bs-docs-sidebar">
-		<!--
-		<ul class="nav nav-list bs-docs-sidenav affix-top">
-			<li>
-				<a href="#WP3 Backend API"></a>
-			</li><li>
-				<a href="#WP3 Backend API"></a>
-			</li>
-		</ul>
-		-->
-		
-		<div id="toc"></div>
-	</div>
-
 	<div class="span9">
 
 <h1>WP3 Backend API</h1>
@@ -33,172 +16,671 @@
 
 <p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve Hyper-events</p>
 
-<h2>Hyper-event DTO definition</h2>
+<h2>Notices</h2>
 
-<p>Following table describes fields of Hyper-event data transfer object (HyperEventDTO):</p>
+<p>Date format for each DTO:</p>
 
-<table class="table change">
+<table class="table">
 	<tr>
-		<th>Hyper-event</th>
+		<th>DTO</th>
+		<th>Attribute</th>
+		<th>Type</th>
+		<th>Example</th>
+	</tr><tr>
+		<td>HyperEvent</td>
+		<td>creationDate</td>
+		<td>mili timestamp</td>
+		<td>1330380000000</td>
+	</tr><tr>
+		<td>HyperEvent</td>
+		<td>duration</td>
+		<td>integer seconds <span class="label label-warning">not confirmed</span></td>
+		<td>300</td>
+	</tr><tr>
+		<td>Tag</td>
+		<td>creationDate</td>
+		<td></td>
+		<td>0 <span class="label label-warning">not data</span></td>
+	</tr><tr>
+		<td>File</td>
+		<td>startDate</td>
+		<td>mili timestamp</td>
+		<td>1383092271000</td>
+	</tr><tr>
+		<td>File</td>
+		<td>endDate</td>
+		<td>mili timestamp</td>
+		<td>1383092363000</td>
+	</tr><tr>
+		<td>Filter</td>
+		<td>startDate</td>
+		<td>mili timestamp</td>
+		<td>1398282433812 <span class="label label-warning">not verified</span></td>
+	</tr><tr>
+		<td>Filter</td>
+		<td>endDate</td>
+		<td>mili timestamp</td>
+		<td>1398282433810 <span class="label label-warning">not verified</span></td>
+	</tr><tr>
+		<td>Segment</td>
+		<td>startDate</td>
+		<td>mili timestamp</td>
+		<td>1398287417648 <span class="label label-warning">not verified</span></td>
+	</tr><tr>
+		<td>Segment</td>
+		<td>endDate</td>
+		<td>mili timestamp</td>
+		<td>1398287421648 <span class="label label-warning">not verified</span></td>
+	</tr><tr>
+		<td>Word</td>
+		<td>startTime</td>
+		<td>float seconds <span class="label label-warning">not confirmed</span></td>
+		<td>5.33 <span class="label label-warning">not verified</span></td>
+	</tr><tr>
+		<td>Word</td>
+		<td>endTime</td>
+		<td>float seconds <span class="label label-warning">not confirmed</span></td>
+		<td>6.0 <span class="label label-warning">not verified</span></td>
+	</tr>
+</table>
+
+<h2>DTO definitions</h2>
+
+<h3 id="HyperEventDTO">HyperEvent</h3>
+
+<p>Following table describes fields of HyperventEvent data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
 		<th>Type</th>
 		<th>Value</th>
 	</tr>
 
 	<tr>
-		<th>ID</th>
-		<td>Long</td>
+		<th>id</th>
+		<td>long</td>
 		<td>ID</td>
 	</tr><tr>
-		<th>Name</th>
+		<th>parentId</th>
+		<td>long</td>
+		<td>Parent (HyperEvent)</td>
+	</tr><tr>
+		<th>childrenIds</th>
+		<td>List of long</td>
+		<td>Children (HyperEvent)</td>
+	</tr><tr>
+		<th>name</th>
 		<td>String</td>
 		<td>Name</td>
 	</tr><tr>
-		<th>Description</th>
+		<th>mediaProvider</th>
+		<td><a href="#MediaProviderDTO">MediaProvider</a></td>
+		<td>Provider</td>
+	</tr><tr>
+		<th>type</th>
+		<td>String</td>
+		<td>Type</td>
+	</tr><tr>
+		<th>description</th>
 		<td>String</td>
 		<td>Description</td>
 	</tr><tr>
-		<th>Date</th>
-		<td>Long</td>
+		<th>creationDate <span class="label label-warning">better than date</span></th>
+		<td>long</td>
 		<td>Date</td>
 	</tr><tr>
-		<th>Duration</th>
-		<td>Integer</td>
+		<th>duration</th>
+		<td>integer</td>
 		<td>Duration</td>
 	</tr><tr>
-		<th>Custom meta</th>
-		<td>List of props</td>
-		<td>Custom meta</td>
+		<th>metaData</th>
+		<td>List of <a href="#MetaDataDTO">MetaData</a> <span class="label label-warning">better than Props</span></td>
+		<td>Custom <a href="#MetaDataDTO">MetaData</a></td>
 	</tr><tr>
-		<th>
-			Tracks
-		</th>
-		<td>List of tracks</td>
+		<th>tracks</th>
+		<td>List of <a href="#TrackDTO">Track</a></td>
 		<td>Tracks</td>
 	</tr><tr>
-		<th>Participants</th>
-		<td>List of participant mappings (ID, role)</td>
-		<td>Participants</td>
-
+		<th>participations</th>
+		<td>List of <a href="#ParticipationDTO">Participation</a></td>
+		<td>Participations who map <a href="#ParticipantDTO">Participant</a> id and role</td>
 	</tr><tr>
-		<th>Tags</th>
-		<td>List of tags (time, person, offset, value)</td>
+		<th>tags</th>
+		<td>List of <a href="#TagDTO">Tag</a><br/>(time, person, offset, value)</td>
 		<td>Tags</td>
 	</tr><tr>
-		<th>Comments</th>
-		<td>List of comments (time, person, value replyTo)</td>
+		<th>comments</th>
+		<td>List of <a href="CommentDTO">Comments</a><br/>(time, person, value replyTo)</td>
 		<td>Comments</td>
 	</tr><tr>
-		<th>Parent</th>
-		<td>Hyper-event</td>
-		<td>Parent</td>
-	</tr><tr>
-		<th>Children</th>
-		<td>List of hyper-events</td>
+		<th>children</th>
+		<td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>Children</td>
 	</tr><tr>
-		<th>Links</th>
-		<td>List of hyper-event references (hyper-event ID, type, value, strength)</td>
+		<th>links</th>
+		<td>List of <a href="#LinkDTO">Link</a></td>
 		<td>References</td>
 	</tr><tr>
-		<th>Status</th>
+		<th>status</th>
 		<td>String</td>
 		<td>Status</td>
-	</tr><tr>
-		<th>Jobs</th>
-		<td>List of jobs</td>
-		<td>Jobs</td>
+	</tr>
+	<tr>
+		<th>views</th>
+		<td>long <span class="label label-warning">supposition</span></td>
+		<td>Number of views</td>
+	</tr>
+	<tr>
+		<th>likes</th>
+		<td>long <span class="label label-warning">supposition</span></td>
+		<td>Number of likes</td>
+	</tr>
+	<tr>
+		<th>dislikes</th>
+		<td>long <span class="label label-warning">supposition</span></td>
+		<td>Number of dislikes</td>
 	</tr>
 </table>
 
+<div class="alert alert-warning">What is the purpose of parent/child in our case ?</div>
+
+<div class="alert alert-error">What is Job ? This parameter is not described anywhere but present in first document I own ? Was it status ? </div>
+
 <p>HyperEventDTO is represented here in JSON format:</p>
 
-<pre class="change">
+<pre><code class="language-javascript">
 {
-	"id": 5,
+	"id": 1261,
 	"parentId": 1,
-	"providerName": "Radvision",
+	"childrenIds": [],
+	"mediaProvider": {},
 	"name": "Lecture 01",
 	"description": "Algebra",
-	"createdDateTime": "28.06.2012 11:48:14",
+	"createdDateTime": "1330380000000",
 	"duration": 300,
-	"metaData": {},
+	"metaData": [],
 	"tags": [],
 	"tracks": [],
-	"childrenIds": [],
 	"status": "ENDED",
-
+	"views":0,
+	"likes":0,
+	"dislikes":0
 }
-</pre>
+</code></pre>
+
+<div class="alert">Don't we have the complete list of status code. Can be null apparently.</div>
+
+<h3 id="TrackDTO">Track</h3>
+
+<p>Following table describes fields of Track data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>mimeType</th>
+		<td>String</td>
+		<td>The inevent type mimeType <span class="label label-warning">not complete</span><br>
+			<ul>
+				<li>inevent/video</li>
+				<li>inevent/transcript</li>
+				<li>inevent/part-events</li>
+				<li>inevent/video+analytics</li>
+				<li>inevent/video</li>
+			</ul>
+		</td>
+	</tr><tr>
+		<th>description</th>
+		<td>String</td>
+		<td>Describe the track</td>
+	</tr><tr>
+		<th>parentId</th>
+		<td>long</td>
+		<td>Parent <a href="#HyperEventDTO">HyperEvent</a></td>
+	</tr><tr>
+		<th>files</th>
+		<td>list of <a href="#FileDTO">File</a></td>
+		<td>Track files (images, videos, transcript, ...)</td>
+	</tr>
+</table>
+
+<div class="alert">recordId disapeared between doc and API ?</div>
 
 <p>tracks field of HyperEventDTO is represented by array of TrackDTO objects:</p>
 
-<pre>
+<pre><code class="language-javascript">
 {
-  "id": 1,
-  "mimeType": "video/x-flv",
-  "description": "Video",
-  "recordId": 2,
-  "url": "/tracks/{hyper_event_id}/video",
-  "slides": []
+	"id":2914,
+	"mimeType":"inevent/video",
+	"description":"Radvision video",
+	"parentId":1261,
+	"files":[]
 }
-</pre>
+</code></pre>
+
+<div class="alert">If description only define the type of track, can we use trackType who is more explicit</div>
+
+<div class="alert">What is the purpose of recordId ?</div>
+
+<h3 id="ParticipationDTO">Participation</h3>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>participant</th>
+		<td>List of <a href="#UserDTO">User</a>  <span class="label label-warning">better User than participant</span></td>
+		<td>Participants</td>
+	</tr><tr>
+		<th>hyperEventId</th>
+		<td>long</td>
+		<td>HyperEvent</td>
+	</tr><tr>
+		<th>role</th>
+		<td>String</td>
+		<td>Role <span class="label label-warning">not complete</span><br>
+			<ul>
+				<li>PARTICIPANT</li>
+				<li>LECTURER</li>
+			</ul>
+		</td>
+	</tr>
+</table>
 
 <p>participations field of HyperEventDTO is represented by array of ParticipationDTO objects:</p>
 
-<pre>
+<pre><code class="language-javascript">
 {
-  "id": 0,
-  "participant": {
-    "id": 3,
-    "displayName": "Marry",
-    "firstName": "Marry",
-    "lastName": "Queen",
-    "email": "tt.ff@com"
-  },
-  "hyperEventId": 1,
-  "role": "PARTICIPANT",
-  "idProvider": 0
+	"id": 0,
+	"participant": {},
+	"hyperEventId": 1,
+	"role": "PARTICIPANT"
 }
-</pre>
+</code></pre>
 
-<p>participant field here is represented by UserDTO object:</p>
+<div class="alert">Which are the roles, are they fixed ?</div>
 
-<pre>
+<h3 id="UserDTO">User</h3>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>globalId</th>
+		<td>long</td>
+		<td>ID ?</td>
+	</tr><tr>
+		<th>displayName</th>
+		<td>String</td>
+		<td>Display Name</td>
+	</tr><tr>
+		<th>firstName</th>
+		<td>String</td>
+		<td>First Name</td>
+	</tr><tr>
+		<th>lastName</th>
+		<td>String</td>
+		<td>Last Name</td>
+	</tr><tr>
+		<th>email</th>
+		<td>String</td>
+		<td>E-mail Address</td>
+	</tr><tr>
+		<th>login</th>
+		<td>String</td>
+		<td></td>
+	</tr><tr>
+		<th>password</th>
+		<td>String</td>
+		<td></td>
+	</tr><tr>
+		<th>hyperEventWatchHistory</th>
+		<td></td>
+		<td></td>
+	</tr><tr>
+		<th>favoriteHyperEvents</th>
+		<td></td>
+		<td></td>
+	</tr>
+
+</table>
+
+<p>participant field here is represented by User object:</p>
+
+<p>Here the user has certainly be automatically registered.</p>
+
+<pre><code class="language-javascript">
 {
-  "id": 3,
-  "displayName": "Marry",
-  "firstName": "Marry",
-  "lastName": "Queen",
-  "email": "tt.ff@com"
+	"id": 402,
+	"globalId": "Kenneth+Reitz",
+	"displayName": "Kenneth+Reitz",
+	"firstName": null,
+	"lastName": null,
+	"email": "test402@e.com",
+	"login": "Kenneth+Reitz",
+	"password": null,
+	"hyperEventWatchHistory": null,
+	"favoriteHyperEvents": null
 }
-</pre>
+</code></pre>
 
-<p>The type field of HyperEventDTO must be set according to predefined Hyper-event hierarchy. For example: Faculty -> Course -> Lecture.</p>
-<p>HyperEventSearchResultDTO is represented here in JSON format:</p>
+<div class="alert alert-error">Why have we a + between firstname and lastname in globalId, displayName and login ?</div>
 
-<pre>
-{"hyperEvents":[<list of HyperEventDTO>],"count":1000}
-</pre>
+<p>Here the user was created manually.</p>
 
-<p>HyperEventLinkResultDTO is represented here in JSON format:</p>
-
-<pre>{"links":[<list of HyperEventLinkDTO>],"count":1000}</pre>
-
-<p>HyperEventFilterDTO is represented here in JSON format:</p>
-
-<pre>
+<pre><code class="language-javascript">
 {
-  "providerName":"TED",
-  "title":"A title",
-  "startDate":1398282433812,
-  "endDate":1398282433810,
-  "speaker":"A speaker",
-  "firstResult":0,
-  "maxResults":50,
-  "orderBy":"DATE","asc":false,
-  "startDoc":5
+	"id": 1028,
+	"globalId": "ajira86@hotmail.com",
+	"displayName": null,
+	"firstName": "Samuel",
+	"lastName": "Dorsaz",
+	"email": "ajira86@hotmail.com",
+	"login": "ajira86",
+	"password": null,
+	"hyperEventWatchHistory": null,
+	"favoriteHyperEvents": null
 }
-</pre>
+</code></pre>
+
+<div class="alert alert-error">Here the user has e-mail as globalId ... Why not in automated user creation ??</div>
+
+<div class="alert alert-error">Password field is always null hopefully. Is the password field really pertinent to be exported ?</div>
+
+<div class="alert">What is the purpose of globalId ?</div>
+
+<h3 id="TagDTO">Tag</h3>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>hyperEventId</th>
+		<td>long</td>
+		<td><a href="#HyperEventDTO">HyperEvent</a> reference</td>
+	</tr><tr>
+		<th>creationDate</th>
+		<td>Date</td>
+		<td>Creation date</td>
+	</tr><tr>
+		<th>creator</th>
+		<td><a href="#UserDTO">User</a></td>
+		<td>Creator</td>
+	</tr><tr>
+		<th>value</th>
+		<td>String</td>
+		<td>Tag text</td>
+	</tr>
+</table>
+
+<div class="alert">The parameters startTime and endTime appeared in documentation but not in final API, has it been deprecated ?</div>
+
+<pre><code class="language-javascript">
+{
+	"id":0,
+	"value":"Webinar",
+	"creationDate":0,
+	"creatorId":0,
+	"hyperEventId":0
+}
+</code></pre>
+
+<div class="alert">Why id, date, creator and hyperevent are all set to zero ??</div>
+
+<h3 id="LinkDTO">Link</h3>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>parentId</th>
+		<td>long (reference to <a href="#HyperEventDTO">HyperEvent</a>)</td>
+		<td></td>
+	</tr><tr>
+		<th>linkedEventId</th>
+		<td>long (reference to <a href="#HyperEventDTO">HyperEvent</a>)</td>
+		<td></td>
+	</tr><tr>
+		<th>relevancePercent</th>
+		<td>Float</td>
+		<td>Relevance</td>
+	</tr><tr>
+		<th>confidencePercent</th>
+		<td>Float</td>
+		<td>Confidence</td>
+	</tr>
+</table>
+
+<pre><code class="language-javascript">
+{
+	"id": 1,
+	"parentId": 1,
+	"linkedEventId": 2,
+	"relevance": 0.8,
+	"confidence": 0.2,
+}
+</code></pre>
+
+<h3 id="CommentDTO">Comment</h3>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>replayId</th>
+		<td>long</td>
+		<td>Answered comment</td>
+	</tr><tr>
+		<th>user</th>
+		<td><a href="#UserDTO">User</a></td>
+		<td>Comment's author</td>
+	</tr><tr>
+		<th>value</th>
+		<td>String</td>
+		<td>Comment</td>
+	</tr>
+</table>
+
+<h3 id="JobDTO">Job</h3>
+
+<div class="alert alert-error">No DTO description</div>
+
+<h3 id="MediaProviderDTO">MediaProvider</h3>
+
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>name</th>
+		<td>String</td>
+		<td>Provider name</td>
+	</tr><tr>
+		<th>description</th>
+		<td>String</td>
+		<td>Provider's description</td>
+	</tr><tr>
+		<th>repositoryPath</th>
+		<td>String</td>
+		<td>Path location</td>
+	</tr>
+</table>
+
+<pre><code class="language-javascript">
+{
+	"id":3,
+	"name":"Radvision",
+	"description":"Radvision provider",
+	"repositoryPath":"C:/inevent/repository/radvision"
+}
+</code></pre>
+
+<h3 id="FileDTO">File</h3>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>startTime</th>
+		<td>Date</td>
+		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+	</tr><tr>
+		<th>endTime</th>
+		<td>Date</td>
+		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+	</tr><tr>
+		<th>fileName</th>
+		<td>String</td>
+		<td>File name</td>
+	</tr><tr>
+		<th>mimeType</th>
+		<td>String</td>
+		<td>file MIME/Type</td>
+	</tr><tr>
+		<th>trackId</th>
+		<td>long</td>
+		<td>Related <a href="#TrackDTO">Track</a> id</td>
+	</tr>
+</table>
+
+<pre><code class="language-javascript">
+{
+	"id":13999,
+	"startTime":1383091805000,
+	"endTime":1383091916000,
+	"fileName":"Slide8.jpg",
+	"mimeType":"image/jpeg",
+	"trackId":2915
+}
+</code></pre>
+
+<div class="alert">Not sure if startTime and endTime are related on Track or HyperEvent</div>
+
+<h3 id="SearchResultDTO">SearchResult</h3>
+
+<p>The type field of HyperEvent must be set according to predefined Hyper-event hierarchy. For example: Faculty -> Course -> Lecture.</p>
+<p>SearchResult is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{"hyperEvents":[<list of HyperEvent>],"count":1000}
+</code></pre>
+
+<h3 id="LinkResultDTO">LinkResult</h3>
+
+<p>LinkResult is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">{"links":[<list of Link>],"count":1000}</code></pre>
+
+<h3 id="FilterDTO">Filter</h3>
+
+<p>FilterDTO is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"providerName":"TED",
+	"title":"A title",
+	"startDate":1398282433812,
+	"endDate":1398282433810,
+	"speaker":"A speaker",
+	"firstResult":0,
+	"maxResults":50,
+	"orderBy":"DATE","asc":false,
+	"startDoc":5
+}
+</code></pre>
+
+<p>Function using this DTO : <a href="#searchHyperEvents">searchHyperEvents</a></p>
+
+<h3 id="SegmentDTO">Segment</h3>
+
+<p>Segment is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"startTime":1398287417648,
+	"endTime":1398287421648,
+	"classId":"Class 2",
+	"speakerId":"Speaker 2"
+}
+</code></pre>
+
+<h3 id="WordDTO">Word</h3>
+
+<p>Word is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"id":"inEvent",
+	"startTime":5.33,
+	"endTime":6.0,
+	"confidence":0.9
+}
+</code></pre>
+
+<h3 id="AsrDTO">ASR</h3>
+
+<p>ASR is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"id":"id 1",
+	"speakers":[],
+	"segments":[]
+}
+</code></pre>
+
+<!-- ---------------------------------------------------------------------------
+From here REST API declaration
+---------------------------------------------------------------------------- -->
 
 <h2>REST API</h2>
 
@@ -225,7 +707,7 @@
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (UserDTO object)</td>
+		<td>application/json (<a href="#UserDTO">User</a> object)</td>
 	</tr>
 </table>
 
@@ -238,12 +720,12 @@
 		<th>ParameterType</th>
 		<th>ValueType</th>
 	</tr><tr>
-		<td>Login</td>
+		<td>login</td>
 		<td>Login name of the user</td>
 		<td>QueryParam</td>
 		<td>String</td>
 	</tr><tr>
-		<td>Password</td>
+		<td>password</td>
 		<td>Password of the user</td>
 		<td>QueryParam</td>
 		<td>String</td>
@@ -287,7 +769,7 @@
 		<th>ValueType</th>
 	</tr><tr>
 		<td>N/A</td>
-		<td>HyperEventDTO</td>
+		<td><a href="#HyperEventDTO">HyperEventDTO</a></td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
@@ -328,7 +810,7 @@
 		<th>ValueType</th>
 	</tr><tr>
 		<td>N/A</td>
-		<td>HyperEventDTO</td>
+		<td><a href="#HyperEventDTO">HyperEventDTO</a></td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
@@ -376,7 +858,7 @@ Example of track might be:
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackDTO</td>
-		<td>trackDTO</td>
+		<td><a href="#TrackDTO">TrackDTO</a></td>
 		<td>FormParam</td>
 		<td>application/json</td>
 	</tr><tr>
@@ -436,7 +918,7 @@ Example of track might be:
 	</tr>
 </table>
 
-<h4>Asynchronous methods</h4>
+<h5>Asynchronous methods</h5>
 
 <p>The following 4 methods are for modifying hyper events. They are asynchronous and will execute ones the hyper event is in unlocked state. Each hyper event is locked during:</p>
 
@@ -482,7 +964,7 @@ Example of track might be:
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackDTO</td>
-		<td>TrackDTO</td>
+		<td><a href="#TrackDTO">TrackDTO</a></td>
 		<td>FormParam</td>
 		<td>application/json</td>
 	</tr><tr>
@@ -669,7 +1151,7 @@ Example of track might be:
 
 <h3>Retrieval</h3>
 
-<h4>Get hyper-event</h4>
+<h4>Get HyperEvent</h4>
 
 <p>Retrieves desired Hyper-event by id.</p>
 
@@ -690,7 +1172,7 @@ Example of track might be:
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (HyperEventDTO object)</td>
+		<td>application/json (<a href="#HyperEventDTO">HyperEvent</a> object)</td>
 	</tr>
 </table>
 
@@ -710,7 +1192,7 @@ Example of track might be:
 	</tr>
 </table>
 
-<h4>Search hyper-events</h4>
+<h4 id="searchHyperEvents">Search HyperEvents</h4>
 
 <p>Retrieves all Hyper-events which matching the provided search query.</p>
 
@@ -731,7 +1213,7 @@ Example of track might be:
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (HyperEventSearchResultDTO object)</td>
+		<td>application/json (<a href="#SearchResultDTO">SearchResult</a> object)</td>
 	</tr>
 </table>
 
@@ -750,7 +1232,7 @@ Example of track might be:
 		<td>String</td>
 	</tr><tr>
 		<td>filterDTO</td>
-		<td>Filter object containing various fields for query filtering</td>
+		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
 		<td>Body</td>
 		<td>HyperEventFilterDTO</td>
 	</tr>
@@ -793,7 +1275,7 @@ Example of track might be:
 		<td>hyperEventId</td>
 		<td>Filter object containing various fields for query filtering</td>
 		<td>Body</td>
-		<td>HyperEventFilterDTO</td>
+		<td>FilterDTO</td>
 	</tr>
 </table>
 
@@ -836,7 +1318,7 @@ Example of track might be:
 		<td>pageNum</td>
 		<td>Pagination parameter</td>
 		<td>QueryParam</td>
-		<td>Integer</td>
+		<td>integer</td>
 	</tr>
 </table>
 
@@ -879,12 +1361,12 @@ Example of track might be:
 		<td>trackId</td>
 		<td>ID of track</td>
 		<td>QueryParam</td>
-		<td>Long</td>
+		<td>long</td>
 	</tr><tr>
 		<td>start</td>
 		<td>The starting position the file is downloaded from</td>
 		<td>QueryParam</td>
-		<td>Long</td>
+		<td>long</td>
 	</tr><tr>
 		<td>filename</td>
 		<td>Name of the file to retrieve</td>
@@ -936,12 +1418,12 @@ Example of track might be:
 		<td>trackId</td>
 		<td>ID of track</td>
 		<td>QueryParam</td>
-		<td>Long</td>
+		<td>long</td>
 	</tr><tr>
 		<td>start</td>
 		<td>The starting position the file is downloaded from</td>
 		<td>QueryParam</td>
-		<td>Long</td>
+		<td>long</td>
 	</tr><tr>
 		<td>filename</td>
 		<td>Name of the file to retrieve</td>
@@ -954,91 +1436,8 @@ Example of track might be:
 
 <p>http://inevent.haifa.il.ibm.com/rest/getTrackFileRaw/{fileName}?trackId={trackId}</p>
 
-<h1>Interface with WP2</h1>
 
-<p>Segmentation is represented here in JSON format:</p>
-
-<pre>
-{"segments": [
-  {
-    "startTime":1398287411648,
-    "endTime":1398287416648,
-    "classId":"Class 1",
-    "speakerId":"Speaker 1"
-  },
-  {
-    "startTime":1398287417648,
-    "endTime":1398287421648,
-    "classId":"Class 2",
-    "speakerId":"Speaker 2"
-  }
-]}
-</pre>
-
-<p>AsrResult is represented here in JSON format:</p>
-
-<pre>
-{
-  "id":"id 1",
-  "speakers":["speaker1","speaker2"],
-  "segments":[
-    {
-      "startTime":3.25,
-      "endTime":4.56,
-      "classId":"Class 1",
-      "speakerId":"Speaker 1",
-      "spokenWords":[
-        {
-          "wordStart":5.33,
-          "wordEnd":6.0,
-          "wordId":"inEvent",
-          "wordConfidence":0.9
-        }
-      ]
-    }
-  ]
-}
-</pre>
-
-<p>Video analytics is represented here in JSON format:</p>
-
-<pre>
-{"segments": [
-  {
-    "end": "04:59.966",
-    "interaction_between_participants": "0",
-    "start": "00.000",
-    "stream": [
-      {
-        "activity_level": "0%",
-        "average_num_of_people": "0.4548",
-        "id": "1",
-        "max_num_of_people": "2",
-        "name": "lmiauton",
-        "person": {
-          "average_face_size": "0.2947",
-          "average_horiz_speed": "0.0516",
-          "average_pitch": "-0.0440",
-          "average_speed": "0.0735",
-          "average_vert_speed": "0.1063",
-          "average_yaw": "0.0342",
-          "id": "0",
-          "percentage_of_appearance": "45.4677%"
-        }
-      },
-      {
-        "activity_level": "0%",
-        "average_num_of_people": "0.0059",
-        "id": "2",
-        "max_num_of_people": "1",
-        "name": "Stefano - HHI"
-      }
-    ]
-  }
-]}
-</pre>
-
-<h2>Process file</h2>
+<h3>Process file</h3>
 
 <p>Processes video file and returns analytic's result.</p>
 
@@ -1079,7 +1478,7 @@ Example of track might be:
 	</tr>
 </table>
 
-<h2>Process file</h2>
+<h3>Process file</h3>
 
 <p>Processes video file using Segmentation object received by calling to diarization service. Returns aggregated ASR result containing merged ASR and diarization data.</p>
 
@@ -1125,7 +1524,7 @@ Example of track might be:
 	</tr>
 </table>
 
-<h2>Get thumbnails</h2>
+<h3>Get thumbnails</h3>
 
 <p>Returns thumbnail files produced by video analytic service.</p>
 
@@ -1166,6 +1565,23 @@ Example of track might be:
 	</tr>
 </table>
 
+<div class="alert alert-error">
+No way to get answer, is it the correct base url ?
+<pre><code class="language-javascript">
+Request Url: http://inevent.haifa.il.ibm.com/rest/getThumbnails
+Request Method: GET
+Status Code: 404
+Params: {
+	"fileName": "inEvent_Webinar_Oct30.mp4"
+}
+</code></pre>
+
+</div>
+
+	</div>
+
+	<div class="span3 bs-docs-sidebar">
+		<div id="toc"></div>
 	</div>
 </div>
 
@@ -1174,7 +1590,7 @@ Example of track might be:
 $(function() {
 	//Calls the tocify method on your HTML div.
 	$("#toc").tocify({
-		selectors: "h1, h2, h3, h4",
+		selectors: "h2, h3, h4",
 	}) ;
 });
 </script>

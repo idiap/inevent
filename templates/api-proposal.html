@@ -16,7 +16,7 @@
 
 <h2>Description</h2>
 
-<p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve Hyper-events</p>
+<p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve HyperEvents</p>
 
 <h2>Notices</h2>
 
@@ -31,7 +31,7 @@
 	</tr><tr>
 		<td>HyperEvent</td>
 		<td>creationDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1330380000000</td>
 	</tr><tr>
 		<td>HyperEvent</td>
@@ -46,32 +46,32 @@
 	</tr><tr>
 		<td>File</td>
 		<td>startDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1383092271000</td>
 	</tr><tr>
 		<td>File</td>
 		<td>endDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1383092363000</td>
 	</tr><tr>
 		<td>Filter</td>
 		<td>startDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1398282433812 <span class="label label-warning">not verified</span></td>
 	</tr><tr>
 		<td>Filter</td>
 		<td>endDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1398282433810 <span class="label label-warning">not verified</span></td>
 	</tr><tr>
 		<td>Segment</td>
 		<td>startDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1398287417648 <span class="label label-warning">not verified</span></td>
 	</tr><tr>
 		<td>Segment</td>
 		<td>endDate</td>
-		<td>mili timestamp</td>
+		<td>milli timestamp</td>
 		<td>1398287421648 <span class="label label-warning">not verified</span></td>
 	</tr><tr>
 		<td>Word</td>
@@ -189,7 +189,7 @@
 
 <div class="alert alert-error">What is Job ? This parameter is not described anywhere but present in first document I own ? Was it status ? </div>
 
-<p>HyperEventDTO is represented here in JSON format:</p>
+<p>HyperEvent is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
 {
@@ -255,7 +255,7 @@
 
 <div class="alert">recordId disapeared between doc and API ?</div>
 
-<p>tracks field of HyperEventDTO is represented by array of TrackDTO objects:</p>
+<p>tracks field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Track objects:</p>
 
 <pre><code class="language-javascript">
 {
@@ -271,7 +271,60 @@
 
 <div class="alert">What is the purpose of recordId ?</div>
 
+<h3 id="FileDTO">File</h3>
+
+<p>Following table describes fields of File data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>startTime</th>
+		<td>Date</td>
+		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+	</tr><tr>
+		<th>endTime</th>
+		<td>Date</td>
+		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+	</tr><tr>
+		<th>fileName</th>
+		<td>String</td>
+		<td>File name</td>
+	</tr><tr>
+		<th>mimeType</th>
+		<td>String</td>
+		<td>file MIME/Type</td>
+	</tr><tr>
+		<th>trackId</th>
+		<td>long</td>
+		<td>Related <a href="#TrackDTO">Track</a> id</td>
+	</tr>
+</table>
+
+<p>files field of <a href="#TrackDTO">Track</a> is represented by array of File objects:</p>
+
+<pre><code class="language-javascript">
+{
+	"id":13999,
+	"startTime":1383091805000,
+	"endTime":1383091916000,
+	"fileName":"Slide8.jpg",
+	"mimeType":"image/jpeg",
+	"trackId":2915
+}
+</code></pre>
+
+<div class="alert">Not sure if startTime and endTime are related on Track or HyperEvent</div>
+
 <h3 id="ParticipationDTO">Participation</h3>
+
+<p>Following table describes fields of Participation data object transfert:</p>
 
 <table class="table">
 	<tr>
@@ -302,7 +355,7 @@
 	</tr>
 </table>
 
-<p>participations field of HyperEventDTO is represented by array of ParticipationDTO objects:</p>
+<p>participations field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Participation objects:</p>
 
 <pre><code class="language-javascript">
 {
@@ -316,6 +369,8 @@
 <div class="alert">Which are the roles, are they fixed ?</div>
 
 <h3 id="UserDTO">User</h3>
+
+<p>Following table describes fields of User data object transfert:</p>
 
 <table class="table">
 	<tr>
@@ -366,7 +421,7 @@
 
 </table>
 
-<p>participant field here is represented by User object:</p>
+<p>participant field of <a href="#ParticipationDTO">Participation</a> is represented by array of User objects:</p>
 
 <p>Here the user has certainly be automatically registered.</p>
 
@@ -412,6 +467,8 @@
 
 <h3 id="TagDTO">Tag</h3>
 
+<p>Following table describes fields of Tag data object transfert:</p>
+
 <table class="table">
 	<tr>
 		<th></th>
@@ -442,6 +499,8 @@
 
 <div class="alert">The parameters startTime and endTime appeared in documentation but not in final API, has it been deprecated ?</div>
 
+<p>tags field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Tag objects:</p>
+
 <pre><code class="language-javascript">
 {
 	"id":0,
@@ -456,6 +515,8 @@
 
 <h3 id="LinkDTO">Link</h3>
 
+<p>Following table describes fields of Link data object transfert:</p>
+
 <table class="table">
 	<tr>
 		<th></th>
@@ -467,22 +528,24 @@
 		<td>ID</td>
 	</tr><tr>
 		<th>parentId</th>
-		<td>long (reference to <a href="#HyperEventDTO">HyperEvent</a>)</td>
-		<td></td>
+		<td>long</td>
+		<td>Parent referent to <a href="#HyperEventDTO">HyperEvent</a></td>
 	</tr><tr>
 		<th>linkedEventId</th>
-		<td>long (reference to <a href="#HyperEventDTO">HyperEvent</a>)</td>
-		<td></td>
+		<td>long</td>
+		<td>Link referent to <a href="#HyperEventDTO">HyperEvent</a></td>
 	</tr><tr>
-		<th>relevancePercent</th>
+		<th>relevancePercent <span class="label label-warning">not confirmed</span></th>
 		<td>Float</td>
 		<td>Relevance</td>
 	</tr><tr>
-		<th>confidencePercent</th>
+		<th>confidencePercent <span class="label label-warning">not confirmed</span></th>
 		<td>Float</td>
 		<td>Confidence</td>
 	</tr>
 </table>
+
+<p>links field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Link objects:</p>
 
 <pre><code class="language-javascript">
 {
@@ -494,7 +557,13 @@
 }
 </code></pre>
 
+<div class="alert">It will be nice to say a float type (percentage here) in variable name. Or describe it with a better description.</div>
+
 <h3 id="CommentDTO">Comment</h3>
+
+<p>Following table describes fields of Comment data object transfert:</p>
+
+<div class="alert">This is not comments from Hopper interface. Certainly from "Comment" tab but didn't work.</div>
 
 <table class="table">
 	<tr>
@@ -520,12 +589,17 @@
 	</tr>
 </table>
 
+<p>comments field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Comment objects:</p>
+
+<div class="alert alert-error">No representation found</div>
+
 <h3 id="JobDTO">Job</h3>
 
 <div class="alert alert-error">No DTO description</div>
 
 <h3 id="MediaProviderDTO">MediaProvider</h3>
 
+<p>Following table describes fields of MediaProvider data object transfert:</p>
 
 <table class="table">
 	<tr>
@@ -551,6 +625,8 @@
 	</tr>
 </table>
 
+<p>mediaProvider field of <a href="#HyperEventDTO">HyperEvent</a> is represented by a MediaProvider objects:</p>
+
 <pre><code class="language-javascript">
 {
 	"id":3,
@@ -560,7 +636,11 @@
 }
 </code></pre>
 
-<h3 id="FileDTO">File</h3>
+<div class="alert">What if we use a UNIX based server ?</div>
+
+<h3 id="SearchResultDTO">SearchResult</h3>
+
+<p>The type field of <a href="#HyperEventDTO">HyperEvent</a> must be set according to predefined <a href="#HyperEventDTO">HyperEvent</a> hierarchy. For example: Faculty -> Course -> Lecture.</p>
 
 <table class="table">
 	<tr>
@@ -572,59 +652,107 @@
 		<td>long</td>
 		<td>ID</td>
 	</tr><tr>
-		<th>startTime</th>
-		<td>Date</td>
-		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+		<th>hyperEvents</th>
+		<td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
+		<td>The data of search result</td>
 	</tr><tr>
-		<th>endTime</th>
-		<td>Date</td>
-		<td>When in <a href="#TrackDTO">Track</a> ?</td>
-	</tr><tr>
-		<th>fileName</th>
-		<td>String</td>
-		<td>File name</td>
-	</tr><tr>
-		<th>mimeType</th>
-		<td>String</td>
-		<td>file MIME/Type</td>
-	</tr><tr>
-		<th>trackId</th>
-		<td>long</td>
-		<td>Related <a href="#TrackDTO">Track</a> id</td>
+		<th>count</th>
+		<td>integer <span class="label label-warning">not confirmed</span></td>
+		<td>The quantity of result</td>
 	</tr>
 </table>
 
-<pre><code class="language-javascript">
-{
-	"id":13999,
-	"startTime":1383091805000,
-	"endTime":1383091916000,
-	"fileName":"Slide8.jpg",
-	"mimeType":"image/jpeg",
-	"trackId":2915
-}
-</code></pre>
-
-<div class="alert">Not sure if startTime and endTime are related on Track or HyperEvent</div>
-
-<h3 id="SearchResultDTO">SearchResult</h3>
-
-<p>The type field of HyperEvent must be set according to predefined Hyper-event hierarchy. For example: Faculty -> Course -> Lecture.</p>
 <p>SearchResult is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{"hyperEvents":[<list of HyperEvent>],"count":1000}
+{
+	"hyperEvents":[],
+	"count":1000
+}
 </code></pre>
 
 <h3 id="LinkResultDTO">LinkResult</h3>
 
+<p>Following table describes fields of LinkResult data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>links</th>
+		<td>List of <a href="#LinkDTO">Link</a></td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr><tr>
+		<th>count</th>
+		<td>integer <span class="label label-warning">not confirmed</span></td>
+		<td>The quantity of result</td>
+	</tr>
+</table>
+
 <p>LinkResult is represented here in JSON format:</p>
 
-<pre><code class="language-javascript">{"links":[<list of Link>],"count":1000}</code></pre>
+<pre><code class="language-javascript">
+{
+	"links":[],
+	"count":1000
+}
+</code></pre>
 
 <h3 id="FilterDTO">Filter</h3>
 
-<p>FilterDTO is represented here in JSON format:</p>
+<p>Following table describes fields of Filter data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>providerName</th>
+		<td>String</td>
+		<td>Search by provider</td>
+	</tr><tr>
+		<th>title</th>
+		<td>String</td>
+		<td>Search by title</td>
+	</tr><tr>
+		<th>startDate</th>
+		<td>milli timestamp</td>
+		<td>Search from date/td>
+	</tr><tr>
+		<th>endDate</th>
+		<td>milli timestamp</td>
+		<td>Search to date</td>
+	</tr><tr>
+		<th>speaker</th>
+		<td>String</td>
+		<td>Search by speaker</td>
+	</tr><tr>
+		<th>firstResult</th>
+		<td>integer <span class="label label-warning">not confirmed</span></td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr><tr>
+		<th>maxResults</th>
+		<td>integer <span class="label label-warning">not confirmed</span></td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr><tr>
+		<th>orderBy</th>
+		<td>String</td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr><tr>
+		<th>startDoc</th>
+		<td>integer <span class="label label-warning">not confirmed</span></td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr>
+</table>
+
+<p>Filter is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
 {
@@ -640,22 +768,76 @@
 }
 </code></pre>
 
-<p>Function using this DTO : <a href="#searchHyperEvents">searchHyperEvents</a></p>
+<p>Function using this DTO: <a href="#searchHyperEvents">searchHyperEvents</a></p>
 
 <h3 id="SegmentDTO">Segment</h3>
+
+<p>Following table describes fields of Segment data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>startDate</th>
+		<td>milli timestamp</td>
+		<td>Search from date/td>
+	</tr><tr>
+		<th>endDate</th>
+		<td>milli timestamp</td>
+		<td>Search to date</td>
+	</tr><tr>
+		<th>classId</th>
+		<td>String</td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr><tr>
+		<th>speakerId</th>
+		<td>String</td>
+		<td><span class="label label-warning">could be a <a href="#UserDTO">User</a> object ?</span></td>
+	</tr>
+</table>
+
+<div class="alert">Why using a date instead if millisecond time only value ??</div>
 
 <p>Segment is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
 {
-	"startTime":1398287417648,
-	"endTime":1398287421648,
+	"startDate":1398287417648,
+	"endDate":1398287421648,
 	"classId":"Class 2",
 	"speakerId":"Speaker 2"
 }
 </code></pre>
 
 <h3 id="WordDTO">Word</h3>
+
+<p>Following table describes fields of Word data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>String <span class="label label-important">really ?</span></td>
+		<td>ID</td>
+	</tr><tr>
+		<th>startTime</th>
+		<td>float <span class="label label-warning">why not millisecond time ?</span></td>
+		<td>Beginning of the word</td>
+	</tr><tr>
+		<th>endTime</th>
+		<td>float</td>
+		<td>End of the word</td>
+	</tr><tr>
+		<th>confidence</th>
+		<td>float</td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr>
+</table>
 
 <p>Word is represented here in JSON format:</p>
 
@@ -669,6 +851,28 @@
 </code></pre>
 
 <h3 id="AsrDTO">ASR</h3>
+
+<p>Following table describes fields of ASR data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>String <span class="label label-important">really ?</span></td>
+		<td>ID</td>
+	</tr><tr>
+		<th>speakers</th>
+		<td>List of <a href="#UserDTO">User</a></td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr><tr>
+		<th>segments</th>
+		<td>List of <a href="#SegmentDTO">Segment</a></td>
+		<td><span class="label label-warning">need this data</span></td>
+	</tr>
+</table>
 
 <p>ASR is represented here in JSON format:</p>
 
@@ -690,7 +894,14 @@ From here REST API declaration
 
 <h4>Login</h4>
 
+<span class="label label-success">Successfully tested</span>
+
 <p>Login a user into the system.</p>
+
+<div class="alert">
+	What is the authentification method Basic Auth Header ?<br>
+	Thinking about this : <a href="http://www.django-rest-framework.org/api-guide/authentication">http://www.django-rest-framework.org/api-guide/authentication</a>
+</div>
 
 <p>Request parameters</p>
 
@@ -736,9 +947,11 @@ From here REST API declaration
 
 <h3>Archiving</h3>
 
-<h4>New hyper-event</h4>
+<h4>New HyperEvent</h4>
 
-<p>Creates new Hyper-Event in database, performs indexing using provided metadata.</p>
+<span class="label label-success">Successfully tested</span>
+
+<p>Creates new HyperEvent in database, performs indexing using provided metadata.</p>
 
 <p>Request parameters</p>
 
@@ -757,7 +970,7 @@ From here REST API declaration
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>text/plain (newly created Hyper-event id)</td>
+		<td>text/plain (newly created HyperEvent id)</td>
 	</tr>
 </table>
 
@@ -771,15 +984,15 @@ From here REST API declaration
 		<th>ValueType</th>
 	</tr><tr>
 		<td>N/A</td>
-		<td><a href="#HyperEventDTO">HyperEventDTO</a></td>
+		<td><a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
 </table>
 
-<h4>Update hyper-event</h4>
+<h4>Update HyperEvent</h4>
 
-<p>Updates existing hyper-event.</p>
+<p>Updates existing HyperEvent.</p>
 
 <p>Request parameters</p>
 
@@ -812,7 +1025,7 @@ From here REST API declaration
 		<th>ValueType</th>
 	</tr><tr>
 		<td>N/A</td>
-		<td><a href="#HyperEventDTO">HyperEventDTO</a></td>
+		<td><a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
@@ -820,7 +1033,7 @@ From here REST API declaration
 
 <h4>Upload track</h4>
 
-<p>Adds provided track to specified Hyper-event. The metadata of the track is described by "trackDTO" parameter and its actual data by "data" parameters.</p>
+<p>Adds provided track to specified HyperEvent. The metadata of the track is described by "trackDTO" parameter and its actual data by "data" parameters.</p>
 
 Example of track might be: 
 <ul>
@@ -871,9 +1084,9 @@ Example of track might be:
 	</tr>
 </table>
 
-<h4>Set hyper-event links</h4>
+<h4>Set HyperEvent links</h4>
 
-<p>Sets linked hyper-events for provided hyper-event.</p>
+<p>Sets linked HyperEvents for provided HyperEvent.</p>
 
 <p>Request parameters</p>
 
@@ -977,9 +1190,11 @@ Example of track might be:
 	</tr>
 </table>
 
-<h4>Delete hyper-event</h4>
+<h4>Delete HyperEvent</h4>
 
-<p>Deletes hyper-event including its tracks and track files in database (metadata) and repository (content)</p>
+<span class="label label-success">Successfully tested</span>
+
+<p>Deletes HyperEvent including its tracks and track files in database (metadata) and repository (content)</p>
 
 <p>Request parameters</p>
 
@@ -998,7 +1213,7 @@ Example of track might be:
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>text/plain (id of the task which is responsible for hyper-event's deletion)</td>
+		<td>text/plain (id of the task which is responsible for HyperEvent's deletion)</td>
 	</tr>
 </table>
 
@@ -1017,6 +1232,18 @@ Example of track might be:
 		<td>long</td>
 	</tr>
 </table>
+
+<div class="alert alert-error">
+No way to ask for action. Do I need to login ?
+<pre><code class="language-javascript">
+Request Url: http://inevent.haifa.il.ibm.com/rest/archiving/deleteHyperEvent
+Request Method: POST
+Status Code: 406
+Params: {
+	"fileName": "1272"
+}
+</code></pre>
+</div>
 
 <h4>Delete track</h4>
 
@@ -1102,6 +1329,8 @@ Example of track might be:
 
 <h4>Check task status</h4>
 
+<span class="label label-success">Successfully tested</span>
+
 <p>Checks status of the task created by one of the following requests: "deleteHyperEvent", "deleteTrack", "deleteTrackFile"</p>
 
 <p>Request parameters</p>
@@ -1155,7 +1384,9 @@ Example of track might be:
 
 <h4>Get HyperEvent</h4>
 
-<p>Retrieves desired Hyper-event by id.</p>
+<span class="label label-success">Successfully tested</span>
+
+<p>Retrieves desired HyperEvent by id.</p>
 
 <p>Request parameters</p>
 
@@ -1196,7 +1427,7 @@ Example of track might be:
 
 <h4 id="searchHyperEvents">Search HyperEvents</h4>
 
-<p>Retrieves all Hyper-events which matching the provided search query.</p>
+<p>Retrieves all HyperEvents which matching the provided search query.</p>
 
 <p>Request parameters</p>
 
@@ -1240,9 +1471,9 @@ Example of track might be:
 	</tr>
 </table>
 
-<h4>Find similar hyper-events</h4>
+<h4>Find similar HyperEvents</h4>
 
-<p>Retrieves all hyper-events that similar to the provided one.</p>
+<p>Retrieves all HyperEvents that similar to the provided one.</p>
 
 <p>Request parameters</p>
 
@@ -1281,9 +1512,9 @@ Example of track might be:
 	</tr>
 </table>
 
-<h4>Get recommended hyper-events</h4>
+<h4>Get recommended HyperEvents</h4>
 
-<p>Retrieves recommended hyper-events for currently logged in user.</p>
+<p>Retrieves recommended HyperEvents for currently logged in user.</p>
 
 <p><i>Note: the method works only if user was successfully logged in, otherwise exception is thrown</i></p>
 
@@ -1383,6 +1614,8 @@ Example of track might be:
 
 <h4>Get track file raw</h4>
 
+<span class="label label-warning">Seams working</span> <span class="label label-important">10min Timeout for webinar</span>
+
 <p>Retrieves desired track file by track id and file name and returns it with mime type "application/octet-stream" in order to download it as is.</p>
 
 <p><i>Note: the method supports HTTP 1.1 Range Request</i></p>
@@ -1395,7 +1628,7 @@ Example of track might be:
 		<th>Value</th>
 	</tr><tr>
 		<th>URL</th>
-		<td>/rest/retrieval/getTrackFileRaw</td>
+		<td>/rest/retrieval/getTrackFileRaw/{fileName}</td>
 	</tr><tr>
 		<th>Method</th>
 		<td>GET</td>
@@ -1422,15 +1655,10 @@ Example of track might be:
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
-		<td>start</td>
+		<td>start (optional)</td>
 		<td>The starting position the file is downloaded from</td>
 		<td>QueryParam</td>
 		<td>long</td>
-	</tr><tr>
-		<td>filename</td>
-		<td>Name of the file to retrieve</td>
-		<td>PathParam</td>
-		<td>String</td>
 	</tr>
 </table>
 
@@ -1577,7 +1805,6 @@ Params: {
 	"fileName": "inEvent_Webinar_Oct30.mp4"
 }
 </code></pre>
-
 </div>
 
 	</div>

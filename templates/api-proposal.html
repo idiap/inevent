@@ -88,7 +88,9 @@
 
 <h2>DTO definitions</h2>
 
-<h3 id="HyperEventDTO">HyperEvent</h3>
+<h3>HyperEvent Structure</h3>
+
+<h4 id="HyperEventDTO">HyperEvent</h4>
 
 <p>Following table describes fields of HyperventEvent data object transfert:</p>
 
@@ -213,7 +215,7 @@
 
 <div class="alert">Don't we have the complete list of status code. Can be null apparently.</div>
 
-<h3 id="TrackDTO">Track</h3>
+<h4 id="TrackDTO">Track</h4>
 
 <p>Following table describes fields of Track data object transfert:</p>
 
@@ -271,7 +273,7 @@
 
 <div class="alert">What is the purpose of recordId ?</div>
 
-<h3 id="FileDTO">File</h3>
+<h4 id="FileDTO">File</h4>
 
 <p>Following table describes fields of File data object transfert:</p>
 
@@ -322,7 +324,7 @@
 
 <div class="alert">Not sure if startTime and endTime are related on Track or HyperEvent</div>
 
-<h3 id="ParticipationDTO">Participation</h3>
+<h4 id="ParticipationDTO">Participation</h4>
 
 <p>Following table describes fields of Participation data object transfert:</p>
 
@@ -368,7 +370,7 @@
 
 <div class="alert">Which are the roles, are they fixed ?</div>
 
-<h3 id="UserDTO">User</h3>
+<h4 id="UserDTO">User</h4>
 
 <p>Following table describes fields of User data object transfert:</p>
 
@@ -465,7 +467,7 @@
 
 <div class="alert">What is the purpose of globalId ?</div>
 
-<h3 id="TagDTO">Tag</h3>
+<h4 id="TagDTO">Tag</h4>
 
 <p>Following table describes fields of Tag data object transfert:</p>
 
@@ -513,7 +515,7 @@
 
 <div class="alert">Why id, date, creator and hyperevent are all set to zero ??</div>
 
-<h3 id="LinkDTO">Link</h3>
+<h4 id="LinkDTO">Link</h4>
 
 <p>Following table describes fields of Link data object transfert:</p>
 
@@ -559,7 +561,7 @@
 
 <div class="alert">It will be nice to say a float type (percentage here) in variable name. Or describe it with a better description.</div>
 
-<h3 id="CommentDTO">Comment</h3>
+<h4 id="CommentDTO">Comment</h4>
 
 <p>Following table describes fields of Comment data object transfert:</p>
 
@@ -593,11 +595,11 @@
 
 <div class="alert alert-error">No representation found</div>
 
-<h3 id="JobDTO">Job</h3>
+<h4 id="JobDTO">Job</h4>
 
 <div class="alert alert-error">No DTO description</div>
 
-<h3 id="MediaProviderDTO">MediaProvider</h3>
+<h4 id="MediaProviderDTO">MediaProvider</h4>
 
 <p>Following table describes fields of MediaProvider data object transfert:</p>
 
@@ -638,7 +640,9 @@
 
 <div class="alert">What if we use a UNIX based server ?</div>
 
-<h3 id="SearchResultDTO">SearchResult</h3>
+<h3>Searching</h3>
+
+<h4 id="SearchResultDTO">SearchResult</h4>
 
 <p>The type field of <a href="#HyperEventDTO">HyperEvent</a> must be set according to predefined <a href="#HyperEventDTO">HyperEvent</a> hierarchy. For example: Faculty -> Course -> Lecture.</p>
 
@@ -671,7 +675,7 @@
 }
 </code></pre>
 
-<h3 id="LinkResultDTO">LinkResult</h3>
+<h4 id="LinkResultDTO">LinkResult</h4>
 
 <p>Following table describes fields of LinkResult data object transfert:</p>
 
@@ -704,7 +708,7 @@
 }
 </code></pre>
 
-<h3 id="FilterDTO">Filter</h3>
+<h4 id="FilterDTO">Filter</h4>
 
 <p>Following table describes fields of Filter data object transfert:</p>
 
@@ -724,7 +728,7 @@
 	</tr><tr>
 		<th>startDate</th>
 		<td>milli timestamp</td>
-		<td>Search from date/td>
+		<td>Search from date</td>
 	</tr><tr>
 		<th>endDate</th>
 		<td>milli timestamp</td>
@@ -770,7 +774,9 @@
 
 <p>Function using this DTO: <a href="#searchHyperEvents">searchHyperEvents</a></p>
 
-<h3 id="SegmentDTO">Segment</h3>
+<h3>Processing</h3>
+
+<h4 id="SegmentDTO">Segment</h4>
 
 <p>Following table describes fields of Segment data object transfert:</p>
 
@@ -782,19 +788,40 @@
 	</tr><tr>
 		<th>startDate</th>
 		<td>milli timestamp</td>
-		<td>Search from date/td>
+		<td>Search from date</td>
 	</tr><tr>
 		<th>endDate</th>
 		<td>milli timestamp</td>
 		<td>Search to date</td>
 	</tr><tr>
-		<th>classId</th>
+		<th>soundType</th>
 		<td>String</td>
+		<td>
+			Ambiant sound could be: <br/>
+			<ul>
+				<li>silence</li>
+				<li>speech</li>
+				<li>music</li>
+				<li>laughter</li>
+				<li>applause</li>
+			</ul>
+		</td>
+	</tr><tr>
+		<th>participantsInteraction</th>
+		<td>integer <span class="label label-warning">not confirmed</span></td>
 		<td><span class="label label-warning">need this data</span></td>
 	</tr><tr>
 		<th>speakerId</th>
-		<td>String</td>
+		<td>(List of ?) <span class="label label-warning">not confirmed</span> String</td>
 		<td><span class="label label-warning">could be a <a href="#UserDTO">User</a> object ?</span></td>
+	</tr><tr>
+		<th>words</th>
+		<td>List of <a href="#WordDTO">Word</a></td>
+		<td></td>
+	</tr><tr>
+		<th>streams</th>
+		<td>List of <a href="#StreamDTO">Stream</a></td>
+		<td></td>
 	</tr>
 </table>
 
@@ -811,7 +838,115 @@
 }
 </code></pre>
 
-<h3 id="WordDTO">Word</h3>
+<h4 id="StreamDTO">Stream</h4>
+
+<p>Following table describes fields of Stream data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>activityLevelPercentage</th>
+		<td>String <span class="label label-warning">Should be float</span></td>
+		<td></td>
+	</tr><tr>
+		<th>peopleNbAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>peopleMax</th>
+		<td>integer <span class="label label-warning">Not confirmed</span></td>
+		<td></td>
+	</tr><tr>
+		<th>name</th>
+		<td>String</td>
+		<td><span class="label label-warning">Is it necessary if we define people in Segment ?</span></td>
+	</tr><tr>
+		<th>face</th>
+		<td><a href="#FaceDTO">Face</a></td>
+		<td></td>
+	</tr>
+</table>
+
+<p>Stream is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"id": "1",
+	"activityLevelPercentage": "0%",
+	"peopleNbAverage": "0.4548",
+	"peopleMax": "2",
+	"name": "lmiauton",
+	"face": {}
+}
+</code></pre>
+
+<h4 id="FaceDTO">Face</h4>
+
+<p>Following table describes fields of Face data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>faceSizeAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>horizSpeedAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>pitchAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>speedAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>vertSpeedAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>yawAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>appearancePercentage</th>
+		<td>String <span class="label label-warning">Should be float</span></td>
+		<td></td>
+	</tr>
+</table>
+
+<p>Face is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"id": "0",
+	"faceSizeAverage": "0.2947",
+	"horizSpeedAverage": "0.0516",
+	"pitchAverage": "-0.0440",
+	"speedAverage": "0.0735",
+	"vertSpeedAverage": "0.1063",
+	"yawAverage": "0.0342",
+	"appearancePercentage": "45.4677%"
+}
+</code></pre>
+
+<h4 id="WordDTO">Word</h4>
 
 <p>Following table describes fields of Word data object transfert:</p>
 
@@ -850,7 +985,7 @@
 }
 </code></pre>
 
-<h3 id="AsrDTO">ASR</h3>
+<h4 id="AsrDTO">ASR</h4>
 
 <p>Following table describes fields of ASR data object transfert:</p>
 
@@ -970,7 +1105,7 @@ From here REST API declaration
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>text/plain (newly created HyperEvent id)</td>
+		<td>text/plain (newly created <a href="#HyperEventDTO">HyperEvent</a> id)</td>
 	</tr>
 </table>
 
@@ -984,7 +1119,7 @@ From here REST API declaration
 		<th>ValueType</th>
 	</tr><tr>
 		<td>N/A</td>
-		<td><a href="#HyperEventDTO">HyperEvent</a></td>
+		<td>The <a href="#HyperEventDTO">HyperEvent</a> to create</td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
@@ -1025,22 +1160,17 @@ From here REST API declaration
 		<th>ValueType</th>
 	</tr><tr>
 		<td>N/A</td>
-		<td><a href="#HyperEventDTO">HyperEvent</a></td>
+		<td>The updated <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
 </table>
 
-<h4>Upload track</h4>
+<h4>Delete HyperEvent</h4>
 
-<p>Adds provided track to specified HyperEvent. The metadata of the track is described by "trackDTO" parameter and its actual data by "data" parameters.</p>
+<span class="label label-success">Successfully tested</span>
 
-Example of track might be: 
-<ul>
-	<li>flash video file</li>
-	<li>sequence of slides</li>
-	<li>transcript (ASR result) - the format needs to be discussed with WP2</li>
-</ul>
+<p>Deletes <a href="#HyperEventDTO">HyperEvent</a> including its <a href="#TrackDTO">Tracks</a> and track <a href="#FileDTO">Files</a> in database (metadata) and repository (content)</p>
 
 <p>Request parameters</p>
 
@@ -1050,16 +1180,16 @@ Example of track might be:
 		<th>Value</th>
 	</tr><tr>
 		<th>URL</th>
-		<td>/rest/archiving/uploadTrack</td>
+		<td>/rest/archiving/deleteHyperEvent</td>
 	</tr><tr>
 		<th>Method</th>
 		<td>POST</td>
 	</tr><tr>
 		<th>Accept</th>
-		<td>multipart/form-data</td>
+		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>text/plain (newly created track id)</td>
+		<td>text/plain (id of the <a href="#TrackDTO">Track</a> which is responsible for <a href="#HyperEventDTO">HyperEvent's</a> deletion)</td>
 	</tr>
 </table>
 
@@ -1072,17 +1202,25 @@ Example of track might be:
 		<th>ParameterType</th>
 		<th>ValueType</th>
 	</tr><tr>
-		<td>trackDTO</td>
-		<td><a href="#TrackDTO">TrackDTO</a></td>
-		<td>FormParam</td>
-		<td>application/json</td>
-	</tr><tr>
-		<td>data</td>
-		<td>Track binary data</td>
-		<td>FormParam</td>
-		<td>application/octet-stream</td>
+		<td>hyperEventId</td>
+		<td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
+		<td>QueryParam</td>
+		<td>long</td>
 	</tr>
 </table>
+
+<div class="alert alert-error">
+No way to ask for action. Do I need to login ?<br>
+Have to check it with best tool configuration before asking !
+<pre><code class="language-javascript">
+Request Url: http://inevent.haifa.il.ibm.com/rest/archiving/deleteHyperEvent
+Request Method: POST
+Status Code: 406
+Params: {
+	"fileName": "1272"
+}
+</code></pre>
+</div>
 
 <h4>Set HyperEvent links</h4>
 
@@ -1119,12 +1257,12 @@ Example of track might be:
 		<th>ValueType</th>
 	</tr><tr>
 		<td>hyperEventID</td>
-		<td>ID of the hyper event</td>
+		<td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
-		<td>hyperEventLinks</td>
-		<td>List of linked hyper event IDs</td>
+		<td>N/A</td>
+		<td>List of linked <a href="#HyperEventDTO">HyperEvent</a> IDs</td>
 		<td>Body</td>
 		<td>
 			application/json<br/>
@@ -1138,15 +1276,69 @@ Example of track might be:
 <p>The following 4 methods are for modifying hyper events. They are asynchronous and will execute ones the hyper event is in unlocked state. Each hyper event is locked during:</p>
 
 <ol>
-	<li>the “getTrackFile” method (locked only for modifying tasks)</li>
+	<li>the "getTrackFile" method (locked only for modifying tasks)</li>
 	<li>One of the modifying methods is invoked (locked for any usage)</li>
 </ol>
 
-<p>When a modifying method is invoked and one or more files of its tracks is used by one or more callers of “getTrackFile”, the hyper event will be marked “prelocked” and no more new callers of “getTrackFile” will be allowed. Ones all the callers are finished, the modifying task will be allowed to execute and will mark the hyper event “locked”. Each asynchronous method returns “id” of the task that was created for it and the task status can be monitored by the “checkTaskStatus” method, described below.</p>
+<p>When a modifying method is invoked and one or more files of its tracks is used by one or more callers of "getTrackFile", the hyper event will be marked “prelocked” and no more new callers of “getTrackFile” will be allowed. Ones all the callers are finished, the modifying task will be allowed to execute and will mark the hyper event “locked”. Each asynchronous method returns “id” of the task that was created for it and the task status can be monitored by the “checkTaskStatus” method, described below.</p>
+
+
+<h4>Upload track</h4>
+
+<p>Adds provided track to specified HyperEvent. The metadata of the track is described by "trackDTO" parameter and its actual data by "data" parameters.</p>
+
+Example of track might be: 
+<ul>
+	<li>flash video file</li>
+	<li>sequence of slides</li>
+	<li>transcript (ASR result) - the format needs to be discussed with WP2</li>
+</ul>
+
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/rest/archiving/uploadTrack</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>multipart/form-data</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain (newly created <a href="#TrackDTO">Track</a> id)</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>trackDTO</td>
+		<td>The <a href="#TrackDTO">Track</a> informations</td>
+		<td>FormParam</td>
+		<td>application/json</td>
+	</tr><tr>
+		<td>data</td>
+		<td><a href="#TrackDT=">Track</a> binary data (file)</td>
+		<td>FormParam</td>
+		<td>application/octet-stream</td>
+	</tr>
+</table>
 
 <h4>Update track</h4>
 
-<p>Updates existing track. The request format is same as for uploadTrack. For single file in data: the file will be created or replaced. For mutiple files (zipped data): new files will be created, existing ones replaced.</p>
+<p>Updates existing <a href="#TrackDTO">Track</a>. The request format is same as for uploadTrack. For single file in data: the file will be created or replaced. For mutiple files (zipped data): new files will be created, existing ones replaced.</p>
 
 <p>Request parameters</p>
 
@@ -1179,75 +1371,20 @@ Example of track might be:
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackDTO</td>
-		<td><a href="#TrackDTO">TrackDTO</a></td>
+		<td>New <a href="#TrackDTO">Track</a> informations</td>
 		<td>FormParam</td>
 		<td>application/json</td>
 	</tr><tr>
 		<td>data</td>
-		<td>Track binary data</td>
+		<td>New <a href="#TrackDTO">Track</a> binary data</td>
 		<td>FormParam</td>
 		<td>application/octet-stream</td>
 	</tr>
 </table>
 
-<h4>Delete HyperEvent</h4>
-
-<span class="label label-success">Successfully tested</span>
-
-<p>Deletes HyperEvent including its tracks and track files in database (metadata) and repository (content)</p>
-
-<p>Request parameters</p>
-
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/deleteHyperEvent</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain (id of the task which is responsible for HyperEvent's deletion)</td>
-	</tr>
-</table>
-
-<p>Method parameters</p>
-
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>hyperEventId</td>
-		<td>ID of the hyper event</td>
-		<td>QueryParam</td>
-		<td>long</td>
-	</tr>
-</table>
-
-<div class="alert alert-error">
-No way to ask for action. Do I need to login ?
-<pre><code class="language-javascript">
-Request Url: http://inevent.haifa.il.ibm.com/rest/archiving/deleteHyperEvent
-Request Method: POST
-Status Code: 406
-Params: {
-	"fileName": "1272"
-}
-</code></pre>
-</div>
-
 <h4>Delete track</h4>
 
-<p>Deletes track including its track files in database (metadata) and repository (content)</p>
+<p>Deletes <a href="#TrackDTO">Track</a> including its track files in database (metadata) and repository (content)</p>
 
 <p>Request parameters</p>
 
@@ -1266,7 +1403,7 @@ Params: {
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>text/plain (id of the task which is responsible for track's deletion)</td>
+		<td>text/plain (id of the task which is responsible for <a href="#TrackDTO">Track's</a> deletion)</td>
 	</tr>
 </table>
 
@@ -1280,7 +1417,7 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackID</td>
-		<td>ID of the track</td>
+		<td>ID of the <a href="#TrackDTO">Track</a> to delete</td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr>
@@ -1288,7 +1425,7 @@ Params: {
 
 <h4>Delete track file</h4>
 
-<p>Deletes track file in database (metadata) and repository (content)</p>
+<p>Deletes track <a href="#FileDTO">File</a> in database (metadata) and repository (content)</p>
 
 <p>Request parameters</p>
 
@@ -1307,7 +1444,7 @@ Params: {
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>text/plain (id of the task which is responsible for track file's deletion)</td>
+		<td>text/plain (id of the task which is responsible for track <a href="#File">File's</a> deletion)</td>
 	</tr>
 </table>
 
@@ -1321,7 +1458,7 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackField</td>
-		<td>ID of the track's file</td>
+		<td>ID of the track's <a href="#FileDTO">File</a></td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr>
@@ -1386,7 +1523,7 @@ Params: {
 
 <span class="label label-success">Successfully tested</span>
 
-<p>Retrieves desired HyperEvent by id.</p>
+<p>Retrieves desired <a href="#HyperEventDTO">HyperEvent</a> by id.</p>
 
 <p>Request parameters</p>
 
@@ -1419,7 +1556,7 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>hyperEventId</td>
-		<td>ID of hyper event</td>
+		<td>ID of <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr>
@@ -1427,7 +1564,7 @@ Params: {
 
 <h4 id="searchHyperEvents">Search HyperEvents</h4>
 
-<p>Retrieves all HyperEvents which matching the provided search query.</p>
+<p>Retrieves all <a href="#HyperEventDTO">HyperEvents</a> which matching the provided search query.</p>
 
 <p>Request parameters</p>
 
@@ -1464,16 +1601,16 @@ Params: {
 		<td>QueryParam</td>
 		<td>String</td>
 	</tr><tr>
-		<td>filterDTO</td>
+		<td>N/A</td>
 		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
 		<td>Body</td>
-		<td>HyperEventFilterDTO</td>
+		<td><a href="#FilterDTO">Filter</a></td>
 	</tr>
 </table>
 
 <h4>Find similar HyperEvents</h4>
 
-<p>Retrieves all HyperEvents that similar to the provided one.</p>
+<p>Retrieves all <a href="#HyperEventDTO">HyperEvents</a> that similar to the provided one.</p>
 
 <p>Request parameters</p>
 
@@ -1492,7 +1629,7 @@ Params: {
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (HyperEventLinkResultDTO object)</td>
+		<td>application/json (<a href="#LinkResultDTO">LinkResult</a> object)</td>
 	</tr>
 </table>
 
@@ -1505,16 +1642,16 @@ Params: {
 		<th>ParameterType</th>
 		<th>ValueType</th>
 	</tr><tr>
-		<td>hyperEventId</td>
-		<td>Filter object containing various fields for query filtering</td>
+		<td>N/A</td>
+		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
 		<td>Body</td>
-		<td>FilterDTO</td>
+		<td><a href="#FilterDTO">Filter</a></td>
 	</tr>
 </table>
 
 <h4>Get recommended HyperEvents</h4>
 
-<p>Retrieves recommended HyperEvents for currently logged in user.</p>
+<p>Retrieves recommended <a href="#HyperEventDTO">HyperEvents</a> for currently logged in user.<span class="label label-warning">Really ?</a></p>
 
 <p><i>Note: the method works only if user was successfully logged in, otherwise exception is thrown</i></p>
 
@@ -1535,7 +1672,7 @@ Params: {
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (HyperEventSearchResultDTO object)</td>
+		<td>application/json (<a href="#SearchResultDTO">SearchResult</a> object)</td>
 	</tr>
 </table>
 
@@ -1557,9 +1694,9 @@ Params: {
 
 <h4>Get track file</h4>
 
-<p>Retrieves desired track file by track id and file name and returns it with corresponding mime type in order to be played automatically.</p>
+<p>Retrieves desired <a href="#SearchResultDTO">SearchResult</a> file by <a href="#TrackDTO">Track</a> id and file name and returns it with corresponding mime type in order to be played automatically.</p>
 
-<p><i>Note: the method supports HTTP 1.1 Range Request</i></p>
+<div class="alert alert-info">Note: the method supports HTTP 1.1 Range Request</div>
 
 <p>Request parameters</p>
 
@@ -1592,17 +1729,17 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackId</td>
-		<td>ID of track</td>
+		<td>ID of <a href="#TrackDTO">Track</a></td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
 		<td>start</td>
-		<td>The starting position the file is downloaded from</td>
+		<td>The starting position the <a href="#FileDTO">File</a> is downloaded from</td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
 		<td>filename</td>
-		<td>Name of the file to retrieve</td>
+		<td>Name of the <a href="#FileDTO">File</a> to retrieve</td>
 		<td>PathParam</td>
 		<td>String</td>
 	</tr>
@@ -1616,7 +1753,7 @@ Params: {
 
 <span class="label label-warning">Seams working</span> <span class="label label-important">10min Timeout for webinar</span>
 
-<p>Retrieves desired track file by track id and file name and returns it with mime type "application/octet-stream" in order to download it as is.</p>
+<p>Retrieves desired track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track</a> id and file name and returns it with mime type "application/octet-stream" in order to download it as is.</p>
 
 <p><i>Note: the method supports HTTP 1.1 Range Request</i></p>
 
@@ -1651,7 +1788,7 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>trackId</td>
-		<td>ID of track</td>
+		<td>ID of <a href="#TrackDTO">Track</a></td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
@@ -1669,7 +1806,7 @@ Params: {
 
 <h3>Process file</h3>
 
-<p>Processes video file and returns analytic's result.</p>
+<p>Processes video <a href="#FileDTO">File</a> and returns analytic's result.<span class="label label-important">Yups, I've to define those objects</span></p>
 
 <p>Request parameters</p>
 
@@ -1702,7 +1839,7 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>fileName</td>
-		<td>Name of the file to process</td>
+		<td>Name of the <a href="#FileDTO">File</a> to process</td>
 		<td>QueryParam</td>
 		<td>String</td>
 	</tr>
@@ -1710,7 +1847,7 @@ Params: {
 
 <h3>Process file</h3>
 
-<p>Processes video file using Segmentation object received by calling to diarization service. Returns aggregated ASR result containing merged ASR and diarization data.</p>
+<p>Processes video <a href="#FileDTO">File</a> using Segmentation object received by calling to diarization service. Returns aggregated <a href="#AsrDTO">ASR</a> result containing merged ASR and diarization data.</p>
 
 <p>Request parameters</p>
 
@@ -1729,7 +1866,7 @@ Params: {
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (AsrResult object))</td>
+		<td>application/json (<a href="#AsrDTO">ASR</a> object)</td>
 	</tr>
 </table>
 
@@ -1747,8 +1884,8 @@ Params: {
 		<td>QueryParam</td>
 		<td>String</td>
 	</tr><tr>
-		<td>segmentation</td>
-		<td>Segmentation object received by calling to diarization service</td>
+		<td>N/A</td>
+		<td><a href="#SegmentDTO">Segment</a> object received by calling to diarization service</td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
@@ -1789,7 +1926,7 @@ Params: {
 		<th>ValueType</th>
 	</tr><tr>
 		<td>fileName</td>
-		<td>Name of the file to process</td>
+		<td>Name of the <a href="#FileDTO">File</a> to process</td>
 		<td>QueryParam</td>
 		<td>String</td>
 	</tr>

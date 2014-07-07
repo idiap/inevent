@@ -229,15 +229,15 @@
 		<td>long</td>
 		<td>ID</td>
 	</tr><tr>
-		<th>mimeType</th>
+		<th>trackType <span class="label label-important">proposal</span></th>
 		<td>String</td>
-		<td>The inevent type mimeType <span class="label label-warning">not complete</span><br>
+		<td>The track type (inevent type mimeType) <span class="label label-warning">not complete</span><br>
 			<ul>
-				<li>inevent/video</li>
-				<li>inevent/transcript</li>
-				<li>inevent/part-events</li>
-				<li>inevent/video+analytics</li>
-				<li>inevent/video</li>
+				<li>video</li>
+				<li>transcript</li>
+				<li>part-events</li>
+				<li>video+analytics</li>
+				<li>video</li>
 			</ul>
 		</td>
 	</tr><tr>
@@ -528,10 +528,20 @@
 		<th>id</th>
 		<td>long</td>
 		<td>ID</td>
-	</tr><tr>
+	</tr>tr>
 		<th>parentId</th>
 		<td>long</td>
 		<td>Parent referent to <a href="#HyperEventDTO">HyperEvent</a></td>
+	</tr><tr>
+		<th>linkType <span class="label label-important">proposal</span</th>
+		<td>String</td>
+		<td>
+			Link type:
+			<ul>
+				<li>Content</li>
+				<li>Sentiments</li>
+			</ul>
+		</td>
 	</tr><tr>
 		<th>linkedEventId</th>
 		<td>long</td>
@@ -986,6 +996,8 @@
 </code></pre>
 
 <h4 id="AsrDTO">ASR</h4>
+
+<div class="alert alert-info">koemei.com/api</div>
 
 <p>Following table describes fields of ASR data object transfert:</p>
 

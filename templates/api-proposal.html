@@ -528,7 +528,7 @@
 		<th>id</th>
 		<td>long</td>
 		<td>ID</td>
-	</tr>tr>
+	</tr><tr>
 		<th>parentId</th>
 		<td>long</td>
 		<td>Parent referent to <a href="#HyperEventDTO">HyperEvent</a></td>
@@ -1654,7 +1654,12 @@ Example of track might be:
 		<th>ParameterType</th>
 		<th>ValueType</th>
 	</tr><tr>
-		<td>N/A</td>
+		<td>hyperEventId</td>
+		<td><a href="#HyperEventDTO">HyperEvent</a> id</td>
+		<td>QueryParam</td>
+		<td><a href="#FilterDTO">long</a></td>
+	</tr><tr>
+		<td>N/A <span class="label label-info">Optional</span></td>
 		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
 		<td>Body</td>
 		<td><a href="#FilterDTO">Filter</a></td>

@@ -43,10 +43,11 @@
 		<div id="wrap">
 			<div class="navbar">
 				<div class="navbar-inner">
-					<a href="/" class="nav nav-pills pull-left" style="margin-left:10px;cursor:pointer">
-						<img src="http://www.inevent-project.eu/logo.png" style="margin:20px 20px 20px 0;" alt="Home"></img> 
-					</a> 
-					<div style="margin-top:60px;margin-left:40px"> {% block menu_inevent_page %} {% endblock %} </div>  
+					<a href="/" class="nav nav-pills pull-left" style="margin-right:40px">
+						<h1>inEvent</h1>
+					</a>
+
+					<div style="margin-top:15px;"> {% block menu_inevent_page %} {% endblock %} </div>
 
 					<div id='loginWidget' class="pull-right">
 						{% include "inevent/login.html" %}

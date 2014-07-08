@@ -93,6 +93,7 @@ function Graph(div_id) {
 					this.input_links.push({
 						"target":target,
 						"source":source,
+						"type":links[s]['type'],
 						"depth":links[s]['depth'],
 						"weight":links[s]['weight']
 					 })
@@ -344,11 +345,23 @@ function Graph(div_id) {
 		
 		this.link = this.svg.selectAll(".link").data(this.input_links);
 			this.linkEnter=this.link.enter().append("line")
-			.attr("class", "link")
+			.attr("class", function(d) {
+				if (d.type == "emotion")
+					{ return "link emotion-type" }
+				else
+					{ return "link content-type" }
+			})
 			.style("stroke-width",function(d) {return  d.weight})
 			.style("stroke", function(d) { 
+				//SD/ Color in red links the emotional link
+				if (d.type == "emotion")
+					{ return "#ff0000" }
+
 				//SD/ Color in blue links of first node only
-				if(d.depth < 2) { return _this.color.blue } else { return _this.color.grey }
+				if(d.depth < 2)
+					{ return _this.color.blue }
+				else
+					{ return _this.color.grey }
 			})
 			.attr("x1", function(d) { return d.source.x})
 			.attr("y1", function(d) { return d.source.y})

@@ -1,4 +1,21 @@
 <script>
+	function toggle_content(type) {
+		if(type == "emotion")
+		{
+			if($("#emotion_link_toggle").hasClass("active"))
+				$('line.emotion-type').show();
+			else
+				$('line.emotion-type').hide();
+		}
+		else
+		{
+			if($("#content_link_toggle").hasClass("active"))
+				$('line.content-type').show();
+			else
+				$('line.content-type').hide();
+		}
+	}
+
 	function update_{{div_id}}_value(firstRun){
 		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 		
@@ -85,8 +102,8 @@
 			<div class="control-group">
 				<label>Relation Type</label>
 				<div class="btn-group" data-toggle="buttons-checkbox">
-					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_content btn btn-small active">Content</button>
-					<button onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" type="button" class="user_emotion btn btn-small" onclick="$('#emo-warn').show();">Emotions</button>
+					<button id="content_link_toggle" type="button" class="user_content btn btn-small active" onclick="toggle_content('content');">Content</button>
+					<button id="emotion_link_toggle" type="button" class="user_emotion btn btn-small active" onclick="toggle_content('emotion');">Emotions</button>
 					<!--<button type="button" class="btn btn-primary">Popularit&eacute;</button>-->
 				</div>
 				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>

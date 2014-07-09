@@ -781,11 +781,11 @@
 
 <p>Function using this DTO: <a href="#searchHyperEvents">searchHyperEvents</a></p>
 
-<h3>Processing</h3>
+<h3>Audio Processing</h3>
 
-<h4 id="SegmentDTO">Segment</h4>
+<h4 id="AudioSegmentDTO">AudioSegment</h4>
 
-<p>Following table describes fields of Segment data object transfert:</p>
+<p>Following table describes fields of AudioSegment data object transfert:</p>
 
 <table class="table">
 	<tr>
@@ -793,13 +793,17 @@
 		<th>Type</th>
 		<th>Value</th>
 	</tr><tr>
+		<th>speakerId</th>
+		<td>(List of ?) <span class="label label-warning">not confirmed</span> String</td>
+		<td><span class="label label-warning">could be a <a href="#UserDTO">User</a> object ?</span></td>
+	</tr><tr>
 		<th>startDate</th>
 		<td>milli timestamp</td>
-		<td>Search from date</td>
+		<td>From date</td>
 	</tr><tr>
 		<th>endDate</th>
 		<td>milli timestamp</td>
-		<td>Search to date</td>
+		<td>To date</td>
 	</tr><tr>
 		<th>soundType</th>
 		<td>String</td>
@@ -814,142 +818,23 @@
 			</ul>
 		</td>
 	</tr><tr>
-		<th>participantsInteraction</th>
-		<td>integer <span class="label label-warning">not confirmed</span></td>
-		<td><span class="label label-warning">need this data</span></td>
-	</tr><tr>
-		<th>speakerId</th>
-		<td>(List of ?) <span class="label label-warning">not confirmed</span> String</td>
-		<td><span class="label label-warning">could be a <a href="#UserDTO">User</a> object ?</span></td>
-	</tr><tr>
 		<th>words</th>
 		<td>List of <a href="#WordDTO">Word</a></td>
-		<td></td>
-	</tr><tr>
-		<th>streams</th>
-		<td>List of <a href="#StreamDTO">Stream</a></td>
 		<td></td>
 	</tr>
 </table>
 
 <div class="alert">Why using a date instead if millisecond time only value ??</div>
 
-<p>Segment is represented here in JSON format:</p>
+<p>AudioSegment is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
 {
+	"speakerId":0,
 	"startDate":1398287417648,
 	"endDate":1398287421648,
-	"classId":"Class 2",
-	"speakerId":"Speaker 2"
-}
-</code></pre>
-
-<h4 id="StreamDTO">Stream</h4>
-
-<p>Following table describes fields of Stream data object transfert:</p>
-
-<table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>activityLevelPercentage</th>
-		<td>String <span class="label label-warning">Should be float</span></td>
-		<td></td>
-	</tr><tr>
-		<th>peopleNbAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>peopleMax</th>
-		<td>integer <span class="label label-warning">Not confirmed</span></td>
-		<td></td>
-	</tr><tr>
-		<th>name</th>
-		<td>String</td>
-		<td><span class="label label-warning">Is it necessary if we define people in Segment ?</span></td>
-	</tr><tr>
-		<th>face</th>
-		<td><a href="#FaceDTO">Face</a></td>
-		<td></td>
-	</tr>
-</table>
-
-<p>Stream is represented here in JSON format:</p>
-
-<pre><code class="language-javascript">
-{
-	"id": "1",
-	"activityLevelPercentage": "0%",
-	"peopleNbAverage": "0.4548",
-	"peopleMax": "2",
-	"name": "lmiauton",
-	"face": {}
-}
-</code></pre>
-
-<h4 id="FaceDTO">Face</h4>
-
-<p>Following table describes fields of Face data object transfert:</p>
-
-<table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>faceSizeAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>horizSpeedAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>pitchAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>speedAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>vertSpeedAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>yawAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>appearancePercentage</th>
-		<td>String <span class="label label-warning">Should be float</span></td>
-		<td></td>
-	</tr>
-</table>
-
-<p>Face is represented here in JSON format:</p>
-
-<pre><code class="language-javascript">
-{
-	"id": "0",
-	"faceSizeAverage": "0.2947",
-	"horizSpeedAverage": "0.0516",
-	"pitchAverage": "-0.0440",
-	"speedAverage": "0.0735",
-	"vertSpeedAverage": "0.1063",
-	"yawAverage": "0.0342",
-	"appearancePercentage": "45.4677%"
+	"soundType":"silence",
+	"words":[]
 }
 </code></pre>
 
@@ -1025,6 +910,255 @@
 	"id":"id 1",
 	"speakers":[],
 	"segments":[]
+}
+</code></pre>
+
+<h3>Video Processing</h3>
+
+<h4 id="VideoSegmentDTO">VideoSegment</h4>
+
+<p>Following table describes fields of VideoSegment data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>type</th>
+		<td>String</td>
+		<td>
+			Type of segment
+			<ul>
+				<li>in case of slides</li>
+				<ul>
+					<li>animation</li>
+					<li>slide change</li>
+					<li>dynamique content</li>
+				</ul>
+				<li>in case of lecture</li>
+				<ul>
+					<li>slides</li>
+					<li>talks</li>
+					<li>preamble</li>
+					<li>epilogue</li>
+				</ul>
+				<li>meeting</li>
+				<ul>
+					<li>joining</li>
+					<li>leaving</li>
+				</ul>
+			</ul>
+		</td>
+	</tr><tr>
+		<th>startTime</th>
+		<td>milli timestamp</td>
+		<td>From time</td>
+	</tr><tr>
+		<th>endTime</th>
+		<td>milli timestamp</td>
+		<td>To time</td>
+	</tr><tr>
+		<th>participantsInteraction</th>
+		<td>integer</td>
+		<td>Quantify how participants are interacting (value from 0 to 100)</td>
+	</tr><tr>
+		<th>streams</th>
+		<td>List of <a href="#StreamDTO">Stream</a></td>
+		<td></td>
+	</tr>
+</table>
+
+<h5>VideoSegment representation in "meeting" format</h5>
+
+<pre><code class="language-javascript">
+"type": "slides"
+"segments":
+{
+	"type": "leaving",
+	"startTime": 0,
+	"endTime": 5000,
+	"participantInteraction": 3,
+	"streams": []
+}
+</code></pre>
+
+<h5>VideoSegment representation in "lecture" format</h5>
+
+<pre><code class="language-javascript">
+{
+	"type": "lecture",
+	"peopleAverage": 10,
+	"animationsNb": 2,
+	"dynamicContentNb": 4,
+	"slidesNb": 2,
+	"talkRatio": 0.5,
+	"videoName": "Test video",
+	"segments": [
+		{
+			"startTime": 0,
+			"endTime": 10000,
+			"type": "TALK",
+		},
+		{
+			"startTime": 10000,
+			"endTime": 20000,
+			"type": "PRES",
+			"animationIntervals": [
+				{
+					"startTime": 10000,
+					"endTime": 20000,
+					"type": "animation"
+				},
+				{
+					"startTime": 20000,
+					"endTime": 25000,
+					"type": "animation 2"
+				}
+			]
+		}
+	]
+}
+</code></pre>
+
+<h5>VideoSegment representation in "slides" format</h5>
+
+<pre><code class="language-javascript">
+{
+	"type": "slides",
+	"animationsNb": 2,
+	"dynamicContentNb": 4,
+	"slidesNb": 2,
+	"videoName": "Test video",
+	"animationIntervals": [
+		{
+			"startTime": 10000,
+			"endTime": 20000,
+			"type": "animation"
+		},
+		{
+			"startTime": 25000,
+			"endTime": 25000,
+			"type": "slide change"
+		}
+	]
+}
+</code></pre>
+
+<h4 id="StreamDTO">Stream</h4>
+
+<p>Following table describes fields of Stream data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>activityIntervals</th>
+		<td>List of intervals (miliseconds timestamps)</td>
+		<td>The intervals where a speaker is speaking</td>
+	</tr><tr>
+		<th>peopleNbAverage</th>
+		<td>float</td>
+		<td>An average of the number of the participant during the conference</td>
+	</tr><tr>
+		<th>peopleMax</th>
+		<td>integer</td>
+		<td>Maximum of people in the segement</td>
+	</tr><tr>
+		<th>displayName</th>
+		<td>String</td>
+		<td>The name provided in video conference</td>
+	</tr><tr>
+		<th>faces</th>
+		<td><a href="#FaceDTO">Face</a></td>
+		<td></td>
+	</tr>
+</table>
+
+<p>Stream is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"id": 0,
+	"activityIntervals": [
+		{
+			"startTime": 5000,
+			"endTime": 10000
+		},
+		{
+			"startTime": 5000,
+			"endTime": 10000
+		}
+	],
+	"peopleNbAverage": 0.98,
+	"peopleMax": 1,
+	"displayName": "Oleg",
+	"faces": []
+}
+</code></pre>
+
+<h4 id="FaceDTO">Face</h4>
+
+<p>Following table describes fields of Face data object transfert:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>id</th>
+		<td>long</td>
+		<td>ID</td>
+	</tr><tr>
+		<th>faceSizeAverage</th>
+		<td>float</td>
+		<td>Face average width in pixels</td>
+	</tr><tr>
+		<th>horizSpeedAverage</th>
+		<td>float</td>
+		<td>Average face speed in horizontal direction</td>
+	</tr><tr>
+		<th>pitchAverage</th>
+		<td>float</td>
+		<td>Face orientation in the image plan</td>
+	</tr><tr>
+		<th>speedAverage</th>
+		<td>float</td>
+		<td>Face speed average</td>
+	</tr><tr>
+		<th>vertSpeedAverage</th>
+		<td>float</td>
+		<td>Average face speed in vertical direction</td>
+	</tr><tr>
+		<th>yawAverage</th>
+		<td>float</td>
+		<td>Face orientation out of plan (front/profile)</td>
+	</tr><tr>
+		<th>appearancePercentage</th>
+		<td>float</td>
+		<td>Percentage of appearance in the windows (from 0 to 100)</td>
+	</tr>
+</table>
+
+<p>Face is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{
+	"id": 0,
+	"faceSizeAverage": 10.3,
+	"horizSpeedAverage": 2.4,
+	"pitchAverage": 1.4,
+	"speedAverage": 5.7,
+	"vertSpeedAverage": 44.56,
+	"yawAverage": 3.44,
+	"appearancePercentage": 45.46
 }
 </code></pre>
 

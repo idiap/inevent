@@ -963,6 +963,30 @@
 		<td>integer</td>
 		<td>Quantify how participants are interacting (value from 0 to 100)</td>
 	</tr><tr>
+		<th>peopleAverage</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>AnimationNb</th>
+		<td>integer</td>
+		<td></td>
+	</tr><tr>
+		<th>dynamicContentNb</th>
+		<td>integer</td>
+		<td></td>
+	</tr><tr>
+		<th>slidesNb</th>
+		<td>integer</td>
+		<td></td>
+	</tr><tr>
+		<th>talkRatio</th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>videoName</th>
+		<td>String</td>
+		<td></td>
+	</tr><tr>
 		<th>streams</th>
 		<td>List of <a href="#StreamDTO">Stream</a></td>
 		<td></td>
@@ -972,14 +996,138 @@
 <h5>VideoSegment representation in "meeting" format</h5>
 
 <pre><code class="language-javascript">
-"type": "slides"
-"segments":
 {
-	"type": "leaving",
-	"startTime": 0,
-	"endTime": 5000,
-	"participantInteraction": 3,
-	"streams": []
+	"type": "meeting"
+	"segments": [
+		{
+			"type": "joining",
+			"startTime": 0,
+			"endTime": 5000,
+			"participantInteraction": 3,
+			"streams": [
+				{
+					"id": "0",
+					"activityIntervals": [
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						},
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						}
+					],
+					"peopleNbAverage": 0.98,
+					"peopleMax": 1,
+					"displayName": "Oleg",
+					"faces": [
+						{
+							"id": "Person1",
+							"faceSizeAverage": 10.3,
+							"horizSpeedAverage": 2.4,
+							"pitchAverage": 1.4,
+							"speedAverage": 5.7,
+							"vertSpeedAverage": 44.56,
+							"yawAverage": 3.44,
+							"appearancePercentage": 55.67
+						}
+					]
+				},
+				{
+					"id": "0",
+					"activityIntervals": [
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						},
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						}
+					],
+					"peopleAverage": 0.98,
+					"peopleMax": 1,
+					"displayName": "Oleg",
+					"faces": [
+						{
+							"id": "Person1",
+							"faceSizeAverage": 10.3,
+							"horizSpeedAverage": 2.4,
+							"pitchAverage": 1.4,
+							"speedAverage": 5.7,
+							"vertSpeedAverage": 44.56,
+							"yawAverage": 3.44,
+							"appearancePercentage": 55.67
+						}
+					]
+				}
+			]
+		},
+		{
+			"startTime": 5000,
+			"endTime": 10000,
+			"type": "leaving",
+			"participantsInteraction": 3,
+			"streams": [
+				{
+					"id": "0",
+					"activityIntervals": [
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						},
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						}
+					],
+					"peopleAverage": 0.98,
+					"peopleMax": 1,
+					"displayName": "Oleg",
+					"faces": [
+						{
+							"id": "Person1",
+							"faceSizeAverage": 10.3,
+							"horizSpeedAverage": 2.4,
+							"pitchAverage": 1.4,
+							"speedAverage": 5.7,
+							"vertSpeedAverage": 44.56,
+							"yawAverage": 3.44,
+							"appearancePercentage": 55.67
+						}
+					]
+				},
+				{
+					"id": "0",
+					"activityIntervals": [
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						},
+						{
+							"startTime": 5000,
+							"endTime": 10000
+						}
+					],
+					"peopleAverage": 0.98,
+					"peopleMax": 1,
+					"displayName": "Oleg",
+					"faces": [
+						{
+							"id": "Person1",
+							"faceSizeAverage": 10.3,
+							"horizSpeedAverage": 2.4,
+							"pitchAverage": 1.4,
+							"speedAverage": 5.7,
+							"vertSpeedAverage": 44.56,
+							"yawAverage": 3.44,
+							"appearancePercentage": 55.67
+						}
+					]
+				}
+			]
+		}
+	]
 }
 </code></pre>
 

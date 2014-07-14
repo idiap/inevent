@@ -915,6 +915,51 @@
 
 <h3>Video Processing</h3>
 
+<h4 id="VideoAnalyticDTO">VideoAnalytic</h4>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>type</th>
+		<td>String</td>
+		<td>
+			Type of analytic
+			<ul>
+				<li>slides</li>
+				<li>lecture</li>
+				<li>meeting</li>
+			</ul>
+		</td>
+	</tr><tr>
+		<th>peopleAverage <span class="label label-info">Optional</span></th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>animationsNb <span class="label label-info">Optional</span></th>
+		<td>integer</td>
+		<td></td>
+	</tr><tr>
+		<th>dynamicContentNb <span class="label label-info">Optional</span></th>
+		<td>integer</td>
+		<td></td>
+	</tr><tr>
+		<th>slidesNb <span class="label label-info">Optional</span></th>
+		<td>integer</td>
+		<td></td>
+	</tr><tr>
+		<th>talkRatio <span class="label label-info">Optional</span></th>
+		<td>float</td>
+		<td></td>
+	</tr><tr>
+		<th>videoName <span class="label label-info">Optional</span></th>
+		<td>String</td>
+		<td></td>
+	</tr>
+</table>
+
 <h4 id="VideoSegmentDTO">VideoSegment</h4>
 
 <p>Following table describes fields of VideoSegment data object transfert:</p>
@@ -959,35 +1004,11 @@
 		<td>milli timestamp</td>
 		<td>To time</td>
 	</tr><tr>
-		<th>participantsInteraction</th>
+		<th>participantsInteraction <span class="label label-info">Optional</span></th>
 		<td>integer</td>
 		<td>Quantify how participants are interacting (value from 0 to 100)</td>
 	</tr><tr>
-		<th>peopleAverage</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>AnimationNb</th>
-		<td>integer</td>
-		<td></td>
-	</tr><tr>
-		<th>dynamicContentNb</th>
-		<td>integer</td>
-		<td></td>
-	</tr><tr>
-		<th>slidesNb</th>
-		<td>integer</td>
-		<td></td>
-	</tr><tr>
-		<th>talkRatio</th>
-		<td>float</td>
-		<td></td>
-	</tr><tr>
-		<th>videoName</th>
-		<td>String</td>
-		<td></td>
-	</tr><tr>
-		<th>streams</th>
+		<th>streams <span class="label label-info">Optional</span></th>
 		<td>List of <a href="#StreamDTO">Stream</a></td>
 		<td></td>
 	</tr>

@@ -1394,6 +1394,10 @@ From here REST API declaration
 
 <h3>Archiving</h3>
 
+<div class="alert alert-error">
+We need an authentication for this group of function
+</div>
+
 <h4>New HyperEvent</h4>
 
 <span class="label label-success">Successfully tested</span>
@@ -1520,19 +1524,6 @@ From here REST API declaration
 		<td>long</td>
 	</tr>
 </table>
-
-<div class="alert alert-error">
-No way to ask for action. Do I need to login ?<br>
-Have to check it with best tool configuration before asking !
-<pre><code class="language-javascript">
-Request Url: http://inevent.haifa.il.ibm.com/rest/archiving/deleteHyperEvent
-Request Method: POST
-Status Code: 406
-Params: {
-	"fileName": "1272"
-}
-</code></pre>
-</div>
 
 <h4>Set HyperEvent links</h4>
 

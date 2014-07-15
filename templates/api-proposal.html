@@ -490,9 +490,9 @@
 		<td>Date</td>
 		<td>Creation date</td>
 	</tr><tr>
-		<th>creator</th>
-		<td><a href="#UserDTO">User</a></td>
-		<td>Creator</td>
+		<th>creatorId</th>
+		<td>Long</td>
+		<td><a href="UserDTO">User</a> id</td>
 	</tr><tr>
 		<th>value</th>
 		<td>String</td>
@@ -1961,7 +1961,7 @@ Example of track might be:
 
 <p>Retrieves recommended <a href="#HyperEventDTO">HyperEvents</a> for currently logged in user.<span class="label label-warning">Really ?</a></p>
 
-<p><i>Note: the method works only if user was successfully logged in, otherwise exception is thrown</i></p>
+<div class="alert alert-warning"><b>Note:</b> the method works only if user was successfully logged in, otherwise exception is thrown</div>
 
 <p>Request parameters</p>
 
@@ -2002,9 +2002,11 @@ Example of track might be:
 
 <h4>Get track file</h4>
 
-<p>Retrieves desired <a href="#SearchResultDTO">SearchResult</a> file by <a href="#TrackDTO">Track</a> id and file name and returns it with corresponding mime type in order to be played automatically.</p>
+<span class="label label-success">Successfully tested</span>
 
-<div class="alert alert-info">Note: the method supports HTTP 1.1 Range Request</div>
+<p>Retrieves desired Track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track id</a> and <a href="#FileDTO">File</a> name and returns it with corresponding mime type in order to be played automatically.</p>
+
+<div class="alert alert-warning"><b>Note:</b> the method supports HTTP 1.1 Range Request</div>
 
 <p>Request parameters</p>
 
@@ -2014,7 +2016,7 @@ Example of track might be:
 		<th>Value</th>
 	</tr><tr>
 		<th>URL</th>
-		<td>/rest/retrieval/getTrackFile</td>
+		<td>/rest/retrieval/getTrackFile/{fileName}</td>
 	</tr><tr>
 		<th>Method</th>
 		<td>GET</td>
@@ -2041,29 +2043,22 @@ Example of track might be:
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
-		<td>start</td>
+		<td>start <span class="label label-info">Optional</span></td>
 		<td>The starting position the <a href="#FileDTO">File</a> is downloaded from</td>
 		<td>QueryParam</td>
 		<td>long</td>
-	</tr><tr>
-		<td>filename</td>
-		<td>Name of the <a href="#FileDTO">File</a> to retrieve</td>
-		<td>PathParam</td>
-		<td>String</td>
 	</tr>
 </table>
 
-<p>Example:</p>
-
-<p>http://inevent.haifa.il.ibm.com/rest/getTrackFile/{fileName}?trackId={trackId}</p>
+<div class="alert alert-info"><b>Example:</b> http://inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167</div>
 
 <h4>Get track file raw</h4>
 
-<span class="label label-warning">Seams working</span> <span class="label label-important">10min Timeout for webinar</span>
+<span class="label label-success">Successfully tested</span>
 
-<p>Retrieves desired track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track</a> id and file name and returns it with mime type "application/octet-stream" in order to download it as is.</p>
+<p>Retrieves desired Track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track id</a> and <a href="#FileDTO">File name</a> and returns it with mime type "application/octet-stream" in order to download it as is.</p>
 
-<p><i>Note: the method supports HTTP 1.1 Range Request</i></p>
+<div class="alert alert-warning"><b>Note:</b> the method supports HTTP 1.1 Range Request</div>
 
 <p>Request parameters</p>
 
@@ -2100,17 +2095,14 @@ Example of track might be:
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr><tr>
-		<td>start (optional)</td>
+		<td>start <span class="label label-info">Optional</span></td>
 		<td>The starting position the file is downloaded from</td>
 		<td>QueryParam</td>
 		<td>long</td>
 	</tr>
 </table>
 
-<p>Example:</p>
-
-<p>http://inevent.haifa.il.ibm.com/rest/getTrackFileRaw/{fileName}?trackId={trackId}</p>
-
+<div class="alert alert-info"><b>Example:</b> http://inevent.haifa.il.ibm.com/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167</div>
 
 <h3>Process file</h3>
 

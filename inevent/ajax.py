@@ -106,8 +106,9 @@ def get_graph_neighbours(request, event_id, count, depth, num_of_similar=4):
         for i in range(0, len(all_events)):
             all_events[i]['depth'] = depth
     
-    new_links.append({"target": "86", "source": "1261", "weight": "1", "depth": "1", "type": "emotion"})
-    new_links.append({"target": "20", "source": "1255", "weight": "1", "depth": "1", "type": "emotion"})
+    #Here are two emotional link exemple for webinar Event
+    #new_links.append({"target": "86", "source": "1261", "weight": "1", "depth": "1", "type": "emotion"})
+    #new_links.append({"target": "20", "source": "1255", "weight": "1", "depth": "1", "type": "emotion"})
     
     output = {'caller_id':event_id, 'count':count, 'depth':depth, 'nodes':all_events,'links':new_links}
     

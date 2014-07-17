@@ -5,8 +5,8 @@ function Graph(div_id) {
 	this.div_id = div_id ;
 
 	this.initVars = function() {
-		this.small_rect = [75.0, 56.0] ;
-		this.orig_rect = [100.0, 75.0] ;
+		this.small_rect = [15.0, 15.0] ;
+		this.orig_rect = [15.0, 15.0] ;
 		this.big_rect = [300.0, 250.0] ;
 		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 70] ;
 
@@ -56,7 +56,7 @@ function Graph(div_id) {
 		this.initVars();
 		
 		this.force = d3.layout.force()
-			.linkDistance(150)
+			.linkDistance(100)
 			.charge(-50)
 			.gravity(0.01)
 			.nodes(this.input_nodes)
@@ -164,18 +164,18 @@ function Graph(div_id) {
 		this.defs.append("rect")
 			.attr("id", function(d) { return "rect_node" + d.id})
 			.style("stroke-width", 4)
-			.style("fill", "black") // Make the nodes hollow looking
+			.style("fill", "white") // Make the nodes hollow looking
 			.attr("height", function(d) {
 				if(d.depth < 1)
-					return _this.orig_rect[1] - 10 ;
+					return _this.orig_rect[1] ;
 				else
-					return _this.small_rect[1] - 10 ;
+					return _this.small_rect[1] ;
 			})
 			.attr("width", function(d) {
 				if(d.depth < 1)
-					return _this.orig_rect[0] - 10 ;
+					return _this.orig_rect[0] ;
 				else
-					return _this.small_rect[0] - 10 ;
+					return _this.small_rect[0] ;
 			})
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
@@ -197,13 +197,15 @@ function Graph(div_id) {
 					return -_this.small_rect[1] / 2 ;
 			});
 
+		this.nodeEnter.append("use")
+			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
+
+		/*
 		this.defs.append("svg:clipPath")
 			.attr("id", function(d) { return "clip" + d.id})
 			.append("use")
 			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
-		this.nodeEnter.append("use")
-			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
 		this.nodeEnter.append("image")
 			.attr("id", function(d) { return "image" + d.id})
@@ -234,9 +236,12 @@ function Graph(div_id) {
 					return -_this.small_rect[1] / 2 ;
 			})
 			.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
+		*/
+		
 		//SD/ Define node picture ENDS =========================================
 
 		//SD/ Define window STARTS =============================================
+		
 		var rect = this.nodeEnter.append("rect")
 			.attr("id", function(d) { return "rect"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -253,6 +258,7 @@ function Graph(div_id) {
 			.attr('rx', 5)
 			.attr('ry', 5);
 
+		/*
 		this.nodeEnter.append("image")
 			.attr("id", function(d) { return "cloud"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -262,8 +268,9 @@ function Graph(div_id) {
 			.attr("height", this.image_rect[1])
 			.attr("width", this.image_rect[0]);
 		  //.attr("clip-path", function(d) { return "url(#"+"clip_zoom"+d.id +")"});
+		*/
 
-		/* Adapt node display depending on Web Browser */
+		// Adapt node display depending on Web Browser
 		var browser = window.navigator.userAgent.toLowerCase();
 		var version = window.navigator.appVersion;
 		
@@ -336,7 +343,7 @@ function Graph(div_id) {
 		//SD/TDOD : What is the purpose of this code ?
 		this.nodeEnter.append("title")
 			.text(function(d) { return d.title; });
-			
+		
 		this.node.exit().remove();
 	}
 
@@ -380,8 +387,10 @@ function Graph(div_id) {
 
 		node.attr("cx", function(d) { return d.x; })
 		node.attr("cy", function(d) { return d.y; })
-		//	node.attr("cx", function(d) { return d.x = Math.max(g.small_rect[0], Math.min(g.graph_width - g.small_rect[0], d.x)); })
-		//	node.attr("cy", function(d) { return d.y = Math.max(g.small_rect[1] - 10, Math.min(g.graph_height - g.small_rect[1] + 10, d.y)); })
+
+		//SD/ Comment this to remove boxe limitation to draw
+		node.attr("cx", function(d) { return d.x = Math.max(g.small_rect[0], Math.min(g.graph_width - g.small_rect[0], d.x)); })
+		node.attr("cy", function(d) { return d.y = Math.max(g.small_rect[1] - 10, Math.min(g.graph_height - g.small_rect[1] + 10, d.y)); })
 		
 		link.attr("x1", function(d) { return d.source.x; })
 			.attr("y1", function(d) { return d.source.y; })
@@ -430,11 +439,9 @@ function Graph(div_id) {
 	this.addElement = function(nodes) {
 		if(typeof nodes !== undefined && nodes != null) {
 			//SD/ Remove some neighbours if nodes limit reached
-			if(this.max_size < 500) {
-				var rest = this.max_size - this.input_nodes.length ;
-				if(nodes.length > rest)
-					nodes.splice(rest , nodes.length - rest) ;
-			}
+			var rest = this.max_size - this.input_nodes.length ;
+			if(nodes.length > rest)
+				nodes.splice(rest , nodes.length - rest) ;
 			
 			//SD/ Enqueue neighbours
 			for(var i = 0 ; i < nodes.length ; i++) {
@@ -462,7 +469,7 @@ function Graph(div_id) {
 	}
 	
 	this.finalizeGraph = function() {
-		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes") ;
+		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes and " + this.input_links.length + " links") ;
 
 		//SD/ Changing node position to back or front have to be done at end of graph
 		this.svg.selectAll(".node").sort(function (a, b) {

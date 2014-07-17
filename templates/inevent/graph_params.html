@@ -21,8 +21,8 @@
 		
 		var range = $("#{{div_id}}_form .user_size") ;
 		var text = $("#{{div_id}}_form .user_size_text") ;
-		text.html(range.val()) ; if(range.val() == 40) {text.html(text.html() + "+") ;}
 		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
+		text.html(range.val()) ;
 		var left = (percent * range.width()) - (percent * text.width()) ;
 		text.css({'margin-left': left + 'px'}) ;
 		
@@ -73,10 +73,10 @@
 				<label>Graph size</label>
 				<div class="min-label">0</div>
 				<div class="user-value">
-					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="40" step="10" value="50" id="fader2" list="volsettings"></input><br>
+					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
 					<div class="user_size_text user_text">0</div>
 				</div>
-				<div class="max-label">40+</div>
+				<div class="max-label">200</div>
 			</div>
 
 			<div class="control-group">

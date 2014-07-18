@@ -18,73 +18,7 @@
 
 <p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve HyperEvents</p>
 
-<h2>Notices</h2>
-
-<p>Date format for each DTO:</p>
-
-<table class="table">
-	<tr>
-		<th>DTO</th>
-		<th>Attribute</th>
-		<th>Type</th>
-		<th>Example</th>
-	</tr><tr>
-		<td>HyperEvent</td>
-		<td>creationDate</td>
-		<td>milli timestamp</td>
-		<td>1330380000000</td>
-	</tr><tr>
-		<td>HyperEvent</td>
-		<td>duration</td>
-		<td>integer seconds <span class="label label-warning">not confirmed</span></td>
-		<td>300</td>
-	</tr><tr>
-		<td>Tag</td>
-		<td>creationDate</td>
-		<td></td>
-		<td>0 <span class="label label-warning">not data</span></td>
-	</tr><tr>
-		<td>File</td>
-		<td>startDate</td>
-		<td>milli timestamp</td>
-		<td>1383092271000</td>
-	</tr><tr>
-		<td>File</td>
-		<td>endDate</td>
-		<td>milli timestamp</td>
-		<td>1383092363000</td>
-	</tr><tr>
-		<td>Filter</td>
-		<td>startDate</td>
-		<td>milli timestamp</td>
-		<td>1398282433812 <span class="label label-warning">not verified</span></td>
-	</tr><tr>
-		<td>Filter</td>
-		<td>endDate</td>
-		<td>milli timestamp</td>
-		<td>1398282433810 <span class="label label-warning">not verified</span></td>
-	</tr><tr>
-		<td>Segment</td>
-		<td>startDate</td>
-		<td>milli timestamp</td>
-		<td>1398287417648 <span class="label label-warning">not verified</span></td>
-	</tr><tr>
-		<td>Segment</td>
-		<td>endDate</td>
-		<td>milli timestamp</td>
-		<td>1398287421648 <span class="label label-warning">not verified</span></td>
-	</tr><tr>
-		<td>Word</td>
-		<td>startTime</td>
-		<td>float seconds <span class="label label-warning">not confirmed</span></td>
-		<td>5.33 <span class="label label-warning">not verified</span></td>
-	</tr><tr>
-		<td>Word</td>
-		<td>endTime</td>
-		<td>float seconds <span class="label label-warning">not confirmed</span></td>
-		<td>6.0 <span class="label label-warning">not verified</span></td>
-	</tr>
-</table>
+<div class="alert alert-info">In this API all date variables (ie: creationDate) are transmitted in mili timestamp format and all time (ie: startTime) in miliseconds.</div>
 
 <h2>DTO definitions</h2>
 
@@ -130,17 +64,17 @@
 		<td>String</td>
 		<td>Description</td>
 	</tr><tr>
-		<th>creationDate <span class="label label-warning">better than date</span></th>
+		<th>creationDate</th>
 		<td>long</td>
 		<td>Date</td>
 	</tr><tr>
 		<th>duration</th>
-		<td>integer</td>
+		<td>long</td>
 		<td>Duration</td>
 	</tr><tr>
-		<th>metaData</th>
-		<td>List of <a href="#MetaDataDTO">MetaData</a> <span class="label label-warning">better than Props</span></td>
-		<td>Custom <a href="#MetaDataDTO">MetaData</a></td>
+		<th>customData</th>
+		<td>List of <a href="#CustomDataDTO">CustomData</a></td>
+		<td><a href="#CustomDataDTO">CustomData</a> are supplemetary data sent by provider</td>
 	</tr><tr>
 		<th>tracks</th>
 		<td>List of <a href="#TrackDTO">Track</a></td>
@@ -166,12 +100,13 @@
 		<td>List of <a href="#LinkDTO">Link</a></td>
 		<td>References</td>
 	</tr><tr>
-		<th>status</th>
+		<th>status <span class="label label-info">optional</span></th>
 		<td>String</td>
 		<td>
-			Status <span class="label label-warning">not complete</span>
+			For real time HyperEvent only. Inform status of event.
 			<ul>
-				<li>ENDED</li>
+				<li>recording</li>
+				<li>ended</li>
 			</ul>
 		</td>
 	</tr>
@@ -203,18 +138,16 @@
 	"name": "Lecture 01",
 	"description": "Algebra",
 	"createdDateTime": "1330380000000",
-	"duration": 300,
-	"metaData": [],
+	"duration": 1800000,
+	"customData": [],
 	"tags": [],
 	"tracks": [],
-	"status": "ENDED",
+	"status": "ended",
 	"views":0,
 	"likes":0,
 	"dislikes":0
 }
 </code></pre>
-
-<div class="alert">Don't we have the complete list of status code. Can be null apparently.</div>
 
 <h4 id="TrackDTO">Track</h4>
 
@@ -230,15 +163,15 @@
 		<td>long</td>
 		<td>ID</td>
 	</tr><tr>
-		<th>trackType <span class="label label-important">proposal</span></th>
+		<th>trackType</th>
 		<td>String</td>
-		<td>The track type (inevent type mimeType) <span class="label label-warning">not complete</span><br>
+		<td>The track type<br>
 			<ul>
-				<li>Audio</li>
-				<li>Docs</li>
-				<li>Participant events</li>
-				<li>Transcript</li>
-				<li>Video analysis</li>
+				<li>audio</li>
+				<li>docs</li>
+				<li>participant-events</li>
+				<li>transcript</li>
+				<li>video-analysis</li>
 			</ul>
 		</td>
 	</tr><tr>
@@ -256,23 +189,17 @@
 	</tr>
 </table>
 
-<div class="alert">recordId disapeared between doc and API ?</div>
-
 <p>tracks field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Track objects:</p>
 
 <pre><code class="language-javascript">
 {
 	"id":2914,
-	"mimeType":"inevent/video",
+	"trackType":"inevent/video",
 	"description":"Radvision video",
 	"parentId":1261,
 	"files":[]
 }
 </code></pre>
-
-<div class="alert">If description only define the type of track, can we use trackType who is more explicit</div>
-
-<div class="alert">What is the purpose of recordId ?</div>
 
 <h4 id="FileDTO">File</h4>
 
@@ -288,11 +215,11 @@
 		<td>long</td>
 		<td>ID</td>
 	</tr><tr>
-		<th>startTime</th>
+		<th>startDate</th>
 		<td>Date</td>
 		<td>When in <a href="#TrackDTO">Track</a> ?</td>
 	</tr><tr>
-		<th>endTime</th>
+		<th>endDate</th>
 		<td>Date</td>
 		<td>When in <a href="#TrackDTO">Track</a> ?</td>
 	</tr><tr>
@@ -315,15 +242,13 @@
 <pre><code class="language-javascript">
 {
 	"id":13999,
-	"startTime":1383091805000,
-	"endTime":1383091916000,
+	"startDate":1383091805000,
+	"endDate":1383091916000,
 	"fileName":"Slide8.jpg",
 	"mimeType":"image/jpeg",
 	"trackId":2915
 }
 </code></pre>
-
-<div class="alert">Not sure if startTime and endTime are related on Track or HyperEvent</div>
 
 <h4 id="ParticipationDTO">Participation</h4>
 
@@ -340,7 +265,7 @@
 		<td>ID</td>
 	</tr><tr>
 		<th>participant</th>
-		<td>List of <a href="#UserDTO">User</a>  <span class="label label-warning">better User than participant</span></td>
+		<td>List of <a href="#UserDTO">User</a></td>
 		<td>Participants</td>
 	</tr><tr>
 		<th>hyperEventId</th>
@@ -351,8 +276,8 @@
 		<td>String</td>
 		<td>Role <span class="label label-warning">not complete</span><br>
 			<ul>
-				<li>PARTICIPANT</li>
-				<li>LECTURER</li>
+				<li>participant</li>
+				<li>lecturer</li>
 			</ul>
 		</td>
 	</tr>
@@ -365,11 +290,9 @@
 	"id": 0,
 	"participant": {},
 	"hyperEventId": 1,
-	"role": "PARTICIPANT"
+	"role": "participant"
 }
 </code></pre>
-
-<div class="alert">Which are the roles, are they fixed ?</div>
 
 <h4 id="UserDTO">User</h4>
 
@@ -500,8 +423,6 @@
 	</tr>
 </table>
 
-<div class="alert">The parameters startTime and endTime appeared in documentation but not in final API, has it been deprecated ?</div>
-
 <p>tags field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Tag objects:</p>
 
 <pre><code class="language-javascript">
@@ -513,8 +434,6 @@
 	"hyperEventId":0
 }
 </code></pre>
-
-<div class="alert">Why id, date, creator and hyperevent are all set to zero ??</div>
 
 <h4 id="LinkDTO">Link</h4>
 
@@ -534,13 +453,13 @@
 		<td>long</td>
 		<td>Parent referent to <a href="#HyperEventDTO">HyperEvent</a></td>
 	</tr><tr>
-		<th>linkType <span class="label label-important">proposal</span</th>
+		<th>linkType</th>
 		<td>String</td>
 		<td>
 			Link type:
 			<ul>
-				<li>Content</li>
-				<li>Sentiments</li>
+				<li>content</li>
+				<li>sentiment</li>
 			</ul>
 		</td>
 	</tr><tr>
@@ -548,11 +467,11 @@
 		<td>long</td>
 		<td>Link referent to <a href="#HyperEventDTO">HyperEvent</a></td>
 	</tr><tr>
-		<th>relevancePercent <span class="label label-warning">not confirmed</span></th>
+		<th>relevance <span class="label label-warning">not confirmed</span></th>
 		<td>Float</td>
 		<td>Relevance</td>
 	</tr><tr>
-		<th>confidencePercent <span class="label label-warning">not confirmed</span></th>
+		<th>confidence <span class="label label-warning">not confirmed</span></th>
 		<td>Float</td>
 		<td>Confidence</td>
 	</tr>
@@ -570,13 +489,11 @@
 }
 </code></pre>
 
-<div class="alert">It will be nice to say a float type (percentage here) in variable name. Or describe it with a better description.</div>
-
 <h4 id="CommentDTO">Comment</h4>
 
 <p>Following table describes fields of Comment data object transfert:</p>
 
-<div class="alert">This is not comments from Hopper interface. Certainly from "Comment" tab but didn't work.</div>
+<div class="alert">This is not comments from Hopper interface. Certainly from "Comment" tab but feature didn't work.</div>
 
 <table class="table">
 	<tr>
@@ -647,7 +564,7 @@
 
 <div class="alert">What if we use a UNIX based server ?</div>
 
-<h3>Searching</h3>
+<h3>Search Result</h3>
 
 <h4 id="SearchResultDTO">SearchResult</h4>
 
@@ -727,35 +644,39 @@
 	</tr><tr>
 		<th>providerName</th>
 		<td>String</td>
-		<td>Search by provider</td>
+		<td>Search/Filter by provider</td>
 	</tr><tr>
 		<th>title</th>
 		<td>String</td>
-		<td>Search by title</td>
+		<td>Search/Filter by title</td>
 	</tr><tr>
 		<th>startDate</th>
 		<td>milli timestamp</td>
-		<td>Search from date</td>
+		<td>Search/Filter from date</td>
 	</tr><tr>
 		<th>endDate</th>
 		<td>milli timestamp</td>
-		<td>Search to date</td>
+		<td>Search/Filter to date</td>
 	</tr><tr>
 		<th>speaker</th>
 		<td>String</td>
-		<td>Search by speaker</td>
+		<td>Search/Filter by speaker</td>
 	</tr><tr>
 		<th>firstResult</th>
 		<td>integer <span class="label label-warning">not confirmed</span></td>
-		<td><span class="label label-warning">need this data</span></td>
+		<td>Start of results (for pagination purpose)</td>
 	</tr><tr>
 		<th>maxResults</th>
 		<td>integer <span class="label label-warning">not confirmed</span></td>
-		<td><span class="label label-warning">need this data</span></td>
+		<td>End of results (for pagination purpose)</td>
 	</tr><tr>
 		<th>orderBy</th>
 		<td>String</td>
-		<td><span class="label label-warning">need this data</span></td>
+		<td>Choose with which value to order data</td>
+	</tr><tr>
+		<th>asc</th>
+		<td>Boolean</td>
+		<td>Sort ascending or descending</td>
 	</tr><tr>
 		<th>startDoc</th>
 		<td>integer <span class="label label-warning">not confirmed</span></td>
@@ -774,7 +695,8 @@
 	"speaker":"A speaker",
 	"firstResult":0,
 	"maxResults":50,
-	"orderBy":"DATE","asc":false,
+	"orderBy":"date",
+	"asc":false,
 	"startDoc":5
 }
 </code></pre>
@@ -794,8 +716,8 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>speakerId</th>
-		<td>(List of ?) <span class="label label-warning">not confirmed</span> String</td>
-		<td><span class="label label-warning">could be a <a href="#UserDTO">User</a> object ?</span></td>
+		<td>long</td>
+		<td>Current speaker identified by processing</td>
 	</tr><tr>
 		<th>startDate</th>
 		<td>milli timestamp</td>
@@ -853,11 +775,11 @@
 		<td>ID</td>
 	</tr><tr>
 		<th>startTime</th>
-		<td>float <span class="label label-warning">why not millisecond time ?</span></td>
+		<td>milisecond timestamp</td>
 		<td>Beginning of the word</td>
 	</tr><tr>
 		<th>endTime</th>
-		<td>float</td>
+		<td>milisecond timestamp</td>
 		<td>End of the word</td>
 	</tr><tr>
 		<th>confidence</th>
@@ -871,17 +793,17 @@
 <pre><code class="language-javascript">
 {
 	"id":"inEvent",
-	"startTime":5.33,
-	"endTime":6.0,
+	"startTime":10000,
+	"endTime":12000,
 	"confidence":0.9
 }
 </code></pre>
 
-<h4 id="AsrDTO">ASR</h4>
+<h4 id="AugmentedAsrDTO">AugmentedASR</h4>
 
 <div class="alert alert-info">koemei.com/api</div>
 
-<p>Following table describes fields of ASR data object transfert:</p>
+<p>Following table describes fields of AugmentedASR data object transfert:</p>
 
 <table class="table">
 	<tr>
@@ -894,8 +816,8 @@
 		<td>ID</td>
 	</tr><tr>
 		<th>speakers</th>
-		<td>List of <a href="#UserDTO">User</a></td>
-		<td><span class="label label-warning">need this data</span></td>
+		<td>List of long</td>
+		<td>Speakers identification</td>
 	</tr><tr>
 		<th>segments</th>
 		<td>List of <a href="#SegmentDTO">Segment</a></td>
@@ -903,7 +825,7 @@
 	</tr>
 </table>
 
-<p>ASR is represented here in JSON format:</p>
+<p>AugmentedASR is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
 {
@@ -2106,7 +2028,7 @@ Example of track might be:
 
 <h3>Process file</h3>
 
-<p>Processes video <a href="#FileDTO">File</a> and returns analytic's result.<span class="label label-important">Yups, I've to define those objects</span></p>
+<p>Processes video <a href="#FileDTO">File</a> and returns analytic's result.</p>
 
 <p>Request parameters</p>
 
@@ -2147,7 +2069,7 @@ Example of track might be:
 
 <h3>Process file</h3>
 
-<p>Processes video <a href="#FileDTO">File</a> using Segmentation object received by calling to diarization service. Returns aggregated <a href="#AsrDTO">ASR</a> result containing merged ASR and diarization data.</p>
+<p>Processes video <a href="#FileDTO">File</a> using Segmentation object received by calling to diarization service. Returns aggregated <a href="#AugmentedASRDTO">AugmentedASR</a> result containing merged ASR and diarization data.</p>
 
 <p>Request parameters</p>
 
@@ -2166,7 +2088,7 @@ Example of track might be:
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (<a href="#AsrDTO">ASR</a> object)</td>
+		<td>application/json (<a href="#AugmentedASRDTO">AugmentedASR</a> object)</td>
 	</tr>
 </table>
 

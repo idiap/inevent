@@ -1,8 +1,21 @@
-INCREMENT_ID = 0 ; //SD/ Unique ID for each graph object call needed to stop callbak from old objects
+var INCREMENT_ID = Array() ; //SD/ Unique ID for each graph object call needed to stop callbak from old objects
 
 // CLASS WIDGET MANAGER
 function Graph(div_id) {
+	_this = this ;
 	this.div_id = div_id ;
+	this.from = null ;
+
+	//SD/ Display tabs
+	$('#' + div_id + '_tabs').html(
+		'<li id="' + div_id + '_list_tab" class="active"><a><i class="icon-th-list"></i> View as List</a></li>' +
+		'<li id="' + div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>'
+	)
+
+	//SD/ Assign functions to tabs
+	$('#' + div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
+	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
+
 
 	this.initVars = function() {
 		this.small_rect = [15.0, 15.0] ;
@@ -22,7 +35,7 @@ function Graph(div_id) {
 		this.excluded = [] ; //SD/ to store node who already displays neighbours
 		this.input_links = [] ;
 		
-		this.svg = d3.select("#" + this.graph_id).append("svg")
+		this.svg = d3.select("#" + this.div_id).append("svg")
 			.attr("width", this.graph_width)
 			.attr("height", this.graph_height);
 		
@@ -33,14 +46,14 @@ function Graph(div_id) {
 		this.endOfGraph = false ;
 	}
 
-	this.loadGraph = function(data, graph_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
-		INCREMENT_ID++ ;
-		this.increment_id = INCREMENT_ID ;
+	this.loadGraph = function(data, div_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
+		INCREMENT_ID[this.div_id]++ ;
+		console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
+		this.increment_id = INCREMENT_ID[this.div_id] ;
 		
 		//SD/ Set parameters in local vars
 		this.input_nodes = data ;
 
-		this.graph_id = graph_id ;
 		this.height = height ;
 		this.width = width ;
 		this.top = top ;
@@ -111,9 +124,7 @@ function Graph(div_id) {
 
 		this.displayLinks();
 		this.displayNodes();
-		
 
-		
 		this.force.start();
 	}
 
@@ -506,7 +517,7 @@ function Graph(div_id) {
 				if(max_size == 0)
 					data = [] ;
 
-				this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#graph_container").width(), 700, position['top'], position['left'], video_switch);
+				this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#" + this.div_id + "_container").width(), 700, position['top'], position['left'], video_switch);
 
 				if(max_size > 0) {
 					this.addElement(data)
@@ -549,7 +560,7 @@ function Graph(div_id) {
 				if(this.stillElement()) {
 					var first = this.pickElement() ;
 			
-					if(callback != undefined && this.increment_id == INCREMENT_ID) {
+					if(callback != undefined && this.increment_id == INCREMENT_ID[div_id]) {
 						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
 						callback(
 							Dajaxice.inevent.get_graph_neighbours(function(data){
@@ -564,6 +575,60 @@ function Graph(div_id) {
 		}
 		catch(e){
 			display_graph_error(e) ;
+		}
+	}
+
+	this.set_graph_tab = function() {
+		//SD/ Switch active button
+		$('#' + this.div_id + '_list_tab').removeClass('active') ;
+		$('#' + this.div_id + '_graph_tab').addClass('active') ;
+
+		//SD/ Switch elements
+		$('#' + this.div_id).show() ;
+		$('#' + this.div_id + '_list').hide() ;
+
+		$('#' + this.div_id + '_params').show() ;
+	}
+
+	this.set_list_tab = function() {
+		//SD/ Switch active button
+		$('#' + this.div_id + '_graph_tab').removeClass('active') ;
+		$('#' + this.div_id + '_list_tab').addClass('active') ;
+
+		//SD/ Switch elements
+		$('#' + this.div_id + '_list').show() ;
+		$('#' + this.div_id).hide() ;
+
+		$('#' + this.div_id + '_params').hide() ;
+	}
+	
+	this.start_graph = function(from, firstRun) {
+		_this = this ;
+		from = typeof from !== 'undefined' ? from : null;
+		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
+
+		max_neighbours = $("#" + this.div_id + "_form .user_neighbours").val() ;
+		max_depth = $("#" + this.div_id + "_form .user_depth").val() ;
+		max_size = $("#" + this.div_id + "_form .user_size").val() ;
+
+		window["update_" + this.div_id + "_value"](firstRun) ;
+
+		if(this.from == null)
+			this.from = from ;
+
+		if(this.from == null) {
+			Dajaxice.inevent.get_graph_head(
+				function(data){_this.display_graph_head(data, video_switch=false, max_neighbours, max_depth, max_size);},
+				{'num_of_events': 5, 'error_callback': display_graph_error}
+			);
+		}
+		else if(this.from === parseInt(this.from)) {
+			Dajaxice.inevent.get_event_head(
+				function(data) {_this.display_graph_head(data, video_switch=true, max_neighbours, max_depth, max_size);},
+				{'id': _this.from, 'error_callback': display_graph_error});
+		}
+		else {
+			this.display_graph_head(this.from, video_switch=false, max_neighbours, max_depth, max_size) ;
 		}
 	}
 }
@@ -602,7 +667,7 @@ function display_graph_error(error) {
 $( window ).resize(function() {
 	//SD/ adapt graph size with container width
 	for(i in graphs) {
-		graphs[i].setWidth($("#graph_container").width()) ;
+		graphs[i].setWidth($("#" + this.div_id + "_container").width()) ;
 		window["update_" + graphs[i].div_id + "_value"](false) ;
 	}
 });

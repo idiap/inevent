@@ -1,136 +1,87 @@
 {% extends "inevent/base.html" %}
 
-{% block menu_inevent_page %}
-<ul class="tabbable nav">
-	<li class="active"><a href="#tab1" data-toggle="tab">Most Recent Talks</a></li>
-	<li><a href="#tab2" data-toggle="tab">Favorite Talks</a></li>
-	<li href="#tab3" data-toggle="tab">
-		{% include "search.html"  with search_form=search_form from="inevent" %}
-	</li>
-</ul>
-{% endblock %}
-
 {% block content_inevent_page %}
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab1">
 			<div class="row-fluid">
 				<div class="col-fluid span9">
 					<h2>Most Recent Talks</h2>
+
+					<ul id="graph_recent_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
 				</div>
 			</div>
-
-			<div class="row-fluid">
-				<div class="col-fluid span9">
-					<ul class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;">
-						<li id="list_button" class="active"><a><i class="icon-th-list"></i> View as List</a></li>
-						<li id="graph_button"><a><i class="icon-th-large"></i> View as Graph</a></li>
-					</ul>
-				</div>
-			</div>
-
 
 			<div class="row-fluid" id="recency">
-				<div id="graph_container" class="tabbable well well-small span9">
-					<div id="list">
-						{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}
+				<div id="graph_recent_container" class="tabbable well well-small span9">
+					<div id="graph_recent_list">
+						{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
 					</div>
 				
-					<div id="graph" style="display:none">
+					<div id="graph_recent" style="display:none">
 						<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
 					</div>
 				</div>
 				
 				<div class="col-fluid span3">
-					<div id="graph_params" class="well">
-						{% include "inevent/graph_params.html" with div_id="graph" %}
+					<div id="graph_recent_params" class="graph_params well">
+						{% include "inevent/graph_params.html" with div_id="graph_recent" %}
 					</div>
 				</div>
 			</div>
 		</div>
 		
-		<!--
 		<div class="tab-pane" id="tab2">
-			<p> Coming Soon </p>
+			<div class="row-fluid">
+				<div class="col-fluid span9">
+					<h2>Favorite Talks</h2>
+				</div>
+			</div>
+
+			<div class="row-fluid">
+				<div id="graph_container" class="tabbable well well-small span9">
+					<p> Coming Soon </p>
+				</div>
+			</div>
 		</div>
-		-->
 		
 		<div class="tab-pane" id="tab3">
-			<div id="search_list"></div>
+			<div id="search_list">
+
+				<div class="row-fluid">
+					<div class="col-fluid span9">
+						<h2>Search in Talks</h2>
+					</div>
+				</div>
+
+				<div class="row-fluid">
+					<div id="graph_search_container" class="tabbable well well-small span9">
+						<p>No search query sent</p>
+						<div id="graph_search"></div>
+					</div>
+				</div>
+
+				<div class="col-fluid span3">
+					<div id="graph_search_params">
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
 	<script type="text/javascript">
-		$('#graph_button').bind('click', set_graph);
-		$('#list_button').bind('click', set_list);
-
-		function set_graph() {
-			//SD/ Switch active button
-			$('#graph_button').addClass('active') ;
-			$('#list_button').removeClass('active') ;
-			
-			//SD/ Switch elements
-			$('#graph').css("display", "");
-			$('#list').css("display", "none");
-			
-			$('#graph_params').show() ;
-		}
-		
-		function set_list() {
-			//SD/ Switch active button
-			$('#list_button').addClass('active') ;
-			$('#graph_button').removeClass('active') ;
-			
-			//SD/ Switch elements
-			$('#list').css("display", "");
-			$('#graph').css("display", "none");
-			
-			$('#graph_params').hide() ;
-		}
-
-		function start_graph(div_id, firstRun) {
-			
-			firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
-			
-			video_switch = false ;
-			max_neighbours = $("#" + div_id + "_form .user_neighbours").val() ;
-			max_depth = $("#" + div_id + "_form .user_depth").val() ;
-			max_size = $("#" + div_id + "_form .user_size").val() ;
-			
-			window["update_" + div_id + "_value"](firstRun) ;
-		
-			for(i in graphs) {
-				Dajaxice.inevent.get_graph_head(
-					function(data){graphs[i].display_graph_head(data, video_switch, max_neighbours, max_depth, max_size);},
-					{'num_of_events':5, 'error_callback': display_graph_error}
-				);
-			}
-		}
-
-		var graphs = new Array() ;
 		$(document).ready(function() {
-			graphs.push(new Graph("graph")) ;
-			
-			for(i in graphs) {
-				div_id = graphs[i].div_id ;
-				
-				$("#" + div_id + "_form .user_neighbours").val(3) ;
-				$("#" + div_id + "_form .user_depth").val(2) ;
-				$("#" + div_id + "_form .user_size").val(200) ;
-			
-				start_graph(div_id, true) ;
-				$('#' + div_id + '_form').show() ;
-			}
-		});
+			$('#tab_recent').addClass("active") ;
+			INCREMENT_ID["graph_recent"] = 0 ;
+			INCREMENT_ID["graph_search"] = 0 ;
 
-		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-			if ($(e.target).attr('href').indexOf("tab1")!=-1){
-				$('#graph_button').css("display", "block");
-				
-				if($('#graph').css("display") == "block")
-					$('#graph_params').css("display", "block");
-			}
-			else
-				$('#graph_button').css("display", "none");
-		})
+			div_id = "graph_recent" ;
+			graphs[div_id] = new Graph(div_id) ;
+
+			$("#" + div_id + "_form .user_neighbours").val(3) ;
+			$("#" + div_id + "_form .user_depth").val(2) ;
+			$("#" + div_id + "_form .user_size").val(200) ;
+
+			graphs[div_id].start_graph(null, true) ;
+		});
 	</script>
 {% endblock%}

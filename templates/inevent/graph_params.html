@@ -1,24 +1,28 @@
 <script>
-	function toggle_content(type) {
+	function toggle_{{div_id}}_content(type) {
 		if(type == "emotion")
 		{
-			if($("#emotion_link_toggle").hasClass("active"))
-				$('line.emotion-type').hide();
-			else
-				$('line.emotion-type').show();
+			if($("#{{div_id}}_form .user_emotion").hasClass("active")) {
+				$('#{{div_id}} line.emotion-type').hide() ;
+			}
+			else {
+				$('#{{div_id}} line.emotion-type').show();
+			}
 		}
 		else
 		{
-			if($("#content_link_toggle").hasClass("active"))
-				$('line.content-type').hide();
-			else
-				$('line.content-type').show();
+			if($("#{{div_id}}_form .user_content").hasClass("active")) {
+				$('#{{div_id}} line.content-type').hide();
+			}
+			else {
+				$('#{{div_id}} line.content-type').show();
+			}
 		}
 	}
 
 	function update_{{div_id}}_value(firstRun){
 		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
-		
+
 		var range = $("#{{div_id}}_form .user_size") ;
 		var text = $("#{{div_id}}_form .user_size_text") ;
 		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
@@ -42,7 +46,7 @@
 		
 		//if($("#{{div_id}}").html() == '')
 		if(firstRun == true)
-			$("#graph_params").hide();
+			$("#{{ div_id }}_params").hide();
 	}
 </script>
 
@@ -73,7 +77,7 @@
 				<label>Graph size</label>
 				<div class="min-label">0</div>
 				<div class="user-value">
-					<input onchange="start_graph('{{ div_id }}')" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
+					<input onchange="graphs['{{ div_id }}'].start_graph()" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
 					<div class="user_size_text user_text">0</div>
 				</div>
 				<div class="max-label">200</div>
@@ -83,7 +87,7 @@
 				<label>Distance from starting node(s)</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
+					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph()" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
 					<div class="user_depth_text user_text">0</div>
 				</div>
 				<div class="max-label">6+</div>
@@ -93,7 +97,7 @@
 				<label>Neighbours per node</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();start_graph('{{ div_id }}')" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>
+					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph()" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>
 					<div class="user_neighbours_text user_text">0</div>
 				</div>
 				<div class="max-label">5</div>
@@ -102,8 +106,8 @@
 			<div class="control-group">
 				<label>Relation Type</label>
 				<div class="btn-group" data-toggle="buttons-checkbox">
-					<button id="content_link_toggle" type="button" class="user_content btn btn-small active" onclick="toggle_content('content');">Content</button>
-					<button id="emotion_link_toggle" type="button" class="user_emotion btn btn-small active" onclick="toggle_content('emotion');">Emotions</button>
+					<button type="button" class="user_content btn btn-small active" onclick="toggle_{{div_id}}_content('content');">Content</button>
+					<button type="button" class="user_emotion btn btn-small active" onclick="toggle_{{div_id}}_content('emotion');">Emotions</button>
 					<!--<button type="button" class="btn btn-primary">Popularit&eacute;</button>-->
 				</div>
 				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>

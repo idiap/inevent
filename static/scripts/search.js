@@ -2,7 +2,7 @@
 (function($,a){$.fn.serializeObject=function(){var b={};$.each(this.serializeArray(),function(d,e){var f=e.name,c=e.value;b[f]=b[f]===a?c:$.isArray(b[f])?b[f].concat(c):[b[f],c]});return b}})(jQuery);
 
 function on_click(event){
-	handle_search_request(event,'1', event.data.from, event.data.form)
+	handle_search_request(event,'1', event.data.from, event.data.form);
 }
 
 function on_click_adv(event){
@@ -27,9 +27,6 @@ function handle_search_request(event, page_num, from, form){
 }
 
 function send_search_request(page_num, from, form) {
-	$('#graph_button').css("display", "none");
-	$('#graph_params').css("display", "none");
-	
 	if ($("#search_list") !='undefined'){
 		$('#search_list').spin(true);
 		$('#search_option_button').addClass('disabled')
@@ -44,8 +41,7 @@ function send_search_request(page_num, from, form) {
 }
 
 function display_results(data) {
-	// $('#search_list').css('display', '');
-	// $('#search_list').html("");
+	$('#navMenu a[href="#tab3"]').tab('show') ;
 	
 	$('#search_list').spin(false);
 	$('#search_option_button').removeClass('disabled');
@@ -74,8 +70,6 @@ function validate_input(inputValue){
 
 function clear_search_box()
 {
-	$('#graph_button').css("display", "none");
-
 	if ($("#search_box")!='undefined' && $("#search_box").attr('class').indexOf('error')!=-1) {
 		$("#search_box").removeClass("error");
 		$("#search_input").val("");

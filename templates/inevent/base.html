@@ -8,26 +8,25 @@
 		<title>	Inevent | Portal </title>
 		
 		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap.min.css" type="text/css" />
-		
 		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css" />
-		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-			<!--[if lt IE 9]>
-				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
 		<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/hyperevent.css" type="text/css" />
 		<link rel="stylesheet" href='{{ STATIC_URL }}inevent/styles/graph.css' type="text/css"/>
 		{% block extrastyle_inevent_page %} {% endblock %}
 
 		<link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}inevent/images/favicon.ico" />
 
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+			<!--[if lt IE 9]>
+				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
 		<script src="{{ STATIC_URL }}inevent/scripts/jquery.min.js"></script>
-		<script src="{{ STATIC_URL }}inevent/scripts/spin.min.js"></script>
 		<script src="{{ STATIC_URL }}inevent/scripts/jquery.spin.js"></script>
+		<script src="{{ STATIC_URL }}inevent/scripts/spin.min.js"></script>
 		<script src="{{ STATIC_URL }}inevent/scripts/bootstrap.min.js" type="text/javascript"></script>
 
 		<script src="{{ STATIC_URL }}inevent/scripts/d3.v3.min.js"></script>
 		<script src="{{ STATIC_URL }}inevent/scripts/d3.layout.cloud.js"></script>
-
 
 		<script src="{{ STATIC_URL }}scripts/search.js"></script>
 		<script type="text/javascript" src='{{ STATIC_URL }}inevent/scripts/graph_extension.js'></script>
@@ -36,7 +35,7 @@
 		{% block extrascripts_inevent_page %} {% endblock %}
 	
 		{% block extrahead %}{% endblock %}
-		{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+		{% block blockbots %}<meta name="robots" content="NONE, NOARCHIVE" />{% endblock %}
 	</head>
 
 	{% load my_tags %}
@@ -44,24 +43,37 @@
 
 	<body>
 		<div id="wrap">
-			<div class="navbar">
-				<div class="navbar-inner">
-					<a href="/" class="nav nav-pills pull-left" style="margin-right:40px">
-						<h1>inEvent</h1>
-					</a>
 
-					<div style="margin-top:15px;"> {% block menu_inevent_page %} {% endblock %} </div>
+			<div class="navbar navbar-inner">
+				<a href="/" class="nav nav-pills pull-left" style="margin-right:40px">
+					<h1>inEvent</h1>
+				</a>
 
-					<div id='loginWidget' class="pull-right">
-						{% include "inevent/login.html" %}
-					</div>
+				<div id="navMenu">
+					{% block menu_inevent_page %}
+						<ul class="tabbable nav">
+							<li id="tab_recent"><a href="#tab1" data-toggle="tab">Most Recent Talks</a></li>
+							<li id="tab_favorite"><a href="#tab2" data-toggle="tab">Favorite Talks</a></li>
+							<li id="tab_search"><a href="#tab3" data-toggle="tab">Current Search</a></li>
+							
+							{% include "search.html" with search_form=search_form from="inevent" %}
+						</ul>
+					{% endblock %}
+				</div>
+
+				<div id='loginWidget' class="pull-right">
+					{% include "inevent/login.html" %}
 				</div>
 			</div>
 
 			<div class="container-fluid">
-				<div class='row-fluid'>{% block content_inevent_page %} {% endblock %}</div>
+				<div class='row-fluid'>
+					{% block content_inevent_page %} {% endblock %}
+				</div>
+				
 				{% include "advanced_form.html" with search_form=search_form from="inevent" %}
 			</div>
+			
 		</div>
 		
 		<div id="footer">
@@ -78,7 +90,8 @@
 </html>
 
 <script>
-var static_url;
+	var static_url;
+	var graphs = new Array() ;
 	$(document).ready(function() {
 		static_url = "{{ STATIC_URL }}";
 	})

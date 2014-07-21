@@ -1,29 +1,76 @@
 <div class="row-fluid">
-	{% if count == 0 %}
-		<h3>No matching talks for: {{ keywords }}</h3>
-	{% elif count == 1 %}
-		<h3>{{ count }} match for: {{ keywords }}</h3>
-	{% else %}
-		<h3>{{ count }} matches for: {{ keywords }}</h3>
-	{% endif %}
+	<div class="col-fluid span9">
+		<h2>
+			{% if count == 0 %}
+				No matching talks for: {{ keywords }}
+			{% elif count == 1 %}
+				{{ count }} match for: {{ keywords }}
+			{% else %}
+				{{ count }} matches for: {{ keywords }}
+			{% endif %}
+		</h2>
+
+		<ul id="graph_search_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
 	</div>
 </div>
 
-<div id="graph_container" class="tabbable well well-small span8">
-	<div class="row-fluid">
-		{% include "inevent/hyperevents_content.html"  with hyperevents=hyperevents %}
+<div class="row-fluid">
+	<div class="tabbable well well-small span9">
+		<div id="graph_search_container">
+			<div id="graph_search" style="display:none;">
+				<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
+			</div>
+		</div>
+
+		<div id="graph_search_list">
+			{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
+	
+			<div class="pull-right">
+				{% if pagination.has_previous %}
+					<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.previous_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.previous_page_number }}"><<</a>
+				{% endif %}
+				{% if count > 0 %}
+					<span class="current">
+						Page {{ pagination.page }} of {{ pagination.num_pages }}.
+					</span>
+				{% endif %}
+				{% if pagination.has_next %}
+					<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.next_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.next_page_number }}">>></a>
+				{% endif %}
+			</div>
+		</div>
 	</div>
-	<div class="pull-right">
-		{% if pagination.has_previous %}
-			<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.previous_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.previous_page_number }}"><<</a>
-		{% endif %}
-		{% if count > 0 %}
-			<span class="current">
-				Page {{ pagination.page }} of {{ pagination.num_pages }}.
-			</span>
-		{% endif %}
-		{% if pagination.has_next %}
-			<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.next_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.next_page_number }}">>></a>
-		{% endif %}
+
+	<div class="col-fluid span3">
+		<div id="graph_search_params" class="graph_params well">
+			{% include "inevent/graph_params.html" with div_id="graph_search" %}
+		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		div_id = "graph_search" ;
+		graphs[div_id] = new Graph("graph_search") ;
+
+		$("#" + div_id + "_form .user_neighbours").val(3) ;
+		$("#" + div_id + "_form .user_depth").val(2) ;
+		$("#" + div_id + "_form .user_size").val(50) ;
+
+		data = [
+			{% for hyperevent in hyperevents %}
+				{
+					"id":"{{ hyperevent.id|safe }}",
+					"title":"{{ hyperevent.title|safe }}",
+					"snapshot_url":"{{ hyperevent.snapshot_url|safe }}",
+					"transcript_url":"{{ hyperevent.transcript_url|safe }}",
+					"mime_type":"{{ hyperevent.mime_type|safe }}",
+					"presenters":"{{ hyperevent.presenters|safe }}",
+					"providerName":"{{ hyperevent.providerName|safe }}",
+				},
+			{% endfor %}
+		]
+
+		graphs[div_id].start_graph(data, true) ;
+	});
+</script>

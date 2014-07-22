@@ -472,6 +472,11 @@ function Graph(div_id) {
 	this.mouseover = function(d, display_class, title_id){
 		if(this.endOfGraph && d != undefined) {
 			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
+
+			//SD/ Reduce title length to suite with container
+			if(d.title.length > 40)
+				d.title = d.title.substring(0, 35) + "..." ;
+
 			display_title(d.title, "video_title" + d.id);
 			return true ;
 		}

@@ -82,6 +82,10 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
                             hyperevent['video_url'] =  rest_url_retrieval + "getTrackFile/"+file['fileName']+"?trackId="+str(file['trackId'])
                             hyperevent['mime_type'] = file['mimeType']      
 #                     hyperevent['duration'] =  track['duration']
+                elif (track['mimeType']=="inevent/transcript"):
+                    for file in files:
+                        if(file['mimeType'].rfind('text/plain')!=-1): # Get transcript
+                            hyperevent['transcript_url'] = rest_url_retrieval +  "getTrackFile/"+file['fileName']+"?trackId="+str(file['trackId'])
                 elif (track['mimeType']=="inevent/slides" and only_basic_info == False):
     #                               print "slide"
                     hyperevent['num_slides'] = len(files)

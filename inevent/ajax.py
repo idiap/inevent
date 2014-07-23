@@ -32,19 +32,23 @@ from django.conf import settings
 ###########################################################################################
 
 @dajaxice_register
-def get_transcript(request,transcript_url):
-    print transcript_url
-#    sample: http://srv-inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/transcript.srt?trackId=1733
-    data = {}
-    try:
-        response = requests.get(transcript_url)
-        transcripts = srt_to_dict(response.content)
-        data = {"transcripts": transcripts}      
-    except:
-        data = {'error':'could not get data'}     
-    template = 'inevent/transcripts.html'
-
-    return render_to_response(template, data, context_instance=RequestContext(request)).content
+def get_transcript(request,transcript_url, event_id=None):
+	print transcript_url
+#	sample: http://srv-inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/transcript.srt?trackId=1733
+	data = {}
+	try:
+		response = requests.get(transcript_url)
+		transcripts = srt_to_dict(response.content)
+		data = {"transcripts": transcripts}
+	except:
+		data = {'error':'could not get data'}
+	
+	if event_id != None :
+		data['event_id'] = event_id
+		return json.dumps(data)
+	else :
+		template = 'inevent/transcripts.html'
+		return render_to_response(template, data, context_instance=RequestContext(request)).content
 
 @dajaxice_register
 def graph_related_talks(request,event_id):

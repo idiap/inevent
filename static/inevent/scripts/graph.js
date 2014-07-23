@@ -48,7 +48,7 @@ function Graph(div_id) {
 
 	this.loadGraph = function(data, div_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
 		INCREMENT_ID[this.div_id]++ ;
-		console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
+		//console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
 		this.increment_id = INCREMENT_ID[this.div_id] ;
 		
 		//SD/ Set parameters in local vars
@@ -158,7 +158,6 @@ function Graph(div_id) {
 	}
 	
 	this.displayNodes = function() {
-
 		var _this = this ;
 
 		this.node = this.svg.selectAll(".node").data(this.input_nodes);
@@ -253,6 +252,7 @@ function Graph(div_id) {
 
 		//SD/ Define window STARTS =============================================
 		
+		//SD/ Container of windows displayed on click
 		var rect = this.nodeEnter.append("rect")
 			.attr("id", function(d) { return "rect"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -268,8 +268,8 @@ function Graph(div_id) {
 			.attr('y', -this.big_rect[1]/2)
 			.attr('rx', 5)
 			.attr('ry', 5);
-
-		/*
+	
+		/*SD/ Video snapshot
 		this.nodeEnter.append("image")
 			.attr("id", function(d) { return "cloud"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -281,15 +281,22 @@ function Graph(div_id) {
 		  //.attr("clip-path", function(d) { return "url(#"+"clip_zoom"+d.id +")"});
 		*/
 
+		//SD/ SVG Container for word cloud generation (replace video snapshot)
+		this.nodeEnter.append("svg")
+			.attr("id", function(d) { return "topwords_"+d.id})
+			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+			.style("fill","red")
+			.attr('x', -this.image_rect[0]/2)
+			.attr('y', -this.image_rect[1]/2)
+			.attr("height", this.image_rect[1])
+			.attr("width", this.image_rect[0])
+
 		// Adapt node display depending on Web Browser
 		var browser = window.navigator.userAgent.toLowerCase();
 		var version = window.navigator.appVersion;
-		
-		_this = this ;
 
 		if ( (browser.indexOf("firefox")>-1) || ( (browser.indexOf("safari")>-1) && version>6)) {
-			//Explorers who does not support the use of foreign objects in SVG
-
+			//HTML incrustation if browser support foreignObject
 			this.nodeEnter.append('svg:foreignObject')
 				.attr("id", function(d) { return "centralize"+d.id})
 				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -318,6 +325,7 @@ function Graph(div_id) {
 				.html('<button class="btn btn-small" value="btn" type="button" ><b>[x]</b> Close</button>');
 		}
 		else {
+			//Explorers who does not support the use of foreignObjects in SVG
 			this.nodeEnter.append('image')
 				.attr("id", function(d) { return "centralize"+d.id})
 				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
@@ -349,9 +357,8 @@ function Graph(div_id) {
 			.attr("width", this.image_rect[0])
 			.attr('x', function(d) { return  -_this.image_rect[0]/2+10})
 			.attr('y', function(d) { return -_this.big_rect[1]/2 + 10})
-			.text("")
 
-		//SD/TDOD : What is the purpose of this code ?
+		//SD/TODO : What is the purpose of this code ?
 		this.nodeEnter.append("title")
 			.text(function(d) { return d.title; });
 		
@@ -485,6 +492,116 @@ function Graph(div_id) {
 	}
 	
 	this.finalizeGraph = function() {
+
+		//SD/ START - Word Cloud ===============================================
+		for(var i in this.input_nodes)
+		{
+			event_id = this.input_nodes[i].id ;
+			track_url = this.input_nodes[i].transcript_url ;
+			//console.log(event_id + " : " + track_url) ;
+
+			Dajaxice.inevent.get_transcript
+			(
+				function(data)
+				{
+					allWords = [] ;
+					countWords = [] ;
+					topWords = [] ;
+				
+					//SD/ Common word to https://github.com/jdf/cue.language/tree/master/src/cue/lang/stop
+					englishCommons = ["", "--", "i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
+				
+					//SD/ Extract all words in lowercase from transcript sentences
+					for(var i in data['transcripts']) {
+						line = data['transcripts'][i].value.toLowerCase() ;
+						line = line.split(",").join(" ") ;
+						line = line.split(".").join(" ") ;
+						line = line.split("\"").join(" ") ;
+						line = line.split("(").join(" ") ;
+						line = line.split(")").join(" ") ;
+						words = line.split(" ") ;
+						allWords = $.merge(allWords, words) ;
+					}
+
+					//SD/ Count words found
+					for(var i in allWords) {
+						found = false ;
+						for(var j in countWords) {
+							if(allWords[i] == countWords[j].text) {
+								countWords[j].size++ ;
+								found = true ;
+							}
+						}
+						if(!found)
+							countWords.push({ text: allWords[i], size: 1 }) ;
+					}
+
+					//SD/ Remove common words
+					for(var i in englishCommons) {
+						for(var j in countWords) {
+							if(englishCommons[i] == countWords[j].text) {
+								delete countWords[j] ;
+							}
+						}
+					}
+
+					// sort array by descending frequency | http://stackoverflow.com/a/8837505
+					countWords = countWords.sort(function(a,b){
+						return (a.size > b.size) ? -1 : ((a.size < b.size) ? 1 : 0) ;
+					});
+
+					maxCount = countWords[0].size ;
+					percentCount = 100 / maxCount ;
+					
+					//SD/ Display only the top30 of words
+					for(var i=0 ; i<50 ; i++) {
+						topWords[i] = countWords[i] ;
+						topWords[i].size = (percentCount * topWords[i].size / 3) + 10 ;
+					}
+
+					console.log(topWords.toSource()) ;
+
+					//SD/ Draw the cloud
+					var fill = d3.scale.category20();
+					d3.layout.cloud().size([260, 180])
+						.words(topWords)
+						.padding(5)
+						.rotate(0)
+						.font("Impact")
+						.fontSize(function(d) { return d.size; })
+						.on("end", draw)
+						.start();
+
+					function draw(words) {
+						d3.select("#topwords_" + data["event_id"])
+							.append("g")
+							.attr("transform", function(d, i) {
+								return "translate(130, 90)" ;
+							})
+							.selectAll("text")
+							.data(words)
+							.enter().append("text")
+							.style("font-size", function(d) {
+								return d.size + "px";
+							})
+							.style("font-family", "Impact")
+							.style("fill", function(d, i) {
+								return fill(i);
+							})
+							.attr("text-anchor", "middle")
+							.attr("transform", function(d) {
+								return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+							})
+							.text(function(d) {
+								return d.text;
+							});
+					}
+				},
+				{'transcript_url': track_url, 'event_id': event_id, 'error_callback': display_graph_error}
+			);
+			//SD/ FINISH - Word Cloud ==============================================
+		}
+
 		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes and " + this.input_links.length + " links") ;
 
 		//SD/ Changing node position to back or front have to be done at end of graph

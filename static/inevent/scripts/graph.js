@@ -165,7 +165,15 @@ function Graph(div_id) {
 		this.nodeEnter = this.node.enter().append("svg:g");
 		this.nodeEnter.attr("id", function(d) { return "node" + d.id;})
 			.attr("class", "node")
-			.on("click", function(d) {d3.event.stopPropagation(); _this.mouseover(d,"word_cloud_" + d.id,"video_title" + d.id); })
+			.on("click", function(d) {
+				d3.event.stopPropagation();
+				
+				//SD/ Get word cloud
+				if($("#topwords_" + d.id).html() == "")
+					_this.draw_cloud(d.id) ;
+				
+				_this.mouseover(d,"word_cloud_" + d.id,"video_title" + d.id);
+			})
 			.call(this.force.drag); //SD/ Enable Drag&Drop 
 
 		this.defs = this.nodeEnter.append("defs") ;
@@ -490,117 +498,121 @@ function Graph(div_id) {
 		else
 			return false ;
 	}
-	
-	this.finalizeGraph = function() {
 
-		//SD/ START - Word Cloud ===============================================
+	//SD/ Draw an SVG word cloud
+	this.draw_cloud = function(hyperEventId) {
 		for(var i in this.input_nodes)
-		{
-			event_id = this.input_nodes[i].id ;
-			track_url = this.input_nodes[i].transcript_url ;
-			//console.log(event_id + " : " + track_url) ;
+			if(this.input_nodes[i].id == hyperEventId)
+				transcriptUrl = this.input_nodes[i].transcript_url ;
+		
+		//SD/ Retrive transcript file
+		Dajaxice.inevent.get_transcript
+		(
+			function(data)
+			{
+				allWords = [] ;
+				countWords = [] ;
+				topWords = [] ;
+			
+				//SD/ Common word to https://github.com/jdf/cue.language/tree/master/src/cue/lang/stop
+				englishCommons = ["i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
+			
+				//SD/ Extract all words in lowercase from transcript sentences
+				for(var i in data['transcripts']) {
+					line = data['transcripts'][i].value.toLowerCase() ;
+					line = line.split(",").join(" ") ;
+					line = line.split(".").join(" ") ;
+					line = line.split("\"").join(" ") ;
+					line = line.split("(").join(" ") ;
+					line = line.split(")").join(" ") ;
+					words = line.split(" ") ;
+					allWords = $.merge(allWords, words) ;
+				}
 
-			Dajaxice.inevent.get_transcript
-			(
-				function(data)
-				{
-					allWords = [] ;
-					countWords = [] ;
-					topWords = [] ;
-				
-					//SD/ Common word to https://github.com/jdf/cue.language/tree/master/src/cue/lang/stop
-					englishCommons = ["", "--", "i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
-				
-					//SD/ Extract all words in lowercase from transcript sentences
-					for(var i in data['transcripts']) {
-						line = data['transcripts'][i].value.toLowerCase() ;
-						line = line.split(",").join(" ") ;
-						line = line.split(".").join(" ") ;
-						line = line.split("\"").join(" ") ;
-						line = line.split("(").join(" ") ;
-						line = line.split(")").join(" ") ;
-						words = line.split(" ") ;
-						allWords = $.merge(allWords, words) ;
-					}
-
-					//SD/ Count words found
-					for(var i in allWords) {
-						found = false ;
-						for(var j in countWords) {
-							if(allWords[i] == countWords[j].text) {
-								countWords[j].size++ ;
-								found = true ;
-							}
-						}
-						if(!found)
-							countWords.push({ text: allWords[i], size: 1 }) ;
-					}
-
-					//SD/ Remove common words
-					for(var i in englishCommons) {
-						for(var j in countWords) {
-							if(englishCommons[i] == countWords[j].text) {
-								delete countWords[j] ;
-							}
+				//SD/ Count words found
+				for(var i in allWords) {
+					found = false ;
+					for(var j in countWords) {
+						if(allWords[i] == countWords[j].text) {
+							countWords[j].size++ ;
+							found = true ;
 						}
 					}
+					if(!found)
+						countWords.push({ text: allWords[i], size: 1 }) ;
+				}
 
-					// sort array by descending frequency | http://stackoverflow.com/a/8837505
-					countWords = countWords.sort(function(a,b){
-						return (a.size > b.size) ? -1 : ((a.size < b.size) ? 1 : 0) ;
-					});
-
-					maxCount = countWords[0].size ;
-					percentCount = 100 / maxCount ;
-					
-					//SD/ Display only the top30 of words
-					for(var i=0 ; i<50 ; i++) {
-						topWords[i] = countWords[i] ;
-						topWords[i].size = (percentCount * topWords[i].size / 3) + 10 ;
+				//SD/TODO Remove common words depending language
+				dict = englishCommons ;
+				for(var i in dict) {
+					for(var j in countWords) {
+						if(dict[i] == countWords[j].text || countWords[j].text == "" || countWords[j].text == "--") {
+							delete countWords[j] ;
+						}
 					}
+				}
 
-					console.log(topWords.toSource()) ;
+				// sort array by descending frequency | http://stackoverflow.com/a/8837505
+				countWords = countWords.sort(function(a,b){
+					return (a.size > b.size) ? -1 : ((a.size < b.size) ? 1 : 0) ;
+				});
 
-					//SD/ Draw the cloud
-					var fill = d3.scale.category20();
-					d3.layout.cloud().size([260, 180])
-						.words(topWords)
-						.padding(5)
-						.rotate(0)
-						.font("Impact")
-						.fontSize(function(d) { return d.size; })
-						.on("end", draw)
-						.start();
+				maxCount = countWords[0].size ;
+				percentCount = 100 / maxCount ;
+				
+				//SD/ Display only the top30 of words
+				for(var i=0 ; i<50 ; i++) {
+					topWords[i] = countWords[i] ;
+					topWords[i].size = (percentCount * topWords[i].size / 3) + 10 ;
+				}
 
-					function draw(words) {
-						d3.select("#topwords_" + data["event_id"])
-							.append("g")
-							.attr("transform", function(d, i) {
-								return "translate(130, 90)" ;
-							})
-							.selectAll("text")
-							.data(words)
-							.enter().append("text")
-							.style("font-size", function(d) {
-								return d.size + "px";
-							})
-							.style("font-family", "Impact")
-							.style("fill", function(d, i) {
-								return fill(i);
-							})
-							.attr("text-anchor", "middle")
-							.attr("transform", function(d) {
-								return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-							})
-							.text(function(d) {
-								return d.text;
-							});
-					}
-				},
-				{'transcript_url': track_url, 'event_id': event_id, 'error_callback': display_graph_error}
-			);
-			//SD/ FINISH - Word Cloud ==============================================
+				//SD/ Draw the cloud
+				var fill = d3.scale.category20();
+				d3.layout.cloud().size([260, 180])
+					.words(topWords)
+					.padding(5)
+					.rotate(0)
+					.font("Impact")
+					.fontSize(function(d) { return d.size; })
+					.on("end", draw)
+					.start();
+
+				function draw(words) {
+					d3.select("#topwords_" + data["event_id"])
+						.append("g")
+						.attr("transform", function(d, i) {
+							return "translate(130, 90)" ;
+						})
+						.selectAll("text")
+						.data(words)
+						.enter().append("text")
+						.style("font-size", function(d) {
+							return d.size + "px";
+						})
+						.style("font-family", "Impact")
+						.style("fill", function(d, i) {
+							return fill(i);
+						})
+						.attr("text-anchor", "middle")
+						.attr("transform", function(d) {
+							return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+						})
+						.text(function(d) {
+							return d.text;
+						});
+				}
+			},
+			{'transcript_url': transcriptUrl, 'event_id': hyperEventId, 'error_callback': display_graph_error}
+		);
+	}
+
+	this.finalizeGraph = function() {
+		//SD/ Draw word clouds
+		/*
+		for(var i in this.input_nodes){
+			this.draw_cloud(this.input_nodes[i].id) ;
 		}
+		*/
 
 		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes and " + this.input_links.length + " links") ;
 

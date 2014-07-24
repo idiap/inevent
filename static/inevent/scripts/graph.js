@@ -16,12 +16,12 @@ function Graph(div_id) {
 	$('#' + div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 
-
 	this.initVars = function() {
 		this.small_rect = [15.0, 15.0] ;
 		this.orig_rect = [15.0, 15.0] ;
-		this.big_rect = [300.0, 250.0] ;
-		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 70] ;
+		this.big_rect = [375.0, 300] ;
+		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 120] ;
+		this.snap_rect = [300 / 4, 250 / 4] ;
 
 		this.margin = {top: 0, right: 0, bottom: 0, left: 0} ;
 		this.graph_width = this.width - this.margin.left - this.margin.right ;
@@ -29,20 +29,19 @@ function Graph(div_id) {
 
 		this.graph_top = this.top;
 		this.graph_left = this.left;
-		
-		
+
 		this.queue = new Queue() ;
 		this.excluded = [] ; //SD/ to store node who already displays neighbours
 		this.input_links = [] ;
-		
+
 		this.svg = d3.select("#" + this.div_id).append("svg")
 			.attr("width", this.graph_width)
 			.attr("height", this.graph_height);
-		
+
 		this.color = {	black:"black",
 						blue:"#0088cc",
 						grey:"grey"} ;
-						
+
 		this.endOfGraph = false ;
 	}
 
@@ -102,6 +101,7 @@ function Graph(div_id) {
 			for (var s = 0; s < links.length; s++) {
 				var target = this.find_node_index(links[s]['target']);
 				var source = this.find_node_index(links[s]['source']);
+				
 				if (target!=-1 && source!=-1) {
 					this.input_links.push({
 						"target":target,
@@ -128,14 +128,16 @@ function Graph(div_id) {
 		this.force.start();
 	}
 
-	this.setCenter = function(d) {
-		if(d.id == this.input_nodes[0]['id'] && this.video_switch == true) {
-			get_graph() ;
-			
-		}
-			
+	this.play_event = function(d) {
+		if(d.id == this.input_nodes[0]['id'] && this.video_switch == true)
+			this.set_list_tab() ;
 		else
 			document.location.href = "/hyperevent/" + d.id;
+	}
+
+	this.set_center = function(d) {
+		//SD/ TODO Find a way to load new page with graph by default
+		document.location.href = "/hyperevent/" + d.id;
 	}
 
 	this.find_node_index = function(node_id) {
@@ -163,7 +165,8 @@ function Graph(div_id) {
 		this.node = this.svg.selectAll(".node").data(this.input_nodes);
 	
 		this.nodeEnter = this.node.enter().append("svg:g");
-		this.nodeEnter.attr("id", function(d) { return "node" + d.id;})
+		this.nodeEnter
+			.attr("id", function(d) { return "node" + d.id;})
 			.attr("class", "node")
 			.on("click", function(d) {
 				d3.event.stopPropagation();
@@ -216,7 +219,7 @@ function Graph(div_id) {
 					return -_this.orig_rect[1] / 2 ;
 				else
 					return -_this.small_rect[1] / 2 ;
-			});
+			})
 
 		this.nodeEnter.append("use")
 			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
@@ -271,7 +274,7 @@ function Graph(div_id) {
 			.attr("width", this.big_rect[0])
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
-				if(d.depth < 1) { return _this.color.blue } else { return _this.color.grey } 
+				if(d.depth < 1) { return _this.color.blue } else { return _this.color.grey }
 			})
 			.style("fill","white") // Make the nodes hollow looking
 			.style("stroke-width", 2) // Give the node strokes some thickness
@@ -279,28 +282,27 @@ function Graph(div_id) {
 			.attr('y', -this.big_rect[1]/2)
 			.attr('rx', 5)
 			.attr('ry', 5);
-	
-		/*SD/ Video snapshot
+
+		//SD/ Video snapshot
 		this.nodeEnter.append("image")
 			.attr("id", function(d) { return "cloud"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
 			.attr("xlink:href", function(d) { return d.snapshot_url })
-			.attr('x', -this.image_rect[0]/2)
-			.attr('y', -this.image_rect[1]/2)
-			.attr("height", this.image_rect[1])
-			.attr("width", this.image_rect[0]);
+			.attr('x', function(d) { return -_this.image_rect[0] / 2})
+			.attr('y', function(d) { return -_this.big_rect[1] / 2 + 10})
+			.attr("height", this.snap_rect[1])
+			.attr("width", this.snap_rect[0]) ;
 		  //.attr("clip-path", function(d) { return "url(#"+"clip_zoom"+d.id +")"});
-		*/
 
 		//SD/ SVG Container for word cloud generation (replace video snapshot)
 		this.nodeEnter.append("svg")
 			.attr("id", function(d) { return "topwords_"+d.id})
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
-			.style("fill","red")
-			.attr('x', -this.image_rect[0]/2)
-			.attr('y', -this.image_rect[1]/2)
+			.attr('x', -this.image_rect[0] / 2)
+			.attr('y', -this.image_rect[1] / 2 + this.snap_rect[1] / 2 - 20)
 			.attr("height", this.image_rect[1])
 			.attr("width", this.image_rect[0])
+			.attr("viewport-fill", "#ff0000") ;
 
 		// Adapt node display depending on Web Browser
 		var browser = window.navigator.userAgent.toLowerCase();
@@ -316,11 +318,24 @@ function Graph(div_id) {
 				.attr("color","#707070")
 				//.attr("requiredExtensions","http://www.w3.org/1999/xhtml")
 				.attr('x', -this.image_rect[0]/2)
-				.attr('y', 90)
-				.on("click", function(d) { d3.event.stopPropagation(); _this.setCenter(d);})
+				.attr('y', 110)
+				.on("click", function(d) { d3.event.stopPropagation(); _this.play_event(d);})
 				.append("xhtml:body")
 				.attr("xmlns","http://www.w3.org/1999/xhtml")
 				.html('<button class="btn btn-small" value="btn" type="button"> <i class="icon-play"></i> Play</button> ');
+
+			this.nodeEnter.append('svg:foreignObject')
+				.attr("id", function(d) { return "center"+d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+				.attr("height", 30)
+				.attr("width", 80)
+				//.attr("requiredExtensions","http://www.w3.org/1999/xhtml")
+				.attr('x', -this.image_rect[0]/2 + 130)
+				.attr('y', 110)
+				.on("click", function(d) { d3.event.stopPropagation(); _this.set_center(d);})
+				.append("xhtml:body")
+				.attr("xmlns","http://www.w3.org/1999/xhtml")
+				.html('<button class="btn btn-small" value="btn" type="button" >Center</button>');
 
 			this.nodeEnter.append('svg:foreignObject')
 				.attr("id", function(d) { return "close"+d.id})
@@ -328,8 +343,8 @@ function Graph(div_id) {
 				.attr("height", 30)
 				.attr("width", 80)
 				//.attr("requiredExtensions","http://www.w3.org/1999/xhtml")
-				.attr('x', -this.image_rect[0]/2 + 180)
-				.attr('y', 90)
+				.attr('x', -this.image_rect[0]/2 + 260)
+				.attr('y', 110)
 				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
 				.append("xhtml:body")
 				.attr("xmlns","http://www.w3.org/1999/xhtml")
@@ -343,8 +358,8 @@ function Graph(div_id) {
 				.attr("height", 33)
 				.attr("width",69)
 				.attr('x', -this.image_rect[0]/2)
-				.attr('y', 90)
-				.on("click", function(d) { d3.event.stopPropagation(); _this.setCenter(d);})
+				.attr('y', 110)
+				.on("click", function(d) { d3.event.stopPropagation(); _this.play_event(d);})
 				.attr("xlink:href", static_url + "inevent/images/play_button.png");
 
 			this.nodeEnter.append('image')
@@ -352,8 +367,8 @@ function Graph(div_id) {
 				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
 				.attr("height", 33)
 				.attr("width", 79)
-				.attr('x', -this.image_rect[0]/2 + 180)
-				.attr('y', 90)
+				.attr('x', -this.image_rect[0]/2 + 260)
+				.attr('y', 110)
 				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
 				.attr("xlink:href", static_url + "inevent/images/close_button.png");
 		}
@@ -366,8 +381,8 @@ function Graph(div_id) {
 			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
 			.attr("fill","#707070")
 			.attr("width", this.image_rect[0])
-			.attr('x', function(d) { return  -_this.image_rect[0]/2+10})
-			.attr('y', function(d) { return -_this.big_rect[1]/2 + 10})
+			.attr('x', function(d) { return  -_this.image_rect[0] / 2 + _this.snap_rect[0] + 20})
+			.attr('y', function(d) { return -_this.big_rect[1] / 2 + 30})
 
 		//SD/TODO : What is the purpose of this code ?
 		this.nodeEnter.append("title")
@@ -564,14 +579,14 @@ function Graph(div_id) {
 				percentCount = 100 / maxCount ;
 				
 				//SD/ Display only the top30 of words
-				for(var i=0 ; i<50 ; i++) {
+				for(var i=0 ; i<20 ; i++) {
 					topWords[i] = countWords[i] ;
 					topWords[i].size = (percentCount * topWords[i].size / 3) + 10 ;
 				}
 
 				//SD/ Draw the cloud
 				var fill = d3.scale.category20();
-				d3.layout.cloud().size([260, 180])
+				d3.layout.cloud().size([_this.image_rect[0], _this.image_rect[1]])
 					.words(topWords)
 					.padding(5)
 					.rotate(0)
@@ -582,27 +597,33 @@ function Graph(div_id) {
 
 				function draw(words) {
 					d3.select("#topwords_" + data["event_id"])
+						.append("rect")
+							.style("fill", "#f5f5f5")
+							.attr('x', -_this.image_rect[0] / 2)
+							.attr('y', -_this.image_rect[1] / 2 + _this.snap_rect[1] / 2 - 20)
+							.attr("height", _this.image_rect[1]*2)
+							.attr("width", _this.image_rect[0]*2)
+					
+					d3.select("#topwords_" + data["event_id"])
 						.append("g")
-						.attr("transform", function(d, i) {
-							return "translate(130, 90)" ;
-						})
-						.selectAll("text")
-						.data(words)
-						.enter().append("text")
-						.style("font-size", function(d) {
-							return d.size + "px";
-						})
-						.style("font-family", "Impact")
-						.style("fill", function(d, i) {
-							return fill(i);
-						})
-						.attr("text-anchor", "middle")
-						.attr("transform", function(d) {
-							return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-						})
-						.text(function(d) {
-							return d.text;
-						});
+							.attr("transform", "translate(" + (_this.image_rect[0] / 2) + ", " + (_this.image_rect[1] / 2) + ")")
+							.selectAll("text")
+							.data(words)
+							.enter().append("text")
+							.style("font-size", function(d) {
+								return d.size + "px";
+							})
+							.style("font-family", "Impact")
+							.style("fill", function(d, i) {
+								return fill(i);
+							})
+							.attr("text-anchor", "middle")
+							.attr("transform", function(d) {
+								return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+							})
+							.text(function(d) {
+								return d.text;
+							});
 				}
 			},
 			{'transcript_url': transcriptUrl, 'event_id': hyperEventId, 'error_callback': display_graph_error}

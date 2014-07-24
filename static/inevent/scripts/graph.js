@@ -163,21 +163,18 @@ function Graph(div_id) {
 		var _this = this ;
 
 		this.node = this.svg.selectAll(".node").data(this.input_nodes);
-	
+		var drag = this.force.drag().on("dragend", this.dragend) ;
+
 		this.nodeEnter = this.node.enter().append("svg:g");
 		this.nodeEnter
 			.attr("id", function(d) { return "node" + d.id;})
 			.attr("class", "node")
 			.on("click", function(d) {
-				d3.event.stopPropagation();
-				
-				//SD/ Get word cloud
-				if($("#topwords_" + d.id).html() == "")
-					_this.draw_cloud(d.id) ;
-				
 				_this.mouseover(d,"word_cloud_" + d.id,"video_title" + d.id);
 			})
-			.call(this.force.drag); //SD/ Enable Drag&Drop 
+			//SD/ TODO Reactive double click to release node with some good idea
+			//.on("dblclick", this.dblclick)
+			.call(drag); //SD/ Enable Drag&Drop 
 
 		this.defs = this.nodeEnter.append("defs") ;
 
@@ -396,28 +393,28 @@ function Graph(div_id) {
 		
 		this.link = this.svg.selectAll(".link").data(this.input_links);
 			this.linkEnter=this.link.enter().append("line")
-			.attr("class", function(d) {
-				if (d.type == "emotion")
-					{ return "link emotion-type" }
-				else
-					{ return "link content-type" }
-			})
-			.style("stroke-width",function(d) {return  d.weight})
-			.style("stroke", function(d) { 
-				//SD/ Color in red links the emotional link
-				if (d.type == "emotion")
-					{ return "#ff0000" }
+				.attr("class", function(d) {
+					if (d.type == "emotion")
+						{ return "link emotion-type" }
+					else
+						{ return "link content-type" }
+				})
+				.style("stroke-width",function(d) { return d.weight * 2 })
+				.style("stroke", function(d) { 
+					//SD/ Color in red links the emotional link
+					if (d.type == "emotion")
+						{ return "#ff0000" }
 
-				//SD/ Color in blue links of first node only
-				if(d.depth < 2)
-					{ return _this.color.blue }
-				else
-					{ return _this.color.grey }
-			})
-			.attr("x1", function(d) { return d.source.x})
-			.attr("y1", function(d) { return d.source.y})
-			.attr("x2", function(d) { return d.target.x})
-			.attr("y2", function(d) { return d.target.y});
+					//SD/ Color in blue links of first node only
+					if(d.depth < 2)
+						{ return _this.color.blue }
+					else
+						{ return _this.color.grey }
+				})
+				.attr("x1", function(d) { return d.source.x})
+				.attr("y1", function(d) { return d.source.y})
+				.attr("x2", function(d) { return d.target.x})
+				.attr("y2", function(d) { return d.target.y});
 		
 		this.link.exit().remove();
 		//SD/ Push lines to background
@@ -502,7 +499,23 @@ function Graph(div_id) {
 			return false ;
 	}
 	
+	this.dragend = function(d) {
+		d3.select("#rect_node" + d.id).classed("fixed", d.fixed = true);
+	}
+	
+	this.dblclick = function(d) {
+		d.fixed = false ;
+	}
+	
 	this.mouseover = function(d, display_class, title_id){
+		if (d3.event.defaultPrevented) return;
+		
+		d3.event.stopPropagation();
+		
+		//SD/ Get word cloud
+		if($("#topwords_" + d.id).html() == "")
+			this.draw_cloud(d.id) ;
+		
 		if(this.endOfGraph && d != undefined) {
 			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
 
@@ -519,6 +532,8 @@ function Graph(div_id) {
 
 	//SD/ Draw an SVG word cloud
 	this.draw_cloud = function(hyperEventId) {
+		_this = this ;
+	
 		for(var i in this.input_nodes)
 			if(this.input_nodes[i].id == hyperEventId)
 				transcriptUrl = this.input_nodes[i].transcript_url ;
@@ -669,8 +684,16 @@ function Graph(div_id) {
 				position = $('#' + this.div_id).position();
 
 				//SD/ Prepare queue for nodes
-				for(var i=0 ; i < data.length ; i++)
+				for(var i=0 ; i < data.length ; i++) {
 					data[i]['depth'] = 0 ;
+				}
+
+				//SD/ If only one head node, put it fixed in center of graph
+				if(data.length == 1) {
+					data[0]['fixed'] = true ;
+					data[0]['x'] = $("#" + this.div_id + "_container").width() / 2 - 30 ;
+					data[0]['y'] = $("#" + this.div_id + "_container").height() / 2 - 30 ;
+				}
 
 				if(max_size == 0)
 					data = [] ;

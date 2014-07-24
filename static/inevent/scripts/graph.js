@@ -182,7 +182,10 @@ function Graph(div_id) {
 		this.defs.append("rect")
 			.attr("id", function(d) { return "rect_node" + d.id})
 			.style("stroke-width", 4)
-			.style("fill", "white") // Make the nodes hollow looking
+			.attr("class", function(d) {
+				//SD/ Color in blue first node only
+				if(d.depth < 1) { return "primary" } else { return "secondary" }
+			})
 			.attr("height", function(d) {
 				if(d.depth < 1)
 					return _this.orig_rect[1] ;

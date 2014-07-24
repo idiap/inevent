@@ -49,3 +49,12 @@
 	overflow-x:hidden;
 	overflow-y:auto;
 }
+
+rect.primary {
+	fill: #0088cc;
+}
+
+rect.secondary {
+	fill: grey;
+}
+

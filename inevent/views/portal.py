@@ -24,12 +24,12 @@ def portal(request,num_of_events=10):
 	template = 'inevent/portal.html'
 	return render_to_response(template, data, context_instance=RequestContext(request))
 
-def get_hyperevent(request,id,display="list"):
+def get_hyperevent(request,id,display_type="list"):
 	response = get_event(id,False)
 	choices=[(0, 'All'),(1, 'Klewel'), (2, 'Radvision'), (3, 'TED')]
 	form = IneventSearchForm(choices=choices)
 	if response.has_key('id'):
-			data = {'hyperevent':response, 'search_form':form, 'display': display}
+			data = {'hyperevent':response, 'search_form':form, 'display_type': display_type}
 	else:
 			data = {'error':"Something went wrong"}
 	

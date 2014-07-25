@@ -24,7 +24,8 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
 #         if (key=='duration'):
 #             hyperevent['duration'] = event['duration']
         if (key == 'description' and only_basic_info == False):
-            hyperevent['description'] = event['description']
+            if event['description'] is None or len(event['description'])!=0 and event['description'].isspace()==False or event['description']!="None":
+                hyperevent['description'] = event['description']
         elif(key=='id'):
             hyperevent['id'] = event['id'] 
         elif (key == "links" and include_recommendation == True and event['id']):

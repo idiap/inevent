@@ -28,6 +28,7 @@ function Graph(div_id, display_type) {
 	//SD/ Assign functions to tabs
 	$('#' + div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
+	
 
 	
 	this.initVars = function() {
@@ -152,7 +153,8 @@ function Graph(div_id, display_type) {
 
 	this.set_center = function(d) {
 		//SD/ TODO Find a way to load new page with graph by default
-		document.location.href = "/hyperevent/" + d.id + "/graph" ;
+		//document.location.href = "/hyperevent/" + d.id + "/graph" ;
+		document.location.href = "/hyperevent/" + d.id;
 	}
 
 	this.find_node_index = function(node_id) {
@@ -858,7 +860,7 @@ function Queue() {
 
 Graph.prototype.set_graph_tab = function() {
 		//SD/ Switch active button
-		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
+		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_list_tab').removeClass('active') ;
 		$('#' + this.div_id + '_graph_tab').addClass('active') ;
 
@@ -872,7 +874,7 @@ Graph.prototype.set_graph_tab = function() {
 
 Graph.prototype.set_list_tab = function() {
 		//SD/ Switch active button
-		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
+		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
 		$('#' + this.div_id + '_list_tab').addClass('active') ;
 

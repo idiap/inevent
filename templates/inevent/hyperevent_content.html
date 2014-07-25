@@ -45,9 +45,9 @@
 			<div class="col-fluid span9">
 				{% if hyperevent.description %}
 					{{ hyperevent.description }}
-				{% elif  hyperevent.tags %}
-				    {{ hyperevent.tags }}	
-				{% else  %}
+				<!--{% elif  hyperevent.tags %}
+				    {{ hyperevent.tags }}	-->
+				{% else  %} 
 				    
 				{% endif  %}    
 				<ul id="graph_event_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
@@ -118,8 +118,10 @@
 	$(document).ready(function() {
 		INCREMENT_ID["graph_event"] = 0 ;
 		div_id = "graph_event" ;
-		var display = "{{ display_type}}".replace(/&quot;/g,"\"");
-
+		if ("{{display_type}}"!=undefined)
+			var display = "{{ display_type}}".replace(/&quot;/g,"\"");
+        else
+        	var display = "list"
 		graphs[div_id] = new Graph(div_id, display) ;
 		/*When the variable is returned by Django it turns all quotes into &quot;. Using {{someDjangoVariable|safe}} causes a Javascript error. */	
 		

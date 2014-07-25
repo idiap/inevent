@@ -57,7 +57,3 @@ rect.primary {
 rect.secondary {
 	fill: grey;
 }
-
-rect.fixed {
-	fill: #f00;
-}

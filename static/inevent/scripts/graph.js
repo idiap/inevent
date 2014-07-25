@@ -767,6 +767,7 @@ function Graph(div_id) {
 		//SD/ Switch elements
 		$('#' + this.div_id).show() ;
 		$('#' + this.div_id + '_list').hide() ;
+		$('.side_block').hide() ;
 
 		$('#' + this.div_id + '_params').show() ;
 	}
@@ -779,6 +780,7 @@ function Graph(div_id) {
 		//SD/ Switch elements
 		$('#' + this.div_id + '_list').show() ;
 		$('#' + this.div_id).hide() ;
+		$('.side_block_').show() ;
 
 		$('#' + this.div_id + '_params').hide() ;
 	}

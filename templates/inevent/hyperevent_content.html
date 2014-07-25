@@ -62,19 +62,11 @@
 				</div>
 			</div>
 
-			<div class="col-fluid span3 well">
+			<div id="graph_event_params" class="graph_params span3 col-fluid well">
+				{% include "inevent/graph_params.html" with div_id="graph_event" %}
+			</div>
 
-
-
-				<div id="test">
-				</div>
-
-
-
-				<div id="graph_event_params" class="graph_params">
-					{% include "inevent/graph_params.html" with div_id="graph_event" %}
-				</div>
-
+			<div class="col-fluid span3 well side_block">
 				<div class="row-fluid" id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id %}</div>
 			</div>
 		</div>

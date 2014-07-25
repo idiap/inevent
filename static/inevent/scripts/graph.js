@@ -17,7 +17,8 @@ function Graph(div_id) {
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 
 	this.initVars = function() {
-		this.small_rect = [15.0, 15.0] ;
+		this.tiny_rect = [15.0, 15.0] ;
+		this.small_rect = [75.0, 56.0] ;
 		this.orig_rect = [15.0, 15.0] ;
 		this.big_rect = [375.0, 300] ;
 		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 120] ;
@@ -137,7 +138,7 @@ function Graph(div_id) {
 
 	this.set_center = function(d) {
 		//SD/ TODO Find a way to load new page with graph by default
-		document.location.href = "/hyperevent/" + d.id;
+		document.location.href = "/hyperevent/" + d.id + "/graph" ;
 	}
 
 	this.find_node_index = function(node_id) {
@@ -166,6 +167,7 @@ function Graph(div_id) {
 		var drag = this.force.drag().on("dragend", this.dragend) ;
 
 		this.nodeEnter = this.node.enter().append("svg:g");
+		
 		this.nodeEnter
 			.attr("id", function(d) { return "node" + d.id;})
 			.attr("class", "node")
@@ -175,6 +177,15 @@ function Graph(div_id) {
 			//SD/ TODO Reactive double click to release node with some good idea
 			//.on("dblclick", this.dblclick)
 			.call(drag); //SD/ Enable Drag&Drop 
+
+			/*SD/ Afficher le titre de la vidéo à côté du noeud
+			.append("svg:text")
+				.attr("x", "5px")
+				.attr("y", "0px")
+				.attr("dx", 12)
+				.attr("dy", ".35em")
+				.text(function(d){return d.title;}) ;
+			*/
 
 		this.defs = this.nodeEnter.append("defs") ;
 
@@ -186,17 +197,28 @@ function Graph(div_id) {
 				//SD/ Color in blue first node only
 				if(d.depth < 1) { return "primary" } else { return "secondary" }
 			})
+			.style("fill", function(d) {
+				if(_this.max_size < 21) { return "black"; }
+			})
 			.attr("height", function(d) {
-				if(d.depth < 1)
-					return _this.orig_rect[1] ;
-				else
-					return _this.small_rect[1] ;
+				//if(d.depth < 1)
+				//	return _this.orig_rect[1] ;
+				//else {
+					if(_this.max_size < 21)
+						return _this.small_rect[1] ;
+					else
+						return _this.tiny_rect[1] ;
+				//}
 			})
 			.attr("width", function(d) {
-				if(d.depth < 1)
-					return _this.orig_rect[0] ;
-				else
-					return _this.small_rect[0] ;
+				//if(d.depth < 1)
+				//	return _this.orig_rect[0] ;
+				//else {
+					if(_this.max_size < 21)
+						return _this.small_rect[0] ;
+					else
+						return _this.tiny_rect[0] ;
+				//}
 			})
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
@@ -206,58 +228,65 @@ function Graph(div_id) {
 			})
 			.attr("rx", "5")
 			.attr('x', function(d) {
-				if(d.depth < 1)
-					return -_this.orig_rect[0] / 2 ;
-				else
-					return -_this.small_rect[0] / 2 ;
+				//if(d.depth < 1)
+				//	return -_this.orig_rect[0] / 2 ;
+				//else {
+					if(_this.max_size < 21)
+						return -_this.small_rect[0] / 2 ;
+					else
+						return -_this.tiny_rect[0] / 2 ;
+				//}
 			})
 			.attr('y', function(d) {
-				if(d.depth < 1)
-					return -_this.orig_rect[1] / 2 ;
-				else
-					return -_this.small_rect[1] / 2 ;
-			})
+				//if(d.depth < 1)
+				//	return -_this.orig_rect[1] / 2 ;
+				//else {
+					if(_this.max_size < 21)
+						return -_this.small_rect[1] / 2 ;
+					else
+						return -_this.tiny_rect[1] / 2 ;
+				//}
+			}) ;
 
 		this.nodeEnter.append("use")
 			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
-		/*
-		this.defs.append("svg:clipPath")
-			.attr("id", function(d) { return "clip" + d.id})
-			.append("use")
-			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
+		if(this.max_size < 21) {
+			this.defs.append("svg:clipPath")
+				.attr("id", function(d) { return "clip" + d.id})
+				.append("use")
+				.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
-
-		this.nodeEnter.append("image")
-			.attr("id", function(d) { return "image" + d.id})
-			.attr("xlink:href", function(d) { return d.snapshot_url })
-			.attr("height", function(d) {
-				if(d.depth < 1)
-					return _this.orig_rect[1] - 10 ;
-				else
-					return _this.small_rect[1] - 10 ;
-			})
-			.attr("width", function(d) {
-				if(d.depth < 1)
-					return _this.orig_rect[0] - 10 ;
-				else
-					return _this.small_rect[0] - 10 ;
-			})
-			.attr("class", "graph_images")
-			.attr('x', function(d) {
-				if(d.depth < 1)
-					return -_this.orig_rect[0] / 2 ;
-				else
-					return -_this.small_rect[0] / 2 ;
-			})
-			.attr('y', function(d) {
-				if(d.depth < 1)
-					return -_this.orig_rect[1] / 2 ;
-				else
-					return -_this.small_rect[1] / 2 ;
-			})
-			.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
-		*/
+			this.nodeEnter.append("image")
+				.attr("id", function(d) { return "image" + d.id})
+				.attr("xlink:href", function(d) { return d.snapshot_url })
+				.attr("height", function(d) {
+					//if(d.depth < 1)
+					//	return _this.orig_rect[1] - 10 ;
+					//else
+						return _this.small_rect[1] - 4 ;
+				})
+				.attr("width", function(d) {
+					//if(d.depth < 1)
+					//	return _this.orig_rect[0] - 10 ;
+					//else
+						return _this.small_rect[0] - 4 ;
+				})
+				.attr("class", "graph_images")
+				.attr('x', function(d) {
+					//if(d.depth < 1)
+					//	return -_this.orig_rect[0] / 2 ;
+					//else
+						return -_this.small_rect[0] / 2 + 2 ;
+				})
+				.attr('y', function(d) {
+					//if(d.depth < 1)
+					//	return -_this.orig_rect[1] / 2 ;
+					//else
+						return -_this.small_rect[1] / 2 + 2 ;
+				})
+				.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
+		}
 		
 		//SD/ Define node picture ENDS =========================================
 
@@ -575,7 +604,8 @@ function Graph(div_id) {
 						countWords.push({ text: allWords[i], size: 1 }) ;
 				}
 
-				//SD/TODO Remove common words depending language
+				//SD/ Remove common words
+				//SD/ TODO choose dict depending on language ?
 				dict = englishCommons ;
 				for(var i in dict) {
 					for(var j in countWords) {
@@ -613,7 +643,7 @@ function Graph(div_id) {
 				function draw(words) {
 					d3.select("#topwords_" + data["event_id"])
 						.append("rect")
-							.style("fill", "#f5f5f5")
+							.style("fill", "#dbdbdb")
 							.attr('x', -_this.image_rect[0] / 2)
 							.attr('y', -_this.image_rect[1] / 2 + _this.snap_rect[1] / 2 - 20)
 							.attr("height", _this.image_rect[1]*2)

@@ -6,30 +6,24 @@ function Graph(div_id, display_type) {
 	this.div_id = div_id ;
 	this.from = null ;
 
-	
-    display_type = typeof display_type !== 'undefined' ? display_type : "list"
-	
+	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
+
 	//SD/ Display tabs
 	$('#' + div_id + '_tabs').html(
 		'<li id="' + div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
 		'<li id="' + div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>'
-	)
-	
-	// choosing between a list and a graph view
-	// choosing between a list and a graph view
-	if(display_type == "graph") {
-		this.set_graph_tab()
-	}
-	else{
-		this.set_list_tab()
-
-	}
+	) ;
 	
 	//SD/ Assign functions to tabs
 	$('#' + div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 	
-
+	// choosing between a list and a graph view
+	// choosing between a list and a graph view
+	if(display_type == "graph")
+		this.set_graph_tab() ;
+	else
+		this.set_list_tab() ;
 	
 	this.initVars = function() {
 		this.tiny_rect = [15.0, 15.0] ;
@@ -50,6 +44,10 @@ function Graph(div_id, display_type) {
 		this.excluded = [] ; //SD/ to store node who already displays neighbours
 		this.input_links = [] ;
 
+		//SD/ Define some graph level depending on max nodes
+		this.graphLevel = [] ;
+		this.graphLevel[1] = 21 ;
+
 		this.svg = d3.select("#" + this.div_id).append("svg")
 			.attr("width", this.graph_width)
 			.attr("height", this.graph_height);
@@ -59,6 +57,23 @@ function Graph(div_id, display_type) {
 						grey:"grey"} ;
 
 		this.endOfGraph = false ;
+
+		//SD/ Automatically ajust distance between node depending on graph size
+		if(this.max_size < this.graphLevel[1])
+			this.distanceBetweenNodes = 200 ;
+		else
+			this.distanceBetweenNodes = 100 ;
+
+		//SD/ Initialize the graph
+		this.force = d3.layout.force()
+			.linkDistance(this.distanceBetweenNodes)
+			.charge(-50)
+			.gravity(0.01)
+			.nodes(this.input_nodes)
+			.links(this.input_links)
+			.size([this.graph_width, this.graph_height])
+			.on("tick", this.boundedTick.bind(this))
+			.start();
 	}
 
 	this.displaySnapNode = function() {
@@ -85,29 +100,10 @@ function Graph(div_id, display_type) {
 		this.max_depth = max_depth ;
 		this.max_neighbours = max_neighbours ;
 
-		this.graphLevel = [] ;
-		this.graphLevel[1] = 21 ;
-
-		//SD/ Automatically ajust distance between node depending on graph size
-		if(this.max_size < this.graphLevel[1])
-			this.distanceBetweenNodes = 200 ;
-		else
-			this.distanceBetweenNodes = 100 ;
-
 		//SD/ Set optional parameters with default values in local vars
 		this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 
 		this.initVars();
-		
-		this.force = d3.layout.force()
-			.linkDistance(this.distanceBetweenNodes)
-			.charge(-50)
-			.gravity(0.01)
-			.nodes(this.input_nodes)
-			.links(this.input_links)
-			.size([this.graph_width, this.graph_height])
-			.on("tick", this.boundedTick.bind(this))
-			.start();
 
 		this.displayLinks();
 		this.displayNodes();
@@ -900,7 +896,7 @@ Graph.prototype.set_list_tab = function() {
 		//SD/ Switch elements
 		$('#' + this.div_id + '_list').show() ;
 		$('#' + this.div_id).hide() ;
-		$('.side_block_').show() ;
+		$('.side_block').show() ;
 
 		$('#' + this.div_id + '_params').hide() ;
 	}

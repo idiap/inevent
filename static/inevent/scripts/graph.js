@@ -63,6 +63,9 @@ function Graph(div_id) {
 		this.max_depth = max_depth ;
 		this.max_neighbours = max_neighbours ;
 
+		this.graphLevel = [] ;
+		this.graphLevel[1] = 21 ;
+
 		//SD/ Set optional parameters with default values in local vars
 		this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 
@@ -198,13 +201,13 @@ function Graph(div_id) {
 				if(d.depth < 1) { return "primary" } else { return "secondary" }
 			})
 			.style("fill", function(d) {
-				if(_this.max_size < 21) { return "black"; }
+				if(_this.max_size < _this.graphLevel[1]) { return "black"; }
 			})
 			.attr("height", function(d) {
 				//if(d.depth < 1)
 				//	return _this.orig_rect[1] ;
 				//else {
-					if(_this.max_size < 21)
+					if(_this.max_size < _this.graphLevel[1])
 						return _this.small_rect[1] ;
 					else
 						return _this.tiny_rect[1] ;
@@ -214,7 +217,7 @@ function Graph(div_id) {
 				//if(d.depth < 1)
 				//	return _this.orig_rect[0] ;
 				//else {
-					if(_this.max_size < 21)
+					if(_this.max_size < _this.graphLevel[1])
 						return _this.small_rect[0] ;
 					else
 						return _this.tiny_rect[0] ;
@@ -231,7 +234,7 @@ function Graph(div_id) {
 				//if(d.depth < 1)
 				//	return -_this.orig_rect[0] / 2 ;
 				//else {
-					if(_this.max_size < 21)
+					if(_this.max_size < _this.graphLevel[1])
 						return -_this.small_rect[0] / 2 ;
 					else
 						return -_this.tiny_rect[0] / 2 ;
@@ -241,7 +244,7 @@ function Graph(div_id) {
 				//if(d.depth < 1)
 				//	return -_this.orig_rect[1] / 2 ;
 				//else {
-					if(_this.max_size < 21)
+					if(_this.max_size < _this.graphLevel[1])
 						return -_this.small_rect[1] / 2 ;
 					else
 						return -_this.tiny_rect[1] / 2 ;
@@ -251,7 +254,7 @@ function Graph(div_id) {
 		this.nodeEnter.append("use")
 			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
-		if(this.max_size < 21) {
+		if(this.max_size < this.graphLevel[1]) {
 			this.defs.append("svg:clipPath")
 				.attr("id", function(d) { return "clip" + d.id})
 				.append("use")

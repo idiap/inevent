@@ -43,13 +43,19 @@
 
 		<div class="row-fluid">
 			<div class="col-fluid span9">
-				{% if hyperevent.description %}
+				{% if hyperevent.description or hyperevent.tags %}
 					{{ hyperevent.description }}
-				<!--{% elif  hyperevent.tags %}
-				    {{ hyperevent.tags }}	-->
-				{% else  %} 
-				    
-				{% endif  %}    
+					{% if hyperevent.description and hyperevent.tags %}
+						<br/>
+					{% endif %}
+					Tags: {{ hyperevent.tags }}
+				{% endif %}
+				
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="col-fluid span9">
 				<ul id="graph_event_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
 			</div>
 		</div>

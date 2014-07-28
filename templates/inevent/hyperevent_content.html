@@ -1,5 +1,5 @@
 {% extends "inevent/base.html" %}
- 
+
 {% block extrastyle_inevent_page %}
 	{% load dajaxice_templatetags %}
 	<meta charset="utf-8">
@@ -43,7 +43,13 @@
 
 		<div class="row-fluid">
 			<div class="col-fluid span9">
-				{{ hyperevent.description }}
+				{% if hyperevent.description %}
+					{{ hyperevent.description }}
+				<!--{% elif  hyperevent.tags %}
+				    {{ hyperevent.tags }}	-->
+				{% else  %} 
+				    
+				{% endif  %}    
 				<ul id="graph_event_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
 			</div>
 		</div>
@@ -74,7 +80,9 @@
 </div>
 
 
+
 <script type="text/javascript">
+	
 	/*	$(document).ready(function() {
 		if ($("#toggle_transcript").length>0){
 			Dajaxice.inevent.get_transcript(display_transcript, {'transcript_url': "{{ hyperevent.transcript_url }}" },{'error_callback': 'error'});
@@ -109,16 +117,21 @@
 
 	$(document).ready(function() {
 		INCREMENT_ID["graph_event"] = 0 ;
-
 		div_id = "graph_event" ;
-		graphs[div_id] = new Graph(div_id) ;
+		if ("{{display_type}}"!=undefined)
+			var display = "{{ display_type}}".replace(/&quot;/g,"\"");
+        else
+        	var display = "list"
+		graphs[div_id] = new Graph(div_id, display) ;
+		/*When the variable is returned by Django it turns all quotes into &quot;. Using {{someDjangoVariable|safe}} causes a Javascript error. */	
+		
 
 		$("#" + div_id + "_form .user_neighbours").val(3) ;
 		$("#" + div_id + "_form .user_depth").val(2) ;
 		$("#" + div_id + "_form .user_size").val(10) ;
-
-
-		graphs[div_id].start_graph({{ hyperevent.id }}, true) ;
+		var id = {{ hyperevent.id }}
+		if (id!=undefined)
+			graphs[div_id].start_graph(id, true) ;
 	});
 </script>
 

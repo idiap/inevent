@@ -1,21 +1,36 @@
 var INCREMENT_ID = Array() ; //SD/ Unique ID for each graph object call needed to stop callbak from old objects
 
 // CLASS WIDGET MANAGER
-function Graph(div_id) {
-	_this = this ;
+function Graph(div_id, display_type) {
+	var _this = this ;
 	this.div_id = div_id ;
 	this.from = null ;
 
+	
+    display_type = typeof display_type !== 'undefined' ? display_type : "list"
+	
 	//SD/ Display tabs
 	$('#' + div_id + '_tabs').html(
-		'<li id="' + div_id + '_list_tab" class="active"><a><i class="icon-th-list"></i> View as List</a></li>' +
+		'<li id="' + div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
 		'<li id="' + div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>'
 	)
+	
+	// choosing between a list and a graph view
+	// choosing between a list and a graph view
+	if(display_type == "graph") {
+		this.set_graph_tab()
+	}
+	else{
+		this.set_list_tab()
 
+	}
+	
 	//SD/ Assign functions to tabs
 	$('#' + div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
+	
 
+	
 	this.initVars = function() {
 		this.tiny_rect = [15.0, 15.0] ;
 		this.small_rect = [75.0, 56.0] ;
@@ -154,7 +169,8 @@ function Graph(div_id) {
 
 	this.set_center = function(d) {
 		//SD/ TODO Find a way to load new page with graph by default
-		document.location.href = "/hyperevent/" + d.id + "/graph" ;
+		//document.location.href = "/hyperevent/" + d.id + "/graph" ;
+		document.location.href = "/hyperevent/" + d.id;
 	}
 
 	this.find_node_index = function(node_id) {
@@ -807,32 +823,6 @@ function Graph(div_id) {
 			display_graph_error(e) ;
 		}
 	}
-
-	this.set_graph_tab = function() {
-		//SD/ Switch active button
-		$('#' + this.div_id + '_list_tab').removeClass('active') ;
-		$('#' + this.div_id + '_graph_tab').addClass('active') ;
-
-		//SD/ Switch elements
-		$('#' + this.div_id).show() ;
-		$('#' + this.div_id + '_list').hide() ;
-		$('.side_block').hide() ;
-
-		$('#' + this.div_id + '_params').show() ;
-	}
-
-	this.set_list_tab = function() {
-		//SD/ Switch active button
-		$('#' + this.div_id + '_graph_tab').removeClass('active') ;
-		$('#' + this.div_id + '_list_tab').addClass('active') ;
-
-		//SD/ Switch elements
-		$('#' + this.div_id + '_list').show() ;
-		$('#' + this.div_id).hide() ;
-		$('.side_block_').show() ;
-
-		$('#' + this.div_id + '_params').hide() ;
-	}
 	
 	this.start_graph = function(from, firstRun) {
 		_this = this ;
@@ -886,6 +876,35 @@ function Queue() {
 		return this.queue.length ;
 	}
 }
+
+Graph.prototype.set_graph_tab = function() {
+		//SD/ Switch active button
+		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
+			$('#' + this.div_id + '_list_tab').removeClass('active') ;
+		$('#' + this.div_id + '_graph_tab').addClass('active') ;
+
+		//SD/ Switch elements
+		$('#' + this.div_id).show() ;
+		$('#' + this.div_id + '_list').hide() ;
+		$('.side_block').hide() ;
+
+		$('#' + this.div_id + '_params').show() ;
+	}
+
+Graph.prototype.set_list_tab = function() {
+		//SD/ Switch active button
+		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
+			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
+		$('#' + this.div_id + '_list_tab').addClass('active') ;
+
+		//SD/ Switch elements
+		$('#' + this.div_id + '_list').show() ;
+		$('#' + this.div_id).hide() ;
+		$('.side_block_').show() ;
+
+		$('#' + this.div_id + '_params').hide() ;
+	}
+	
 
 /*SD/ ==========================================================================
 Function called to display graph and get data

@@ -46,6 +46,13 @@ function Graph(div_id) {
 		this.endOfGraph = false ;
 	}
 
+	this.displaySnapNode = function() {
+		if(this.max_size < this.graphLevel[1])
+			return true ;
+		else
+			return false ;
+	}
+
 	this.loadGraph = function(data, div_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
 		INCREMENT_ID[this.div_id]++ ;
 		//console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
@@ -223,7 +230,7 @@ function Graph(div_id) {
 				//if(d.depth < 1)
 				//	return _this.orig_rect[0] ;
 				//else {
-					if(_this.max_size < _this.graphLevel[1])
+					if(_this.displaySnapNode())
 						return _this.small_rect[0] ;
 					else
 						return _this.tiny_rect[0] ;
@@ -240,7 +247,7 @@ function Graph(div_id) {
 				//if(d.depth < 1)
 				//	return -_this.orig_rect[0] / 2 ;
 				//else {
-					if(_this.max_size < _this.graphLevel[1])
+					if(_this.displaySnapNode())
 						return -_this.small_rect[0] / 2 ;
 					else
 						return -_this.tiny_rect[0] / 2 ;
@@ -250,7 +257,7 @@ function Graph(div_id) {
 				//if(d.depth < 1)
 				//	return -_this.orig_rect[1] / 2 ;
 				//else {
-					if(_this.max_size < _this.graphLevel[1])
+					if(_this.displaySnapNode())
 						return -_this.small_rect[1] / 2 ;
 					else
 						return -_this.tiny_rect[1] / 2 ;
@@ -260,37 +267,40 @@ function Graph(div_id) {
 		this.nodeEnter.append("use")
 			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
-		if(this.max_size < this.graphLevel[1]) {
+		//SD/ If node display event Snapshot
+		if(this.displaySnapNode()) {
+			//SD/ Define clip for a rounded picture
 			this.defs.append("svg:clipPath")
 				.attr("id", function(d) { return "clip" + d.id})
 				.append("use")
 				.attr("xlink:href", function(d) { return "#rect_node" + d.id});
 
+			//SD/ Insert the picture and link to clip
 			this.nodeEnter.append("image")
 				.attr("id", function(d) { return "image" + d.id})
 				.attr("xlink:href", function(d) { return d.snapshot_url })
 				.attr("height", function(d) {
 					//if(d.depth < 1)
-					//	return _this.orig_rect[1] - 10 ;
+					//	return _this.orig_rect[1] - 4 ;
 					//else
 						return _this.small_rect[1] - 4 ;
 				})
 				.attr("width", function(d) {
 					//if(d.depth < 1)
-					//	return _this.orig_rect[0] - 10 ;
+					//	return _this.orig_rect[0] - 4 ;
 					//else
 						return _this.small_rect[0] - 4 ;
 				})
 				.attr("class", "graph_images")
 				.attr('x', function(d) {
 					//if(d.depth < 1)
-					//	return -_this.orig_rect[0] / 2 ;
+					//	return -_this.orig_rect[0] / 2 + 2 ;
 					//else
 						return -_this.small_rect[0] / 2 + 2 ;
 				})
 				.attr('y', function(d) {
 					//if(d.depth < 1)
-					//	return -_this.orig_rect[1] / 2 ;
+					//	return -_this.orig_rect[1] / 2 + 2 ;
 					//else
 						return -_this.small_rect[1] / 2 + 2 ;
 				})

@@ -66,13 +66,19 @@ function Graph(div_id) {
 		this.graphLevel = [] ;
 		this.graphLevel[1] = 21 ;
 
+		//SD/ Automatically ajust distance between node depending on graph size
+		if(this.max_size < this.graphLevel[1])
+			this.distanceBetweenNodes = 200 ;
+		else
+			this.distanceBetweenNodes = 100 ;
+
 		//SD/ Set optional parameters with default values in local vars
 		this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 
 		this.initVars();
 		
 		this.force = d3.layout.force()
-			.linkDistance(100)
+			.linkDistance(this.distanceBetweenNodes)
 			.charge(-50)
 			.gravity(0.01)
 			.nodes(this.input_nodes)

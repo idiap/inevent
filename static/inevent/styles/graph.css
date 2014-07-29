@@ -57,3 +57,7 @@ rect.primary {
 rect.secondary {
 	fill: grey;
 }
+
+.progress {
+	margin-bottom:0px;
+}

@@ -112,6 +112,8 @@ function Graph(div_id, display_type) {
 	this.updateGraph = function(new_data) {
 		_this = this ;
 		
+		$("#" + this.div_id + "_progress").css("width", this.input_nodes.length * 100 / this.max_size + "%") ;
+		
 		//SD/ Merge graphed nodes with new nodes removing duplicates
 		if(typeof new_data['nodes'] !== undefined && new_data['nodes'] != null) {
 			if(new_data['nodes'].length > 0) {
@@ -714,6 +716,9 @@ function Graph(div_id, display_type) {
 		}
 		*/
 
+		$("#" + this.div_id + "_progress").css("width", "100%") ;
+		$("#" + this.div_id + "_progress").parent().animate({height : 0}) ;
+
 		console.log("End of queue after exclusion with " + this.input_nodes.length + " nodes and " + this.input_links.length + " links") ;
 
 		//SD/ Changing node position to back or front have to be done at end of graph
@@ -759,7 +764,9 @@ function Graph(div_id, display_type) {
 				if(max_size == 0)
 					data = [] ;
 
-				this.loadGraph(data, this.div_id, max_size, max_depth, max_neighbours, $("#" + this.div_id + "_container").width(), 700, position['top'], position['left'], video_switch);
+				//SD/ Erease graph container and draw graph
+				$('#' + this.div_id).html('<div>Navigate through similar event</div><div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>') ;
+				this.loadGraph(data, $("#" + this.div_id + "_container").width());
 
 				if(max_size > 0) {
 					this.addElement(data)
@@ -900,7 +907,6 @@ Graph.prototype.set_list_tab = function() {
 
 		$('#' + this.div_id + '_params').hide() ;
 	}
-	
 
 /*SD/ ==========================================================================
 Function called to display graph and get data

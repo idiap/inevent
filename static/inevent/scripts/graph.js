@@ -6,6 +6,18 @@ function Graph(div_id, display_type) {
 	this.div_id = div_id ;
 	this.from = null ;
 
+	this.graph_height = 700 ;
+
+	//SD/ Set node sizes
+	this.tiny_rect = [15.0, 15.0] ;
+	this.small_rect = [75.0, 56.0] ;
+	this.orig_rect = [15.0, 15.0] ;
+	this.big_rect = [375.0, 300] ;
+
+	//SD/ Define some graph level depending on max nodes
+	this.graphLevel = [] ;
+	this.graphLevel[1] = 21 ;
+
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
 	//SD/ Display tabs
@@ -24,18 +36,25 @@ function Graph(div_id, display_type) {
 		this.set_graph_tab() ;
 	else
 		this.set_list_tab() ;
-	
+
+	this.nodeWidth = function () {
+		if(this.max_size < this.graphLevel[1])
+			return this.small_rect[0] ;
+		else
+			return this.tiny_rect[0] ;
+	}
+
+	this.nodeHeight = function () {
+		if(this.max_size < this.graphLevel[1])
+			return this.small_rect[1] ;
+		else
+			return this.tiny_rect[1] ;
+	}
+
 	this.initVars = function() {
-		this.tiny_rect = [15.0, 15.0] ;
-		this.small_rect = [75.0, 56.0] ;
-		this.orig_rect = [15.0, 15.0] ;
-		this.big_rect = [375.0, 300] ;
+		//SD/ Set pcitures sizes
 		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 120] ;
 		this.snap_rect = [300 / 4, 250 / 4] ;
-
-		this.margin = {top: 0, right: 0, bottom: 0, left: 0} ;
-		this.graph_width = this.width - this.margin.left - this.margin.right ;
-		this.graph_height = this.height - this.margin.top - this.margin.bottom ;
 
 		this.graph_top = this.top;
 		this.graph_left = this.left;
@@ -43,10 +62,6 @@ function Graph(div_id, display_type) {
 		this.queue = new Queue() ;
 		this.excluded = [] ; //SD/ to store node who already displays neighbours
 		this.input_links = [] ;
-
-		//SD/ Define some graph level depending on max nodes
-		this.graphLevel = [] ;
-		this.graphLevel[1] = 21 ;
 
 		this.svg = d3.select("#" + this.div_id).append("svg")
 			.attr("width", this.graph_width)
@@ -83,25 +98,13 @@ function Graph(div_id, display_type) {
 			return false ;
 	}
 
-	this.loadGraph = function(data, div_id, max_size, max_depth, max_neighbours, width, height, top, left, video_switch) {
+	this.loadGraph = function(data, width) {
 		INCREMENT_ID[this.div_id]++ ;
 		//console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
 		this.increment_id = INCREMENT_ID[this.div_id] ;
 		
 		//SD/ Set parameters in local vars
 		this.input_nodes = data ;
-
-		this.height = height ;
-		this.width = width ;
-		this.top = top ;
-		this.left = left ;
-		
-		this.max_size = max_size ;
-		this.max_depth = max_depth ;
-		this.max_neighbours = max_neighbours ;
-
-		//SD/ Set optional parameters with default values in local vars
-		this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
 
 		this.initVars();
 
@@ -486,15 +489,15 @@ function Graph(div_id, display_type) {
 	this.boundedTick = function() {
 		node = this.svg.selectAll(".node");
 		link = this.svg.selectAll(".link");
-		var g = this;
+		var _this = this ;
 
 		node.attr("cx", function(d) { return d.x; })
 		node.attr("cy", function(d) { return d.y; })
 
 		//SD/ Comment this to remove boxe limitation to draw
-		node.attr("cx", function(d) { return d.x = Math.max(g.small_rect[0], Math.min(g.graph_width - g.small_rect[0], d.x)); })
-		node.attr("cy", function(d) { return d.y = Math.max(g.small_rect[1] - 10, Math.min(g.graph_height - g.small_rect[1] + 10, d.y)); })
-		
+		node.attr("cx", function(d) { return d.x = Math.max(_this.nodeWidth() / 2 + 2, Math.min(_this.graph_width - _this.nodeWidth() / 2 - 2, d.x)); }) ;
+		node.attr("cy", function(d) { return d.y = Math.max(_this.nodeHeight() / 2 + 2, Math.min(_this.graph_height - _this.nodeHeight() / 2 - 2, d.y)); }) ;
+
 		link.attr("x1", function(d) { return d.source.x; })
 			.attr("y1", function(d) { return d.source.y; })
 			.attr("x2", function(d) { return d.target.x; })
@@ -525,7 +528,7 @@ function Graph(div_id, display_type) {
 	this.setWidth = function(new_width) {
 		this.width = new_width ;
 		if (this.margin!=undefined) {
-			this.graph_width = this.width - this.margin.left - this.margin.right ;
+			this.graph_width = this.width - (19 * 2) ;
 		
 			this.svg.attr("width", this.graph_width) ;
 			this.force.start();
@@ -738,16 +741,20 @@ function Graph(div_id, display_type) {
 		{
 			var _this = this ;
 
-			video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
-			max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 3;
-			max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
-			max_size = typeof max_size !== 'undefined' ? max_size : 10;
+			this.video_switch = typeof video_switch !== 'undefined' ? video_switch : false;
+			this.max_neighbours = typeof max_neighbours !== 'undefined' ? max_neighbours : 3;
+			this.max_depth = typeof max_depth !== 'undefined' ? max_depth : 2;
+			this.max_size = typeof max_size !== 'undefined' ? max_size : 10;
 
 			if(data.length > 0)
 			{
 				//SD/ Create first graph without any data
 				$('#' + this.div_id).html("");
 				position = $('#' + this.div_id).position();
+				this.top = position['top'] ;
+				this.left = position['top'] ;
+
+				this.graph_width = $("#" + this.div_id + "_container").width() - (19 * 2) ;
 
 				//SD/ Prepare queue for nodes
 				for(var i=0 ; i < data.length ; i++) {
@@ -757,8 +764,8 @@ function Graph(div_id, display_type) {
 				//SD/ If only one head node, put it fixed in center of graph
 				if(data.length == 1) {
 					data[0]['fixed'] = true ;
-					data[0]['x'] = $("#" + this.div_id + "_container").width() / 2 - 30 ;
-					data[0]['y'] = $("#" + this.div_id + "_container").height() / 2 - 30 ;
+					data[0]['x'] = (this.graph_width - this.nodeWidth()) / 2 ;
+					data[0]['y'] = (this.graph_height - this.nodeHeight()) / 2 ;
 				}
 
 				if(max_size == 0)

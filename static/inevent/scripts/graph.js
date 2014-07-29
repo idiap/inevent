@@ -22,8 +22,10 @@ function Graph(div_id, display_type) {
 
 	//SD/ Display tabs
 	$('#' + div_id + '_tabs').html(
-		'<li id="' + div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
-		'<li id="' + div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>'
+		'<ul class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;">' +
+			'<li id="' + div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
+			'<li id="' + div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>' +
+		'</ul>'
 	) ;
 	
 	//SD/ Assign functions to tabs
@@ -31,7 +33,7 @@ function Graph(div_id, display_type) {
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 	
 	// choosing between a list and a graph view
-	// choosing between a list and a graph view
+
 	if(display_type == "graph")
 		this.set_graph_tab() ;
 	else
@@ -750,8 +752,6 @@ function Graph(div_id, display_type) {
 
 			if(data.length > 0)
 			{
-				//SD/ Create first graph without any data
-				$('#' + this.div_id).html("");
 				position = $('#' + this.div_id).position();
 				this.top = position['top'] ;
 				this.left = position['top'] ;
@@ -770,6 +770,7 @@ function Graph(div_id, display_type) {
 					data[0]['y'] = (this.graph_height - this.nodeHeight()) / 2 ;
 				}
 
+				//SD/ If max_size is zero, init a data table
 				if(max_size == 0)
 					data = [] ;
 

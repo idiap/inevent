@@ -59,7 +59,7 @@
 
 		<div class="row-fluid">
 			<div class="col-fluid span9">
-				<ul id="graph_event_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
+				<div id="graph_event_tabs"></div>
 			</div>
 		</div>
 
@@ -127,19 +127,21 @@
 	$(document).ready(function() {
 		INCREMENT_ID["graph_event"] = 0 ;
 		div_id = "graph_event" ;
-		if ("{{display_type}}"!=undefined)
-			var display = "{{ display_type}}".replace(/&quot;/g,"\"");
-        else
-        	var display = "list"
+
+		if("{{display_type}}" != undefined)
+			var display = "{{ display_type }}".replace(/&quot;/g,"\"") ;
+		else
+			var display = "list" ;
+
 		graphs[div_id] = new Graph(div_id, display) ;
-		/*When the variable is returned by Django it turns all quotes into &quot;. Using {{someDjangoVariable|safe}} causes a Javascript error. */	
-		
+		/*When the variable is returned by Django it turns all quotes into &quot;. Using {{someDjangoVariable|safe}} causes a Javascript error. */
 
 		$("#" + div_id + "_form .user_neighbours").val(3) ;
 		$("#" + div_id + "_form .user_depth").val(2) ;
 		$("#" + div_id + "_form .user_size").val(10) ;
-		var id = {{ hyperevent.id }}
-		if (id!=undefined)
+		
+		var id = {{ hyperevent.id }} ;
+		if(id != undefined)
 			graphs[div_id].start_graph(id, true) ;
 	});
 </script>

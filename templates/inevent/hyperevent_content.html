@@ -25,7 +25,10 @@
 	<div class="container-fluid span12">
 		<div class="row-fluid">
 			<div class="col-fluid span9">
-				<h2 id="center-element" class="pull-left" style="margin-right:20px;">{{ hyperevent.title }}</h2>
+				<h2 id="center-element" class="pull-left" style="margin-right:20px;">
+					<img src="{{ hyperevent.snapshot_url }}" style="height:50px">
+					{{ hyperevent.title }}
+				</h2>
 
 				<!-- AddThis Button BEGIN -->
 				<div id="addthis" class="addthis_toolbox addthis_default_style pull-left" style="margin-top:20px">

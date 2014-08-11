@@ -15,8 +15,19 @@ function Graph(div_id, display_type) {
 	this.big_rect = [375.0, 300] ;
 
 	//SD/ Define some graph level depending on max nodes
-	this.graphLevel = [] ;
-	this.graphLevel[1] = 21 ;
+	this.graphLevel = [[],[],[],[],[]] ;
+	this.graphLevel[1].max_size = 21 ;
+	this.graphLevel[1].distance = 200 ;
+	this.graphLevel[1].rect_size = [75.0, 56.0] ;
+	this.graphLevel[2].max_size = 51 ;
+	this.graphLevel[2].distance = 150 ;
+	this.graphLevel[2].rect_size = [38.0, 28.0] ;
+	this.graphLevel[3].max_size = 101 ;
+	this.graphLevel[3].distance = 100 ;
+	this.graphLevel[3].rect_size = [15.0, 15.0] ;
+	this.graphLevel[4].max_size = 201 ;
+	this.graphLevel[4].distance = 50 ;
+	this.graphLevel[4].rect_size = [7.5, 7.5] ;
 
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
@@ -39,18 +50,23 @@ function Graph(div_id, display_type) {
 	else
 		this.set_list_tab() ;
 
+	this.getLevel = function() {
+		if(this.max_size < this.graphLevel[1].max_size)
+			return 1 ;
+		if(this.max_size < this.graphLevel[2].max_size)
+			return 2 ;
+		if(this.max_size < this.graphLevel[3].max_size)
+			return 3 ;
+
+		return 4 ;
+	}
+
 	this.nodeWidth = function () {
-		if(this.max_size < this.graphLevel[1])
-			return this.small_rect[0] ;
-		else
-			return this.tiny_rect[0] ;
+		return this.graphLevel[this.getLevel()].rect_size[0] ;
 	}
 
 	this.nodeHeight = function () {
-		if(this.max_size < this.graphLevel[1])
-			return this.small_rect[1] ;
-		else
-			return this.tiny_rect[1] ;
+		return this.graphLevel[this.getLevel()].rect_size[1] ;
 	}
 
 	this.initVars = function() {
@@ -76,10 +92,7 @@ function Graph(div_id, display_type) {
 		this.endOfGraph = false ;
 
 		//SD/ Automatically ajust distance between node depending on graph size
-		if(this.max_size < this.graphLevel[1])
-			this.distanceBetweenNodes = 200 ;
-		else
-			this.distanceBetweenNodes = 100 ;
+		this.distanceBetweenNodes = this.graphLevel[this.getLevel()].distance ;
 
 		//SD/ Initialize the graph
 		this.force = d3.layout.force()
@@ -94,7 +107,7 @@ function Graph(div_id, display_type) {
 	}
 
 	this.displaySnapNode = function() {
-		if(this.max_size < this.graphLevel[1])
+		if(this.max_size < this.graphLevel[2].max_size)
 			return true ;
 		else
 			return false ;
@@ -233,26 +246,20 @@ function Graph(div_id, display_type) {
 				if(d.depth < 1) { return "primary" } else { return "secondary" }
 			})
 			.style("fill", function(d) {
-				if(_this.max_size < _this.graphLevel[1]) { return "black"; }
+				if(_this.displaySnapNode()) { return "black"; }
 			})
 			.attr("height", function(d) {
 				//if(d.depth < 1)
 				//	return _this.orig_rect[1] ;
 				//else {
-					if(_this.max_size < _this.graphLevel[1])
-						return _this.small_rect[1] ;
-					else
-						return _this.tiny_rect[1] ;
+					return _this.graphLevel[_this.getLevel()].rect_size[1] ;
 				//}
 			})
 			.attr("width", function(d) {
 				//if(d.depth < 1)
 				//	return _this.orig_rect[0] ;
 				//else {
-					if(_this.displaySnapNode())
-						return _this.small_rect[0] ;
-					else
-						return _this.tiny_rect[0] ;
+					return _this.graphLevel[_this.getLevel()].rect_size[0] ;
 				//}
 			})
 			.style("stroke", function(d) {
@@ -266,20 +273,14 @@ function Graph(div_id, display_type) {
 				//if(d.depth < 1)
 				//	return -_this.orig_rect[0] / 2 ;
 				//else {
-					if(_this.displaySnapNode())
-						return -_this.small_rect[0] / 2 ;
-					else
-						return -_this.tiny_rect[0] / 2 ;
+					return -_this.graphLevel[_this.getLevel()].rect_size[0] / 2 ;
 				//}
 			})
 			.attr('y', function(d) {
 				//if(d.depth < 1)
 				//	return -_this.orig_rect[1] / 2 ;
 				//else {
-					if(_this.displaySnapNode())
-						return -_this.small_rect[1] / 2 ;
-					else
-						return -_this.tiny_rect[1] / 2 ;
+					return -_this.graphLevel[_this.getLevel()].rect_size[1] / 2 ;
 				//}
 			}) ;
 
@@ -302,26 +303,26 @@ function Graph(div_id, display_type) {
 					//if(d.depth < 1)
 					//	return _this.orig_rect[1] - 4 ;
 					//else
-						return _this.small_rect[1] - 4 ;
+						return _this.graphLevel[_this.getLevel()].rect_size[1] - 4 ;
 				})
 				.attr("width", function(d) {
 					//if(d.depth < 1)
 					//	return _this.orig_rect[0] - 4 ;
 					//else
-						return _this.small_rect[0] - 4 ;
+						return _this.graphLevel[_this.getLevel()].rect_size[0] - 4 ;
 				})
 				.attr("class", "graph_images")
 				.attr('x', function(d) {
 					//if(d.depth < 1)
 					//	return -_this.orig_rect[0] / 2 + 2 ;
 					//else
-						return -_this.small_rect[0] / 2 + 2 ;
+						return -_this.graphLevel[_this.getLevel()].rect_size[0] / 2 + 2 ;
 				})
 				.attr('y', function(d) {
 					//if(d.depth < 1)
 					//	return -_this.orig_rect[1] / 2 + 2 ;
 					//else
-						return -_this.small_rect[1] / 2 + 2 ;
+						return -_this.graphLevel[_this.getLevel()].rect_size[1] / 2 + 2 ;
 				})
 				.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
 		}
@@ -466,7 +467,12 @@ function Graph(div_id, display_type) {
 					else
 						{ return "link content-type" }
 				})
-				.style("stroke-width",function(d) { return d.weight * 2 })
+				.style("stroke-width",function(d) {
+					if(_this.getLevel() < 4)
+						return d.weight * 2 ;
+					else
+						return d.weight ;
+				})
 				.style("stroke", function(d) { 
 					//SD/ Color in red links the emotional link
 					if (d.type == "emotion")

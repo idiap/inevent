@@ -8,6 +8,14 @@ function Graph(div_id, display_type) {
 
 	this.graph_height = 700 ;
 
+	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
+
+	// choosing between a list and a graph view
+	if(display_type == "graph")
+		this.set_graph_tab() ;
+	else
+		this.set_list_tab() ;
+		
 	//SD/ Set node sizes
 	this.orig_rect = [15.0, 15.0] ;
 	this.big_rect = [375.0, 300] ;
@@ -31,16 +39,9 @@ function Graph(div_id, display_type) {
 			'rect_size':[7.5, 7.5]
 		}
 	] ;
+}
 
-	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
-
-	// choosing between a list and a graph view
-	if(display_type == "graph")
-		this.set_graph_tab() ;
-	else
-		this.set_list_tab() ;
-
-	this.getLevel = function() {
+	Graph.prototype.getLevel = function() {
 		if(this.max_size < this.graphLevel[1].max_size)
 			return 1 ;
 		if(this.max_size < this.graphLevel[2].max_size)
@@ -52,7 +53,7 @@ function Graph(div_id, display_type) {
 	}
 
 	//SD/ Define graph Level from slider in graph
-	this.setLevel = function(slider) {
+	Graph.prototype.setLevel = function(slider) {
 		console.log("Change level to: " + slider.value + " with new size: " + (this.graphLevel[slider.value].max_size - 1));
 		//this.max_size = this.graphLevel[slider.value].max_size - 1 ;
 
@@ -61,16 +62,16 @@ function Graph(div_id, display_type) {
 	}
 
 	//SD/ Get node Width depending on graphLevel
-	this.nodeWidth = function () {
+	Graph.prototype.nodeWidth = function () {
 		return this.graphLevel[this.getLevel()].rect_size[0] ;
 	}
 
 	//SD/ Get node Height depending on graphLevel
-	this.nodeHeight = function () {
+	Graph.prototype.nodeHeight = function () {
 		return this.graphLevel[this.getLevel()].rect_size[1] ;
 	}
 
-	this.initVars = function() {
+	Graph.prototype.initVars = function() {
 		//SD/ Set pcitures sizes
 		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 120] ;
 		this.snap_rect = [300 / 4, 250 / 4] ;
@@ -107,14 +108,14 @@ function Graph(div_id, display_type) {
 			.start();
 	}
 
-	this.displaySnapNode = function() {
+	Graph.prototype.displaySnapNode = function() {
 		if(this.max_size < this.graphLevel[2].max_size)
 			return true ;
 		else
 			return false ;
 	}
 
-	this.printTab = function() {
+	Graph.prototype.printTab = function() {
 		//SD/ Display tabs
 		$('#' + this.div_id + '_tabs').html(
 			'<ul class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;">' +
@@ -128,7 +129,7 @@ function Graph(div_id, display_type) {
 		$('#' + this.div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 	}
 
-	this.loadGraph = function(data, width) {
+	Graph.prototype.loadGraph = function(data, width) {
 		INCREMENT_ID[this.div_id]++ ;
 		//console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
 		this.increment_id = INCREMENT_ID[this.div_id] ;
@@ -142,7 +143,7 @@ function Graph(div_id, display_type) {
 		this.displayNodes();
 	}
 	
-	this.updateGraph = function(new_data) {
+	Graph.prototype.updateGraph = function(new_data) {
 		_this = this ;
 		
 		$("#" + this.div_id + "_progress").css("width", this.input_nodes.length * 100 / this.max_size + "%") ;
@@ -191,20 +192,20 @@ function Graph(div_id, display_type) {
 		this.force.start();
 	}
 
-	this.play_event = function(d) {
+	Graph.prototype.play_event = function(d) {
 		if(d.id == this.input_nodes[0]['id'] && this.video_switch == true)
 			this.set_list_tab() ;
 		else
 			document.location.href = "/hyperevent/" + d.id;
 	}
 
-	this.set_center = function(d) {
+	Graph.prototype.set_center = function(d) {
 		//SD/ TODO Find a way to load new page with graph by default
 		//document.location.href = "/hyperevent/" + d.id + "/graph" ;
 		document.location.href = "/hyperevent/" + d.id;
 	}
 
-	this.find_node_index = function(node_id) {
+	Graph.prototype.find_node_index = function(node_id) {
 		for(var i=0; i < this.input_nodes.length; i++){
 			if(parseInt(this.input_nodes[i].id) == parseInt(node_id)) {
 				return i;
@@ -213,7 +214,7 @@ function Graph(div_id, display_type) {
 		return -1;
 	}
 
-	this.addNodeIfUnique = function(candidate_node) {
+	Graph.prototype.addNodeIfUnique = function(candidate_node) {
 		for(var i=0; i < this.input_nodes.length; i++){
 			if(parseInt(this.input_nodes[i].id) == parseInt(candidate_node.id)) {
 				return ;
@@ -223,7 +224,7 @@ function Graph(div_id, display_type) {
 		this.input_nodes.push(candidate_node) ;
 	}
 	
-	this.displayNodes = function() {
+	Graph.prototype.displayNodes = function() {
 		var _this = this ;
 
 		this.node = this.svg.selectAll(".node").data(this.input_nodes);
@@ -471,7 +472,7 @@ function Graph(div_id, display_type) {
 		this.node.exit().remove();
 	}
 
-	this.displayLinks = function() {
+	Graph.prototype.displayLinks = function() {
 		_this = this ;
 		
 		this.link = this.svg.selectAll(".link").data(this.input_links);
@@ -509,7 +510,7 @@ function Graph(div_id, display_type) {
 		//this.svg.selectAll(".link").moveToBack();
 	}
 
-	this.boundedTick = function() {
+	Graph.prototype.boundedTick = function() {
 		node = this.svg.selectAll(".node");
 		link = this.svg.selectAll(".link");
 		var _this = this ;
@@ -531,16 +532,16 @@ function Graph(div_id, display_type) {
 		});
 	}
 	
-	this.getExcludedEvent = function() {
+	Graph.prototype.getExcludedEvent = function() {
 		return this.excluded ;
 	}
 
-	this.addExclusion = function(event_id) {
+	Graph.prototype.addExclusion = function(event_id) {
 		if(typeof event_id != undefined)
 			this.excluded.push(event_id) ;
 	}
 
-	this.isExcluded = function(id) {
+	Graph.prototype.isExcluded = function(id) {
 		for(var i = 0 ; i < this.excluded.length ; i++) {
 			if(id == this.excluded[i])
 				return true ;
@@ -548,7 +549,7 @@ function Graph(div_id, display_type) {
 		return false ;
 	}
 
-	this.setWidth = function(new_width) {
+	Graph.prototype.setWidth = function(new_width) {
 		this.width = new_width ;
 		if (this.margin!=undefined) {
 			this.graph_width = this.width - (19 * 2) ;
@@ -558,14 +559,14 @@ function Graph(div_id, display_type) {
 		}
 	}
 	
-	this.pickElement = function() {
+	Graph.prototype.pickElement = function() {
 		node = this.queue.firstQueue() ;
 		this.queue.deQueue() ;
 		
 		return node[0] ;
 	}
 	
-	this.addElement = function(nodes) {
+	Graph.prototype.addElement = function(nodes) {
 		if(typeof nodes !== undefined && nodes != null) {
 			//SD/ Remove some neighbours if nodes limit reached
 			var rest = this.max_size - this.input_nodes.length ;
@@ -580,22 +581,22 @@ function Graph(div_id, display_type) {
 		}
 	}
 	
-	this.stillElement = function() {
+	Graph.prototype.stillElement = function() {
 		if(this.queue.sizeQueue() > 0)
 			return true ;
 		else
 			return false ;
 	}
 	
-	this.dragend = function(d) {
+	Graph.prototype.dragend = function(d) {
 		d3.select("#rect_node" + d.id).classed("fixed", d.fixed = true);
 	}
 	
-	this.dblclick = function(d) {
+	Graph.prototype.dblclick = function(d) {
 		d.fixed = false ;
 	}
 	
-	this.mouseover = function(d, display_class, title_id){
+	Graph.prototype.mouseover = function(d, display_class, title_id){
 		if (d3.event.defaultPrevented) return;
 		
 		d3.event.stopPropagation();
@@ -619,7 +620,7 @@ function Graph(div_id, display_type) {
 	}
 
 	//SD/ Draw an SVG word cloud
-	this.draw_cloud = function(hyperEventId) {
+	Graph.prototype.draw_cloud = function(hyperEventId) {
 		_this = this ;
 	
 		for(var i in this.input_nodes)
@@ -736,7 +737,7 @@ function Graph(div_id, display_type) {
 		);
 	}
 
-	this.finalizeGraph = function() {
+	Graph.prototype.finalizeGraph = function() {
 		//SD/ Draw word clouds
 		/*
 		for(var i in this.input_nodes){
@@ -761,7 +762,7 @@ function Graph(div_id, display_type) {
 	}
 	
 	//SD/ Initiate the first graph and call dynamically next data
-	this.display_graph_head = function(data, video_switch, max_neighbours, max_depth, max_size) {
+	Graph.prototype.display_graph_head = function(data, video_switch, max_neighbours, max_depth, max_size) {
 		try
 		{
 			var _this = this ;
@@ -825,9 +826,9 @@ function Graph(div_id, display_type) {
 			display_graph_error(e) ;
 		}
 	}
-	
+
 	//SD/ update graph with children data
-	this.display_graph = function(data, callback) {
+	Graph.prototype.display_graph = function(data, callback) {
 		try {
 			var _this = this ;
 
@@ -845,7 +846,7 @@ function Graph(div_id, display_type) {
 				//SD/ Check exclusion for next node
 				if(this.stillElement()) {
 					var first = this.pickElement() ;
-			
+		
 					if(callback != undefined && this.increment_id == INCREMENT_ID[div_id]) {
 						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
 						callback(
@@ -863,8 +864,8 @@ function Graph(div_id, display_type) {
 			display_graph_error(e) ;
 		}
 	}
-	
-	this.start_graph = function(from, firstRun) {
+
+	Graph.prototype.start_graph = function(from, firstRun) {
 		_this = this ;
 		from = typeof from !== 'undefined' ? from : null;
 		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
@@ -901,7 +902,34 @@ function Graph(div_id, display_type) {
 			this.display_graph_head(this.from, video_switch=false, max_neighbours, max_depth, max_size) ;
 		}
 	}
-}
+
+	Graph.prototype.set_graph_tab = function() {
+		//SD/ Switch active button
+		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
+			$('#' + this.div_id + '_list_tab').removeClass('active') ;
+		$('#' + this.div_id + '_graph_tab').addClass('active') ;
+
+		//SD/ Switch elements
+		$('#' + this.div_id).show() ;
+		$('#' + this.div_id + '_list').hide() ;
+		$('.side_block').hide() ;
+
+		$('#' + this.div_id + '_params').show() ;
+	}
+
+	Graph.prototype.set_list_tab = function() {
+		//SD/ Switch active button
+		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
+			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
+		$('#' + this.div_id + '_list_tab').addClass('active') ;
+
+		//SD/ Switch elements
+		$('#' + this.div_id + '_list').show() ;
+		$('#' + this.div_id).hide() ;
+		$('.side_block').show() ;
+
+		$('#' + this.div_id + '_params').hide() ;
+	}
 
 function Queue() {
 	this.queue = [] ;
@@ -924,34 +952,6 @@ function Queue() {
 		return this.queue.length ;
 	}
 }
-
-Graph.prototype.set_graph_tab = function() {
-		//SD/ Switch active button
-		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
-			$('#' + this.div_id + '_list_tab').removeClass('active') ;
-		$('#' + this.div_id + '_graph_tab').addClass('active') ;
-
-		//SD/ Switch elements
-		$('#' + this.div_id).show() ;
-		$('#' + this.div_id + '_list').hide() ;
-		$('.side_block').hide() ;
-
-		$('#' + this.div_id + '_params').show() ;
-	}
-
-Graph.prototype.set_list_tab = function() {
-		//SD/ Switch active button
-		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
-			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
-		$('#' + this.div_id + '_list_tab').addClass('active') ;
-
-		//SD/ Switch elements
-		$('#' + this.div_id + '_list').show() ;
-		$('#' + this.div_id).hide() ;
-		$('.side_block').show() ;
-
-		$('#' + this.div_id + '_params').hide() ;
-	}
 
 /*SD/ ==========================================================================
 Function called to display graph and get data

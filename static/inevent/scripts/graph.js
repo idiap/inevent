@@ -34,18 +34,6 @@ function Graph(div_id, display_type) {
 
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
-	//SD/ Display tabs
-	$('#' + div_id + '_tabs').html(
-		'<ul class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;">' +
-			'<li id="' + div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
-			'<li id="' + div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>' +
-		'</ul>'
-	) ;
-	
-	//SD/ Assign functions to tabs
-	$('#' + div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
-	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
-	
 	// choosing between a list and a graph view
 	if(display_type == "graph")
 		this.set_graph_tab() ;
@@ -124,6 +112,20 @@ function Graph(div_id, display_type) {
 			return true ;
 		else
 			return false ;
+	}
+
+	this.printTab = function() {
+		//SD/ Display tabs
+		$('#' + this.div_id + '_tabs').html(
+			'<ul class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;">' +
+				'<li id="' + this.div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
+				'<li id="' + this.div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>' +
+			'</ul>'
+		) ;
+
+		//SD/ Assign functions to tabs
+		$('#' + this.div_id + '_graph_tab').bind('click', function(){_this.set_graph_tab()} );
+		$('#' + this.div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 	}
 
 	this.loadGraph = function(data, width) {

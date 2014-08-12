@@ -48,9 +48,15 @@
 		if(firstRun == true)
 			$("#{{ div_id }}_params").hide();
 	}
+	
+	function toggle_{{ div_id }}() {
+		$("#{{ div_id }}_params").parent().toggle()
+	}
 </script>
 
 <div id="{{ div_id }}_form" style="display:block;">
+
+	<div class="pull-right"><i class="icon-remove-circle" onclick="toggle_{{ div_id }}();"></i></div>
 
 	<div class="nav-header">Graph parameters</div>
 

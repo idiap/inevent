@@ -4,7 +4,7 @@
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab1">
 			<div class="row-fluid">
-				<div class="col-fluid span9">
+				<div class="col-fluid spa12">
 					<h2>Most Recent Talks</h2>
 
 					<ul id="graph_recent_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
@@ -12,19 +12,19 @@
 			</div>
 
 			<div class="row-fluid" id="recency">
-				<div id="graph_recent_container" class="tabbable well well-small span9">
+				<div id="graph_recent_container" class="tabbable well well-small span12" style="position:relative;">
 					<div id="graph_recent_list">
 						{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
 					</div>
-				
+
 					<div id="graph_recent" style="display:none">
 						<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
 					</div>
-				</div>
-				
-				<div class="col-fluid span3">
-					<div id="graph_recent_params" class="graph_params well">
-						{% include "inevent/graph_params.html" with div_id="graph_recent" %}
+					
+					<div class="col-fluid span3 pull-right hide" style="margin-right:10px;">
+						<div id="graph_recent_params" class="graph_params well span3" style="position:absolute;top:70px;">
+							{% include "inevent/graph_params.html" with div_id="graph_recent" %}
+						</div>
 					</div>
 				</div>
 			</div>

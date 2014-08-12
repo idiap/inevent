@@ -61,6 +61,14 @@ function Graph(div_id, display_type) {
 		return 4 ;
 	}
 
+	//SD/ Define graph Level from slider in graph
+	this.setLevel = function(slider) {
+		console.log("Change level to: " + slider.value + " with new size: " + (this.graphLevel[slider.value].max_size - 1));
+		//this.max_size = this.graphLevel[slider.value].max_size - 1 ;
+
+		$("#" + this.div_id + "_form .user_size").val(this.graphLevel[slider.value].max_size - 1) ;
+		this.start_graph() ;
+	}
 	this.nodeWidth = function () {
 		return this.graphLevel[this.getLevel()].rect_size[0] ;
 	}
@@ -781,7 +789,13 @@ function Graph(div_id, display_type) {
 					data = [] ;
 
 				//SD/ Erease graph container and draw graph
-				$('#' + this.div_id).html('<div>Navigate through similar event</div><div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>') ;
+				$('#' + this.div_id).html(
+					'<div>Navigate through similar event</div>' +
+					'<div class="pull-right"><i class="icon-plus-sign"></i> ' + 
+						'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
+					' <i class="icon-minus-sign"></i><i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
+					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
+				) ;
 				this.loadGraph(data, $("#" + this.div_id + "_container").width());
 
 				if(max_size > 0) {

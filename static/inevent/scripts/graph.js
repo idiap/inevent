@@ -233,10 +233,10 @@ function Graph(div_id, display_type) {
 		this.nodeEnter = this.node.enter().append("svg:g");
 		
 		this.nodeEnter
-			.attr("id", function(d) { return "node" + d.id;})
+			.attr("id", function(d) { return _this.div_id + "_node_" + d.id;})
 			.attr("class", "node")
 			.on("click", function(d) {
-				_this.mouseover(d,"word_cloud_" + d.id,"video_title" + d.id);
+				_this.mouseover(d, _this.div_id + "_word_cloud_" + d.id, _this.div_id + "_video_title_" + d.id);
 			})
 			//SD/ TODO Reactive double click to release node with some good idea
 			//.on("dblclick", this.dblclick)
@@ -255,7 +255,7 @@ function Graph(div_id, display_type) {
 
 		//SD/ Define node picture STARTS =======================================
 		this.defs.append("rect")
-			.attr("id", function(d) { return "rect_node" + d.id})
+			.attr("id", function(d) { return _this.div_id + "_rect_node_" + d.id})
 			.style("stroke-width", 4)
 			.attr("class", function(d) {
 				//SD/ Color in blue first node only
@@ -301,7 +301,7 @@ function Graph(div_id, display_type) {
 			}) ;
 
 		this.nodeEnter.append("use")
-			.attr("xlink:href", function(d) { return "#rect_node" + d.id});
+			.attr("xlink:href", function(d) { return "#" + _this.div_id + "_rect_node_" + d.id});
 
 		//SD/ If node display event Snapshot
 		if(this.displaySnapNode()) {
@@ -309,11 +309,11 @@ function Graph(div_id, display_type) {
 			this.defs.append("svg:clipPath")
 				.attr("id", function(d) { return "clip" + d.id})
 				.append("use")
-				.attr("xlink:href", function(d) { return "#rect_node" + d.id});
+				.attr("xlink:href", function(d) { return "#" + _this.div_id + "_rect_node_" + d.id});
 
 			//SD/ Insert the picture and link to clip
 			this.nodeEnter.append("image")
-				.attr("id", function(d) { return "image" + d.id})
+				.attr("id", function(d) { return _this.div_id + "_image_" + d.id})
 				.attr("xlink:href", function(d) { return d.snapshot_url })
 				.attr("height", function(d) {
 					//if(d.depth < 1)
@@ -349,8 +349,8 @@ function Graph(div_id, display_type) {
 		
 		//SD/ Container of windows displayed on click
 		var rect = this.nodeEnter.append("rect")
-			.attr("id", function(d) { return "rect"+d.id})
-			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+			.attr("id", function(d) { return _this.div_id + "_rect_" + d.id})
+			.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 			.attr("height", this.big_rect[1])
 			.attr("width", this.big_rect[0])
 			.style("stroke", function(d) {
@@ -366,8 +366,8 @@ function Graph(div_id, display_type) {
 
 		//SD/ Video snapshot
 		this.nodeEnter.append("image")
-			.attr("id", function(d) { return "cloud"+d.id})
-			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+			.attr("id", function(d) { return _this.div_id + "_cloud_" + d.id})
+			.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 			.attr("xlink:href", function(d) { return d.snapshot_url })
 			.attr('x', function(d) { return -_this.image_rect[0] / 2})
 			.attr('y', function(d) { return -_this.big_rect[1] / 2 + 10})
@@ -377,8 +377,8 @@ function Graph(div_id, display_type) {
 
 		//SD/ SVG Container for word cloud generation (replace video snapshot)
 		this.nodeEnter.append("svg")
-			.attr("id", function(d) { return "topwords_"+d.id})
-			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+			.attr("id", function(d) { return _this.div_id + "_topwords_" + d.id})
+			.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 			.attr('x', -this.image_rect[0] / 2)
 			.attr('y', -this.image_rect[1] / 2 + this.snap_rect[1] / 2 - 20)
 			.attr("height", this.image_rect[1])
@@ -392,8 +392,8 @@ function Graph(div_id, display_type) {
 		if ( (browser.indexOf("firefox")>-1) || ( (browser.indexOf("safari")>-1) && version>6)) {
 			//HTML incrustation if browser support foreignObject
 			this.nodeEnter.append('svg:foreignObject')
-				.attr("id", function(d) { return "centralize"+d.id})
-				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+				.attr("id", function(d) { return _this.div_id + "_centralize_" + d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 				.attr("height", 30)
 				.attr("width", 80)
 				.attr("color","#707070")
@@ -406,8 +406,8 @@ function Graph(div_id, display_type) {
 				.html('<button class="btn btn-small" value="btn" type="button"> <i class="icon-play"></i> Play</button> ');
 
 			this.nodeEnter.append('svg:foreignObject')
-				.attr("id", function(d) { return "center"+d.id})
-				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+				.attr("id", function(d) { return _this.div_id + "_center_" + d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 				.attr("height", 30)
 				.attr("width", 80)
 				//.attr("requiredExtensions","http://www.w3.org/1999/xhtml")
@@ -419,14 +419,14 @@ function Graph(div_id, display_type) {
 				.html('<button class="btn btn-small" value="btn" type="button" >Center</button>');
 
 			this.nodeEnter.append('svg:foreignObject')
-				.attr("id", function(d) { return "close"+d.id})
-				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+				.attr("id", function(d) { return _this.div_id + "_close_" + d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 				.attr("height", 30)
 				.attr("width", 80)
 				//.attr("requiredExtensions","http://www.w3.org/1999/xhtml")
 				.attr('x', -this.image_rect[0]/2 + 260)
 				.attr('y', 110)
-				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
+				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,_this.div_id + "_word_cloud_" + d.id); return false})
 				.append("xhtml:body")
 				.attr("xmlns","http://www.w3.org/1999/xhtml")
 				.html('<button class="btn btn-small" value="btn" type="button" ><b>[x]</b> Close</button>');
@@ -434,8 +434,8 @@ function Graph(div_id, display_type) {
 		else {
 			//Explorers who does not support the use of foreignObjects in SVG
 			this.nodeEnter.append('image')
-				.attr("id", function(d) { return "centralize"+d.id})
-				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+				.attr("id", function(d) { return _this.div_id + "_centralize_" + d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 				.attr("height", 33)
 				.attr("width",69)
 				.attr('x', -this.image_rect[0]/2)
@@ -444,22 +444,22 @@ function Graph(div_id, display_type) {
 				.attr("xlink:href", static_url + "inevent/images/play_button.png");
 
 			this.nodeEnter.append('image')
-				.attr("id", function(d) { return "close"+d.id})
-				.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+				.attr("id", function(d) { return _this.div_id + "_close_" + d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 				.attr("height", 33)
 				.attr("width", 79)
 				.attr('x', -this.image_rect[0]/2 + 260)
 				.attr('y', 110)
-				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,"word_cloud_"+d.id); return false})
+				.on("click", function(d) {d3.event.stopPropagation(); mouseout(d,_this.div_id + "_word_cloud_" + d.id); return false})
 				.attr("xlink:href", static_url + "inevent/images/close_button.png");
 		}
 		//SD/ Define window ENDS ===============================================
 
 		//SD/ Define title
 		node_text = this.nodeEnter.append('text')
-			.attr("id", function(d) { return "video_title"+d.id})
+			.attr("id", function(d) { return _this.div_id + "_video_title_" + d.id})
 			.attr("height", 60)
-			.attr("class",  function(d) { return "word_cloud"+ " " + "word_cloud_"+d.id})
+			.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 			.attr("fill","#707070")
 			.attr("width", this.image_rect[0])
 			.attr('x', function(d) { return  -_this.image_rect[0] / 2 + _this.snap_rect[0] + 20})
@@ -589,7 +589,7 @@ function Graph(div_id, display_type) {
 	}
 	
 	Graph.prototype.dragend = function(d) {
-		d3.select("#rect_node" + d.id).classed("fixed", d.fixed = true);
+		d3.select("#" + _this.div_id + "_rect_node_" + d.id).classed("fixed", d.fixed = true);
 	}
 	
 	Graph.prototype.dblclick = function(d) {
@@ -602,17 +602,17 @@ function Graph(div_id, display_type) {
 		d3.event.stopPropagation();
 		
 		//SD/ Get word cloud
-		if($("#topwords_" + d.id).html() == "")
+		if($("#" + this.div_id + "_topwords_" + d.id).html() == "")
 			this.draw_cloud(d.id) ;
 		
 		if(this.endOfGraph && d != undefined) {
-			zoom_in(d, "node" + d.id, "rect" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
+			zoom_in(d, this.div_id + "_node_" + d.id, this.div_id + "_rect_" + d.id, this.graph_left, this.graph_width, this.graph_top, this.graph_height, display_class);
 
 			//SD/ Reduce title length to suite with container
 			if(d.title.length > 40)
 				d.title = d.title.substring(0, 35) + "..." ;
 
-			display_title(d.title, "video_title" + d.id);
+			display_title(d.title, this.div_id + "_video_title_" + d.id);
 			return true ;
 		}
 		else
@@ -703,7 +703,7 @@ function Graph(div_id, display_type) {
 					.start();
 
 				function draw(words) {
-					d3.select("#topwords_" + data["event_id"])
+					d3.select("#" + _this.div_id + "_topwords_" + data["event_id"])
 						.append("rect")
 							.style("fill", "#dbdbdb")
 							.attr('x', -_this.image_rect[0] / 2)
@@ -711,7 +711,7 @@ function Graph(div_id, display_type) {
 							.attr("height", _this.image_rect[1]*2)
 							.attr("width", _this.image_rect[0]*2)
 					
-					d3.select("#topwords_" + data["event_id"])
+					d3.select("#" + _this.div_id + "_topwords_" + data["event_id"])
 						.append("g")
 							.attr("transform", "translate(" + (_this.image_rect[0] / 2) + ", " + (_this.image_rect[1] / 2) + ")")
 							.selectAll("text")

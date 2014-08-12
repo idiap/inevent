@@ -65,7 +65,7 @@
 
 		<div class="row-fluid">
 			<div class="col-fluid span9">
-				<div id="graph_event_container">
+				<div id="graph_event_container" class="graph_container">
 					<!-- Display player and graph -->
 					<div id="graph_event_list">
 						<iframe id="hePlayer" width="100%" height="700px" src='http://inevent.haifa.il.ibm.com/player.jsp?hyperEventId={{ hyperevent.id }}'style='border:none;'> </iframe>
@@ -74,11 +74,13 @@
 					<div id="graph_event" style="display:none" class="tab-content well">
 						<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
 					</div>
-				</div>
-			</div>
 
-			<div id="graph_event_params" class="graph_params span3 col-fluid well">
-				{% include "inevent/graph_params.html" with div_id="graph_event" %}
+					<div class="col-fluid span3 pull-right hide" style="margin-right:10px;">
+						<div id="graph_event_params" class="graph_params span3 col-fluid well">
+							{% include "inevent/graph_params.html" with div_id="graph_event" %}
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="col-fluid span3 well side_block">

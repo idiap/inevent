@@ -9,25 +9,28 @@ function Graph(div_id, display_type) {
 	this.graph_height = 700 ;
 
 	//SD/ Set node sizes
-	this.tiny_rect = [15.0, 15.0] ;
-	this.small_rect = [75.0, 56.0] ;
 	this.orig_rect = [15.0, 15.0] ;
 	this.big_rect = [375.0, 300] ;
 
 	//SD/ Define some graph level depending on max nodes
-	this.graphLevel = [[],[],[],[],[]] ;
-	this.graphLevel[1].max_size = 21 ;
-	this.graphLevel[1].distance = 200 ;
-	this.graphLevel[1].rect_size = [75.0, 56.0] ;
-	this.graphLevel[2].max_size = 51 ;
-	this.graphLevel[2].distance = 150 ;
-	this.graphLevel[2].rect_size = [38.0, 28.0] ;
-	this.graphLevel[3].max_size = 101 ;
-	this.graphLevel[3].distance = 100 ;
-	this.graphLevel[3].rect_size = [15.0, 15.0] ;
-	this.graphLevel[4].max_size = 201 ;
-	this.graphLevel[4].distance = 50 ;
-	this.graphLevel[4].rect_size = [7.5, 7.5] ;
+	this.graphLevel = [{},{
+			'max_size':21,
+			'distance':200,
+			'rect_size':[75.0, 56.0]
+		},{
+			'max_size':51,
+			'distance':150,
+			'rect_size':[37.5, 28.0]
+		},{
+			'max_size':101,
+			'distance':100,
+			'rect_size':[15.0, 15.0]
+		},{
+			'max_size':201,
+			'distance':50,
+			'rect_size':[7.5, 7.5]
+		}
+	] ;
 
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
@@ -44,7 +47,6 @@ function Graph(div_id, display_type) {
 	$('#' + div_id + '_list_tab').bind('click', function(){_this.set_list_tab()} );
 	
 	// choosing between a list and a graph view
-
 	if(display_type == "graph")
 		this.set_graph_tab() ;
 	else
@@ -69,10 +71,13 @@ function Graph(div_id, display_type) {
 		$("#" + this.div_id + "_form .user_size").val(this.graphLevel[slider.value].max_size - 1) ;
 		this.start_graph() ;
 	}
+
+	//SD/ Get node Width depending on graphLevel
 	this.nodeWidth = function () {
 		return this.graphLevel[this.getLevel()].rect_size[0] ;
 	}
 
+	//SD/ Get node Height depending on graphLevel
 	this.nodeHeight = function () {
 		return this.graphLevel[this.getLevel()].rect_size[1] ;
 	}
@@ -862,26 +867,34 @@ function Graph(div_id, display_type) {
 		from = typeof from !== 'undefined' ? from : null;
 		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
+		//SD/ Get default settings
 		max_neighbours = $("#" + this.div_id + "_form .user_neighbours").val() ;
 		max_depth = $("#" + this.div_id + "_form .user_depth").val() ;
 		max_size = $("#" + this.div_id + "_form .user_size").val() ;
 
+		//SD/ Update settings
 		window["update_" + this.div_id + "_value"](firstRun) ;
+
+		//SD/ Print tabs
+		this.printTab() ;
 
 		if(this.from == null)
 			this.from = from ;
 
+		//SD/ Display 5 firsts video as origin
 		if(this.from == null) {
 			Dajaxice.inevent.get_graph_head(
 				function(data){_this.display_graph_head(data, video_switch=false, max_neighbours, max_depth, max_size);},
 				{'num_of_events': 5, 'error_callback': display_graph_error}
 			);
 		}
+		//SD/ Or display the specific choosen from ID video as origin
 		else if(this.from === parseInt(this.from)) {
 			Dajaxice.inevent.get_event_head(
 				function(data) {_this.display_graph_head(data, video_switch=true, max_neighbours, max_depth, max_size);},
 				{'id': _this.from, 'error_callback': display_graph_error});
 		}
+		//SD/ Or display the specific choosen video from data as origin
 		else {
 			this.display_graph_head(this.from, video_switch=false, max_neighbours, max_depth, max_size) ;
 		}

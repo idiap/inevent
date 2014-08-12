@@ -53,12 +53,12 @@ function Graph(div_id, display_type) {
 	}
 
 	//SD/ Define graph Level from slider in graph
-	Graph.prototype.setLevel = function(slider) {
-		console.log("Change level to: " + slider.value + " with new size: " + (this.graphLevel[slider.value].max_size - 1));
-		//this.max_size = this.graphLevel[slider.value].max_size - 1 ;
-
-		$("#" + this.div_id + "_form .user_size").val(this.graphLevel[slider.value].max_size - 1) ;
-		this.start_graph() ;
+	Graph.prototype.setLevel = function(level) {
+		if(level > 0 && level < this.graphLevel.length)
+		{
+			$("#" + this.div_id + "_form .user_size").val(this.graphLevel[level].max_size - 1) ;
+			this.start_graph() ;
+		}
 	}
 
 	//SD/ Get node Width depending on graphLevel
@@ -798,10 +798,12 @@ function Graph(div_id, display_type) {
 
 				//SD/ Erease graph container and draw graph
 				$('#' + this.div_id).html(
-					'<div>Navigate through similar event</div>' +
-					'<div class="pull-right"><i class="icon-plus-sign"></i> ' + 
-						'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
-					' <i class="icon-minus-sign"></i><i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
+					'<div>' +
+						'<div class="pull-left">Navigate through similar event</div>' +
+						'<div class="pull-right"><i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');" class="icon-minus-sign"></i> ' + 
+							'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
+						' <i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-plus-sign"></i><i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
+					'</div>' +
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
 				) ;
 				this.loadGraph(data, $("#" + this.div_id + "_container").width());

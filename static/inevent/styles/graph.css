@@ -59,5 +59,7 @@ rect.secondary {
 }
 
 .progress {
+	margin:auto;
 	margin-bottom:0px;
+	width:50%;
 }

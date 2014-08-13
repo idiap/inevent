@@ -444,6 +444,16 @@ function Graph(div_id, display_type) {
 				.attr("xlink:href", static_url + "inevent/images/play_button.png");
 
 			this.nodeEnter.append('image')
+				.attr("id", function(d) { return _this.div_id + "_center_" + d.id})
+				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
+				.attr("height", 33)
+				.attr("width", 80)
+				.attr('x', -this.image_rect[0]/2 + 130)
+				.attr('y', 110)
+				.on("click", function(d) { d3.event.stopPropagation(); _this.set_center(d);})
+				.attr("xlink:href", static_url + "inevent/images/center_button.png");
+
+			this.nodeEnter.append('image')
 				.attr("id", function(d) { return _this.div_id + "_close_" + d.id})
 				.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
 				.attr("height", 33)

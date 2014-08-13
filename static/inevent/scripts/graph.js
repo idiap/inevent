@@ -108,7 +108,7 @@ function Graph(div_id, display_type) {
 			.start();
 	}
 
-	Graph.prototype.displaySnapNode = function() {
+	Graph.prototype.isSnapNodeDisplay = function() {
 		if(this.max_size < this.graphLevel[2].max_size)
 			return true ;
 		else
@@ -262,7 +262,7 @@ function Graph(div_id, display_type) {
 				if(d.depth < 1) { return "primary" } else { return "secondary" }
 			})
 			.style("fill", function(d) {
-				if(_this.displaySnapNode()) { return "black"; }
+				if(_this.isSnapNodeDisplay()) { return "black"; }
 			})
 			.attr("height", function(d) {
 				//if(d.depth < 1)
@@ -304,7 +304,7 @@ function Graph(div_id, display_type) {
 			.attr("xlink:href", function(d) { return "#" + _this.div_id + "_rect_node_" + d.id});
 
 		//SD/ If node display event Snapshot
-		if(this.displaySnapNode()) {
+		if(this.isSnapNodeDisplay()) {
 			//SD/ Define clip for a rounded picture
 			this.defs.append("svg:clipPath")
 				.attr("id", function(d) { return "clip" + d.id})

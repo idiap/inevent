@@ -935,25 +935,25 @@ function Graph(div_id, display_type) {
 
 function Queue() {
 	this.queue = [] ;
+}
 
 	//SD/ Enqueue if not excluded
-	this.enQueue = function(node) {
+	Queue.prototype.enQueue = function(node) {
 		if(typeof node !== undefined && node != null)
 			this.queue.push(node) ;
 	}
 	
-	this.deQueue = function() {
+	Queue.prototype.deQueue = function() {
 		this.queue.splice(0, 1) ;
 	}
 	
-	this.firstQueue = function() {
+	Queue.prototype.firstQueue = function() {
 		return [this.queue[0]] ;
 	}
 
-	this.sizeQueue = function() {
+	Queue.prototype.sizeQueue = function() {
 		return this.queue.length ;
 	}
-}
 
 /*SD/ ==========================================================================
 Function called to display graph and get data

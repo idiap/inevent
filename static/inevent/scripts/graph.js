@@ -57,6 +57,7 @@ function Graph(div_id, display_type) {
 		if(level > 0 && level < this.graphLevel.length)
 		{
 			$("#" + this.div_id + "_form .user_size").val(this.graphLevel[level].max_size - 1) ;
+			//FIXME: not really the correct way to reload with data like search result
 			this.start_graph() ;
 		}
 	}
@@ -265,39 +266,22 @@ function Graph(div_id, display_type) {
 				if(_this.isSnapNodeDisplay()) { return "black"; }
 			})
 			.attr("height", function(d) {
-				//if(d.depth < 1)
-				//	return _this.orig_rect[1] ;
-				//else {
-					return _this.graphLevel[_this.getLevel()].rect_size[1] ;
-				//}
+				return _this.nodeHeight() ;
 			})
 			.attr("width", function(d) {
-				//if(d.depth < 1)
-				//	return _this.orig_rect[0] ;
-				//else {
-					return _this.graphLevel[_this.getLevel()].rect_size[0] ;
-				//}
+				return _this.nodeWidth() ;
 			})
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
-				color = _this.color.grey ;
-				if(d.depth < 1) { color = _this.color.blue }
-				return color ;
+				if(d.depth < 1) { return _this.color.blue }
+				return _this.color.grey ;
 			})
 			.attr("rx", "5")
 			.attr('x', function(d) {
-				//if(d.depth < 1)
-				//	return -_this.orig_rect[0] / 2 ;
-				//else {
-					return -_this.graphLevel[_this.getLevel()].rect_size[0] / 2 ;
-				//}
+				return -_this.nodeWidth() / 2 ;
 			})
 			.attr('y', function(d) {
-				//if(d.depth < 1)
-				//	return -_this.orig_rect[1] / 2 ;
-				//else {
-					return -_this.graphLevel[_this.getLevel()].rect_size[1] / 2 ;
-				//}
+				return -_this.nodeHeight() / 2 ;
 			}) ;
 
 		this.nodeEnter.append("use")
@@ -316,29 +300,20 @@ function Graph(div_id, display_type) {
 				.attr("id", function(d) { return _this.div_id + "_image_" + d.id})
 				.attr("xlink:href", function(d) { return d.snapshot_url })
 				.attr("height", function(d) {
-					//if(d.depth < 1)
-					//	return _this.orig_rect[1] - 4 ;
-					//else
-						return _this.graphLevel[_this.getLevel()].rect_size[1] - 4 ;
+					return _this.nodeHeight() - 4 ;
 				})
 				.attr("width", function(d) {
-					//if(d.depth < 1)
-					//	return _this.orig_rect[0] - 4 ;
-					//else
-						return _this.graphLevel[_this.getLevel()].rect_size[0] - 4 ;
+					return _this.nodeWidth() - 4 ;
 				})
 				.attr("class", "graph_images")
 				.attr('x', function(d) {
-					//if(d.depth < 1)
-					//	return -_this.orig_rect[0] / 2 + 2 ;
-					//else
-						return -_this.graphLevel[_this.getLevel()].rect_size[0] / 2 + 2 ;
+					return -_this.nodeWidth() / 2 + 2 ;
 				})
 				.attr('y', function(d) {
 					//if(d.depth < 1)
 					//	return -_this.orig_rect[1] / 2 + 2 ;
 					//else
-						return -_this.graphLevel[_this.getLevel()].rect_size[1] / 2 + 2 ;
+						return -_this.nodeHeight() / 2 + 2 ;
 				})
 				.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
 		}

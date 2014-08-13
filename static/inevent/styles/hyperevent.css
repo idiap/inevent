@@ -104,7 +104,7 @@ html, body {
 
 .graph_container { position:relative; }
 
-.graph_params { position:absolute;top:70px; }
+.graph_params { position:absolute;top:60px; }
 .graph_params .nav-header { margin-bottom:20px; padding-left:0; }
 .graph_params .user_text { float:left; }
 .graph_params .min-label { float:left;text-align:right;margin-right:3%;width:10%; }

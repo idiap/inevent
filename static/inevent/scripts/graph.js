@@ -799,7 +799,7 @@ function Graph(div_id, display_type) {
 				//SD/ Erease graph container and draw graph
 				$('#' + this.div_id).html(
 					'<div>' +
-						'<div class="pull-left">Navigate through similar event</div>' +
+						'<div class="pull-left">Navigate through similar events</div>' +
 						'<div class="pull-right"><i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');" class="icon-minus-sign"></i> ' + 
 							'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
 						' <i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-plus-sign"></i><i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +

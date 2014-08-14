@@ -2,10 +2,10 @@ var INCREMENT_ID = Array() ; //SD/ Unique ID for each graph object call needed t
 
 // CLASS WIDGET MANAGER
 function Graph(div_id, display_type) {
-	var _this = this ;
+	//SD/ Persistant variable ==================================================
+	
 	this.div_id = div_id ;
 	this.from = null ;
-
 	this.graph_height = 700 ;
 
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
@@ -15,9 +15,8 @@ function Graph(div_id, display_type) {
 		this.set_graph_tab() ;
 	else
 		this.set_list_tab() ;
-		
+
 	//SD/ Set node sizes
-	this.orig_rect = [15.0, 15.0] ;
 	this.big_rect = [375.0, 300] ;
 
 	//SD/ Define some graph level depending on max nodes
@@ -39,6 +38,8 @@ function Graph(div_id, display_type) {
 			'rect_size':[7.5, 7.5]
 		}
 	] ;
+	
+	//SD/ END OF Persistant variable ===========================================
 }
 
 	Graph.prototype.getLevel = function() {
@@ -72,6 +73,7 @@ function Graph(div_id, display_type) {
 		return this.graphLevel[this.getLevel()].rect_size[1] ;
 	}
 
+	//SD/ Initiate variables for a new graph load
 	Graph.prototype.initVars = function() {
 		//SD/ Set pcitures sizes
 		this.image_rect = [this.big_rect[0] - 40, this.big_rect[1] - 120] ;
@@ -94,12 +96,9 @@ function Graph(div_id, display_type) {
 
 		this.endOfGraph = false ;
 
-		//SD/ Automatically ajust distance between node depending on graph size
-		this.distanceBetweenNodes = this.graphLevel[this.getLevel()].distance ;
-
 		//SD/ Initialize the graph
 		this.force = d3.layout.force()
-			.linkDistance(this.distanceBetweenNodes)
+			.linkDistance(this.graphLevel[this.getLevel()].distance)
 			.charge(-50)
 			.gravity(0.01)
 			.nodes(this.input_nodes)
@@ -109,6 +108,7 @@ function Graph(div_id, display_type) {
 			.start();
 	}
 
+	//SD/ Depending on graph size, say if we have to display picture in node
 	Graph.prototype.isSnapNodeDisplay = function() {
 		if(this.max_size < this.graphLevel[2].max_size)
 			return true ;
@@ -116,6 +116,7 @@ function Graph(div_id, display_type) {
 			return false ;
 	}
 
+	//SD/ Print HTML code for tab and link to internal function
 	Graph.prototype.printTab = function() {
 		//SD/ Display tabs
 		$('#' + this.div_id + '_tabs').html(
@@ -310,10 +311,7 @@ function Graph(div_id, display_type) {
 					return -_this.nodeWidth() / 2 + 2 ;
 				})
 				.attr('y', function(d) {
-					//if(d.depth < 1)
-					//	return -_this.orig_rect[1] / 2 + 2 ;
-					//else
-						return -_this.nodeHeight() / 2 + 2 ;
+					return -_this.nodeHeight() / 2 + 2 ;
 				})
 				.attr("clip-path", function(d) { return "url(#"+"clip" + d.id +")"}) ;
 		}
@@ -787,7 +785,7 @@ function Graph(div_id, display_type) {
 						'<div class="pull-left">Navigate through similar events</div>' +
 						'<div class="pull-right"><i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');" class="icon-minus-sign"></i> ' + 
 							'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
-						' <i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-plus-sign"></i><i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
+						' <i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-plus-sign"></i> <i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
 					'</div>' +
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
 				) ;

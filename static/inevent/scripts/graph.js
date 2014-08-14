@@ -58,7 +58,7 @@ function Graph(div_id, display_type) {
 		{
 			$("#" + this.div_id + "_form .user_size").val(this.graphLevel[level].max_size - 1) ;
 			//FIXME: not really the correct way to reload with data like search result
-			this.start_graph() ;
+			this.start_graph(this.from) ;
 		}
 	}
 
@@ -136,7 +136,7 @@ function Graph(div_id, display_type) {
 		this.increment_id = INCREMENT_ID[this.div_id] ;
 		
 		//SD/ Set parameters in local vars
-		this.input_nodes = data ;
+		this.input_nodes = data.slice(0) ;
 
 		this.initVars();
 
@@ -853,6 +853,10 @@ function Graph(div_id, display_type) {
 	}
 
 	Graph.prototype.start_graph = function(from, firstRun) {
+		if(this.from == null && from != null) {
+			this.from = from ;
+		}
+
 		_this = this ;
 		from = typeof from !== 'undefined' ? from : null;
 		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
@@ -868,8 +872,6 @@ function Graph(div_id, display_type) {
 		//SD/ Print tabs
 		this.printTab() ;
 
-		if(this.from == null)
-			this.from = from ;
 
 		//SD/ Display 5 firsts video as origin
 		if(this.from == null) {

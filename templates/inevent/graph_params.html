@@ -83,7 +83,7 @@
 				<label>Graph size</label>
 				<div class="min-label">0</div>
 				<div class="user-value">
-					<input onchange="graphs['{{ div_id }}'].start_graph()" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
+					<input onchange="graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
 					<div class="user_size_text user_text">0</div>
 				</div>
 				<div class="max-label">200</div>
@@ -93,7 +93,7 @@
 				<label>Distance from starting node(s)</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph()" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
+					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
 					<div class="user_depth_text user_text">0</div>
 				</div>
 				<div class="max-label">6+</div>
@@ -103,7 +103,7 @@
 				<label>Neighbours per node</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph()" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>
+					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>
 					<div class="user_neighbours_text user_text">0</div>
 				</div>
 				<div class="max-label">5</div>

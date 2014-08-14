@@ -60,6 +60,16 @@ rect.secondary {
 
 .progress {
 	margin:auto;
-	margin-bottom:0px;
 	width:50%;
 }
+
+.graph_container { position:relative; }
+
+.graph_params { position:absolute;top:40px; }
+.graph_params .nav-header { margin-bottom:20px; padding-left:0; }
+.graph_params .user_text { float:left; }
+.graph_params .min-label { float:left;text-align:right;margin-right:3%;width:10%; }
+.graph_params .user-value { float:left; width:65%; }
+.graph_params .max-label { float:left;text-align:left;margin-left:3%;width:10%; }
+.graph_params .control-group { margin-bottom:20px; clear:both; overflow:auto; }
+.graph_params input[type=range] { width:100%; }

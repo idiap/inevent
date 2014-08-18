@@ -7,7 +7,6 @@ function Graph(div_id, display_type) {
 	this.div_id = div_id ;
 	this.from = null ;
 	this.graph_height = 700 ;
-
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
 	// choosing between a list and a graph view
@@ -203,8 +202,8 @@ function Graph(div_id, display_type) {
 
 	Graph.prototype.set_center = function(d) {
 		//SD/ TODO Find a way to load new page with graph by default
-		//document.location.href = "/hyperevent/" + d.id + "/graph" ;
-		document.location.href = "/hyperevent/" + d.id;
+		document.location.href = "/hyperevent/" + d.id + "/graph" ;
+		//document.location.href = "/hyperevent/" + d.id;
 	}
 
 	Graph.prototype.find_node_index = function(node_id) {
@@ -782,7 +781,7 @@ function Graph(div_id, display_type) {
 				//SD/ Erease graph container and draw graph
 				$('#' + this.div_id).html(
 					'<div>' +
-						'<div class="pull-left">Navigate through similar events</div>' +
+						'<div class="pull-left">Explore similar events</div>' +
 						'<div class="pull-right"><i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');" class="icon-minus-sign"></i> ' + 
 							'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
 						' <i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-plus-sign"></i> <i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
@@ -898,7 +897,8 @@ function Graph(div_id, display_type) {
 
 		//SD/ Switch elements
 		$('#' + this.div_id).show() ;
-		$('#' + this.div_id + '_list').hide() ;
+		// hide player iframe
+		$('#' + this.div_id + '_list').css({"display":"block","visibility":"hidden","height":"0px","width":"0px"});
 		$('.side_block').hide() ;
 
 		$('#' + this.div_id + '_params').show() ;
@@ -910,10 +910,11 @@ function Graph(div_id, display_type) {
 			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
 		$('#' + this.div_id + '_list_tab').addClass('active') ;
 
-		//SD/ Switch elements
-		$('#' + this.div_id + '_list').show() ;
+		//SD/ Switch element
 		$('#' + this.div_id).hide() ;
-		$('.side_block').show() ;
+		// show player iframe
+		$('#' + this.div_id + '_list').css({"display":"block","visibility":"visible","height":this.graph_height,"width":"100%"});
+	    $('.side_block').show() ;
 
 		$('#' + this.div_id + '_params').hide() ;
 	}

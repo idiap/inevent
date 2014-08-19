@@ -9,6 +9,9 @@ function Graph(div_id, display_type) {
 	this.graph_height = 700 ;
 	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
+	this.listTabTitle = { "icon": "icon-th-list", "text":"View as List", "size":12 } ;
+	this.graphTabTitle = { "icon": "icon-th-large", "text":"View as Graph", "size":12 } ;
+
 	// choosing between a list and a graph view
 	if(display_type == "graph")
 		this.set_graph_tab() ;
@@ -40,6 +43,27 @@ function Graph(div_id, display_type) {
 	
 	//SD/ END OF Persistant variable ===========================================
 }
+
+	Graph.prototype.setTabsTitle = function(listTabTitle, graphTabTitle) {
+		if(typeof listTabTitle !== 'undefined') {
+			if(typeof listTabTitle.icon !== 'undefined')
+				this.listTabTitle.icon = listTabTitle.icon ;
+			if(typeof listTabTitle.text !== 'undefined')
+				this.listTabTitle.text = listTabTitle.text ;
+			if(typeof listTabTitle.size !== 'undefined') {
+				this.listTabTitle.size = listTabTitle.size ;
+			}
+		}
+		
+		if(typeof graphTabTitle !== 'undefined') {
+			if(typeof graphTabTitle.icon !== 'undefined')
+				this.graphTabTitle.icon = graphTabTitle.icon ;
+			if(typeof graphTabTitle.text !== 'undefined')
+				this.graphTabTitle.text = graphTabTitle.text ;
+			if(typeof graphTabTitle.size !== 'undefined')
+				this.graphTabTitle.size = graphTabTitle.size ;
+		}
+	}
 
 	Graph.prototype.getLevel = function() {
 		if(this.max_size < this.graphLevel[1].max_size)
@@ -119,10 +143,12 @@ function Graph(div_id, display_type) {
 	Graph.prototype.printTab = function() {
 		//SD/ Display tabs
 		$('#' + this.div_id + '_tabs').html(
-			'<ul class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;">' +
-				'<li id="' + this.div_id + '_list_tab"><a><i class="icon-th-list"></i> View as List</a></li>' +
-				'<li id="' + this.div_id + '_graph_tab"><a><i class="icon-th-large"></i> View as Graph</a></li>' +
-			'</ul>'
+			'<div class="col-fluid span' + this.listTabTitle.size + '">' +
+				'<ul class="pull-right nav nav-tabs" style="margin-bottom:0;">' +
+					'<li id="' + this.div_id + '_list_tab" class="active"><a><i class="' + this.listTabTitle.icon + '"></i> ' + this.listTabTitle.text + '</a></li>' +
+					'<li id="' + this.div_id + '_graph_tab"><a><i class="' + this.graphTabTitle.icon + '"></i> ' + this.graphTabTitle.text + '</a></li>' +
+				'</ul>' +
+			'</div>'
 		) ;
 
 		//SD/ Assign functions to tabs
@@ -883,7 +909,6 @@ function Graph(div_id, display_type) {
 		//SD/ Print tabs
 		this.printTab() ;
 
-
 		//SD/ Display 5 firsts video as origin
 		if(this.from == null) {
 			Dajaxice.inevent.get_graph_head(
@@ -907,7 +932,11 @@ function Graph(div_id, display_type) {
 		//SD/ Switch active button
 		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_list_tab').removeClass('active') ;
+
 		$('#' + this.div_id + '_graph_tab').addClass('active') ;
+		for(var i=1 ; i<=12 ; i++)
+			$('#' + this.div_id + '_tabs div').removeClass('span' + i) ;
+		$('#' + this.div_id + '_tabs div').addClass('span' + this.graphTabTitle.size) ;
 
 		//SD/ Switch elements
 		$('#' + this.div_id).show() ;
@@ -922,13 +951,17 @@ function Graph(div_id, display_type) {
 		//SD/ Switch active button
 		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
+
 		$('#' + this.div_id + '_list_tab').addClass('active') ;
+		for(var i=1 ; i<=12 ; i++)
+			$('#' + this.div_id + '_tabs div').removeClass('span' + i) ;
+		$('#' + this.div_id + '_tabs div').addClass('span' + this.listTabTitle.size) ;
 
 		//SD/ Switch element
 		$('#' + this.div_id).hide() ;
 		// show player iframe
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"visible","height":this.graph_height,"width":"100%"});
-	    $('.side_block').show() ;
+		$('.side_block').show() ;
 
 		$('#' + this.div_id + '_params').hide() ;
 	}

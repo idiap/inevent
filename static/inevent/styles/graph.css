@@ -63,7 +63,29 @@ rect.secondary {
 	width:50%;
 }
 
-.graph_container { position:relative; }
+.graph_container { position:relative; overflow:auto; }
+
+.graph_container div.graph:after {
+	content: "Explore similar Events";
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	padding: 10px 14px;
+	font-size: 12px;
+	font-weight: bold;
+	background-color: #ffffff;
+	border: 1px solid #DDD;
+	color: #9DA0A4;
+	border-radius: 4px 0px;
+}
+
+.graph_container div.graph span {
+	border:1px solid #ddd;
+	padding:10px;
+	background-color:#ffffff;
+	margin-left:10px;
+	border-radius: 4px 0px;
+}
 
 .graph_params {
 	margin-bottom: 20px;
@@ -72,7 +94,7 @@ rect.secondary {
 	border-radius: 4px;
 	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
 	position:absolute;
-	top:40px;
+	top:60px;
 }
 
 .graph_params .nav-header { margin-bottom:20px; padding-left:0; }

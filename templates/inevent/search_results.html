@@ -10,40 +10,39 @@
 			{% endif %}
 		</h2>
 
-		<ul id="graph_search_tabs" class="col-fluid pull-right nav nav-tabs" style="margin-bottom:0;"></ul>
+		<div id="graph_search_tabs"></div>
 	</div>
 </div>
 
 <div class="row-fluid">
-	<div class="tabbable well well-small span12">
-		<div id="graph_search_container" class="graph_container">
-			<div id="graph_search" style="display:none;">
+	<div class="col-fluid span12">
+		<div id="graph_search_container" class="graph_container well">
+			<div id="graph_search" class="graph" style="display:none;">
 				<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
 			</div>
-
 
 			<div class="col-fluid span3 pull-right hide" style="margin-right:10px;">
 				<div id="graph_search_params" class="graph_params well span3">
 					{% include "inevent/graph_params.html" with div_id="graph_search" %}
 				</div>
 			</div>
-		</div>
-
-		<div id="graph_search_list">
-			{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
+			
+			<div id="graph_search_list">
+				{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
 	
-			<div class="pull-right">
-				{% if pagination.has_previous %}
-					<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.previous_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.previous_page_number }}"><<</a>
-				{% endif %}
-				{% if count > 0 %}
-					<span class="current">
-						Page {{ pagination.page }} of {{ pagination.num_pages }}.
-					</span>
-				{% endif %}
-				{% if pagination.has_next %}
-					<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.next_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.next_page_number }}">>></a>
-				{% endif %}
+				<div class="pull-right">
+					{% if pagination.has_previous %}
+						<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.previous_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.previous_page_number }}"><<</a>
+					{% endif %}
+					{% if count > 0 %}
+						<span class="current">
+							Page {{ pagination.page }} of {{ pagination.num_pages }}.
+						</span>
+					{% endif %}
+					{% if pagination.has_next %}
+						<a class="hyperevent_link_to_page" onclick="send_search_request('{{ pagination.next_page_number }}', 'inevent', 'search_form' )" id="page-{{ pagination.next_page_number }}">>></a>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>

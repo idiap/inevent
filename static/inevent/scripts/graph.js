@@ -814,6 +814,7 @@ function Graph(div_id, display_type) {
 				//SD/ Erease graph container and draw graph
 				$('#' + this.div_id).html(
 					'<div>' +
+						'<div class="pull-left" style="width:140px;"></div>' +
 						'<div class="pull-right">' +
 							'<span title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');"><i class="icon-zoom-in"></i></span>' + 
 							'<span><input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input></span>' +

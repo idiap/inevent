@@ -1,7 +1,7 @@
 {% if hyperevents %}
 {% load seconds %}
 {% for hyperevent in hyperevents %}
-<div class="container-fluid hyperevent">
+<div class="row-fluid hyperevent">
 	<div class="span2">
 		{% if hyperevent.snapshot_url %}
 			<a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;"> 
@@ -20,7 +20,7 @@
 		{%endif %}
 	</div>
 	<div class="metadata span10">
-		<div class="row-fluid container-fluid">
+		<div class="row-fluid">
 			<div class="pull-left hyperevent-big-title span8">
 				{% if hyperevent.title %}
 					{% if hyperevent.video_url %}
@@ -55,7 +55,7 @@
 			</div>-->
 		</div>
 
-		<div class="row-fluid container-fluid hyperevent-metadata">
+		<div class="row-fluid hyperevent-metadata">
 			<small>
 				{% with presenters=hyperevent.presenters %}
 					{% if presenters %} <i class="icon-user"></i> 
@@ -80,14 +80,14 @@
 			</div>
 		</div>
 		
-		<div class="row-fluid container-fluid hyperevent-metadata">
+		<div class="row-fluid hyperevent-metadata">
 			<small> {% with tags=hyperevent.tags %}
 				{% if tags %} <i class="icon-tag"></i> {{ tags }}
 				{% endif %}
 				{% endwith %}
 			</small>
 		</div>
-		<div class="row-fluid container-fluid hyperevent-metadata">
+		<div class="row-fluid hyperevent-metadata">
 			<small> {% with num_slides=hyperevent.num_slides %}
 				{%if num_slides %} <i class="icon-picture"></i> <a href="{% url "get_hyperevent" hyperevent.id %}" rel="shadowbox;"> {{ num_slides }} {{ num_slides|pluralize:"slide, slides"}} </a> &nbsp;&nbsp;&nbsp;
 				{%endif%}

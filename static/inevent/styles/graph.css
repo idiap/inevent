@@ -60,7 +60,7 @@ rect.secondary {
 
 .progress {
 	margin:auto;
-	width:50%;
+	width:20%;
 }
 
 .graph_container { position:relative; overflow:auto; }
@@ -68,8 +68,8 @@ rect.secondary {
 .graph_container div.graph:after {
 	content: "Explore similar Events";
 	position: absolute;
-	top: -1px;
-	left: -1px;
+	top: 0px;
+	left: 0px;
 	padding: 10px 14px;
 	font-size: 12px;
 	font-weight: bold;

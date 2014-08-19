@@ -7,16 +7,10 @@ function Graph(div_id, display_type) {
 	this.div_id = div_id ;
 	this.from = null ;
 	this.graph_height = 700 ;
-	display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
+	this.display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
 
 	this.listTabTitle = { "icon": "icon-th-list", "text":"View as List", "size":12 } ;
 	this.graphTabTitle = { "icon": "icon-th-large", "text":"View as Graph", "size":12 } ;
-
-	// choosing between a list and a graph view
-	if(display_type == "graph")
-		this.set_graph_tab() ;
-	else
-		this.set_list_tab() ;
 
 	//SD/ Set node sizes
 	this.big_rect = [375.0, 300] ;
@@ -906,9 +900,17 @@ function Graph(div_id, display_type) {
 		//SD/ Update settings
 		window["update_" + this.div_id + "_value"](firstRun) ;
 
-		//SD/ Print tabs
-		this.printTab() ;
-
+		if(firstRun === true) {
+			//SD/ Print tabs
+			this.printTab() ;
+			
+			//SI/ choosing between a list and a graph view
+			if(this.display_type == "graph")
+				this.set_graph_tab() ;
+			else
+				this.set_list_tab() ;
+		}
+		
 		//SD/ Display 5 firsts video as origin
 		if(this.from == null) {
 			Dajaxice.inevent.get_graph_head(
@@ -932,15 +934,18 @@ function Graph(div_id, display_type) {
 		//SD/ Switch active button
 		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_list_tab').removeClass('active') ;
-
 		$('#' + this.div_id + '_graph_tab').addClass('active') ;
-		for(var i=1 ; i<=12 ; i++)
-			$('#' + this.div_id + '_tabs div').removeClass('span' + i) ;
-		$('#' + this.div_id + '_tabs div').addClass('span' + this.graphTabTitle.size) ;
+
+		//SD/ Change tab size if they are different
+		if(this.listTabTitle.size != this.graphTabTitle.size) {
+			for(var i=1 ; i<=12 ; i++)
+				$('#' + this.div_id + '_tabs div').removeClass('span' + i) ;
+			$('#' + this.div_id + '_tabs div').addClass('span' + this.graphTabTitle.size) ;
+		}
 
 		//SD/ Switch elements
 		$('#' + this.div_id).show() ;
-		// hide player iframe
+		//SI/ hide player iframe
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"hidden","height":"0px","width":"0px"});
 		$('.side_block').hide() ;
 
@@ -951,15 +956,18 @@ function Graph(div_id, display_type) {
 		//SD/ Switch active button
 		if($('#' + this.div_id + '_graph_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_graph_tab').removeClass('active') ;
-
 		$('#' + this.div_id + '_list_tab').addClass('active') ;
-		for(var i=1 ; i<=12 ; i++)
-			$('#' + this.div_id + '_tabs div').removeClass('span' + i) ;
-		$('#' + this.div_id + '_tabs div').addClass('span' + this.listTabTitle.size) ;
+
+		//SD/ Change tab size if they are different
+		if(this.listTabTitle.size != this.graphTabTitle.size) {
+			for(var i=1 ; i<=12 ; i++)
+				$('#' + this.div_id + '_tabs div').removeClass('span' + i) ;
+			$('#' + this.div_id + '_tabs div').addClass('span' + this.listTabTitle.size) ;
+		}
 
 		//SD/ Switch element
 		$('#' + this.div_id).hide() ;
-		// show player iframe
+		//SI/ show player iframe
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"visible","height":this.graph_height,"width":"100%"});
 		$('.side_block').show() ;
 

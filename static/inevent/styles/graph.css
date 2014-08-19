@@ -65,7 +65,16 @@ rect.secondary {
 
 .graph_container { position:relative; }
 
-.graph_params { position:absolute;top:40px; }
+.graph_params {
+	margin-bottom: 20px;
+	background-color: #ffffff;
+	border: 1px solid #E3E3E3;
+	border-radius: 4px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
+	position:absolute;
+	top:40px;
+}
+
 .graph_params .nav-header { margin-bottom:20px; padding-left:0; }
 .graph_params .user_text { float:left; }
 .graph_params .min-label { float:left;text-align:right;margin-right:3%;width:10%; }

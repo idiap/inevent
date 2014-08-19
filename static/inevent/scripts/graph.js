@@ -132,6 +132,19 @@ function Graph(div_id, display_type) {
 
 	Graph.prototype.loadGraph = function(data, width) {
 		INCREMENT_ID[this.div_id]++ ;
+		
+		_this = this ;
+		$(document).mouseup(function (e)
+		{
+			var container = $("#" + _this.div_id + "_params") ;
+			if (!container.is(e.target) // if the target of the click isn't the container...
+				&& container.has(e.target).length === 0) // ... nor a descendant of the container
+			{
+				if(container.is(':visible'))
+					container.parent().toggle() ;
+			}
+		});
+		
 		//console.log("graph #" + this.div_id + " increment :" + INCREMENT_ID[this.div_id]) ;
 		this.increment_id = INCREMENT_ID[this.div_id] ;
 		
@@ -782,9 +795,10 @@ function Graph(div_id, display_type) {
 				$('#' + this.div_id).html(
 					'<div>' +
 						'<div class="pull-left">Explore similar events</div>' +
-						'<div class="pull-right"><i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');" class="icon-minus-sign"></i> ' + 
+						'<div class="pull-right"><i title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');" class="icon-zoom-in"></i> ' + 
 							'<input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input>' +
-						' <i onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-plus-sign"></i> <i onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
+						' <i title="Zoom out" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');" class="icon-zoom-out"></i>' +
+						' <i title="Advanced settings" onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;" class="icon-cog"></i></div>' +
 					'</div>' +
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
 				) ;

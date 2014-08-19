@@ -50,17 +50,20 @@
 	}
 	
 	function toggle_{{ div_id }}() {
-		$("#{{ div_id }}_params").parent().toggle()
+		$("#{{ div_id }}_params").parent().toggle() ;
 	}
 </script>
 
 <div id="{{ div_id }}_form" style="display:block;">
 
-	<div class="pull-right"><i class="icon-remove-circle" onclick="toggle_{{ div_id }}();"></i></div>
+	<div class="modal-header">
+		<button class="close" aria-hidden="true" type="button" onclick="toggle_{{ div_id }}();">×</button>
+		<h4 class="modal-title">
+			Advanced settings
+		</h4>
+	</div>
 
-	<div class="nav-header">Graph parameters</div>
-
-	<form action="" method="post" id="filterform">
+	<form action="" method="post" id="filterform" class="modal-body">
 		<!--
 		<div class="control-group">
 			<label class="control-label" for="buttonMotCles">Keywords</label>
@@ -80,7 +83,7 @@
 		-->
 			
 			<div class="control-group">
-				<label>Graph size</label>
+				<label>Max quantity of event</label>
 				<div class="min-label">0</div>
 				<div class="user-value">
 					<input onchange="graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
@@ -90,7 +93,7 @@
 			</div>
 
 			<div class="control-group">
-				<label>Distance from starting node(s)</label>
+				<label>Distance from starting event</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
 					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
@@ -100,7 +103,7 @@
 			</div>
 
 			<div class="control-group">
-				<label>Neighbours per node</label>
+				<label>Neighbours per event</label>
 				<div class="min-label">1</div>
 				<div class="user-value">
 					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>

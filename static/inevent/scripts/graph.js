@@ -135,6 +135,8 @@ function Graph(div_id, display_type) {
 
 	//SD/ Print HTML code for tab and link to internal function
 	Graph.prototype.printTab = function() {
+		var _this = this ;
+
 		//SD/ Display tabs
 		$('#' + this.div_id + '_tabs').html(
 			'<div class="col-fluid span' + this.listTabTitle.size + '">' +
@@ -153,7 +155,7 @@ function Graph(div_id, display_type) {
 	Graph.prototype.loadGraph = function(data, width) {
 		INCREMENT_ID[this.div_id]++ ;
 		
-		_this = this ;
+		var _this = this ;
 		$(document).mouseup(function (e)
 		{
 			var container = $("#" + _this.div_id + "_params") ;
@@ -178,7 +180,7 @@ function Graph(div_id, display_type) {
 	}
 	
 	Graph.prototype.updateGraph = function(new_data) {
-		_this = this ;
+		var _this = this ;
 		
 		$("#" + this.div_id + "_progress").css("width", this.input_nodes.length * 100 / this.max_size + "%") ;
 		
@@ -194,7 +196,7 @@ function Graph(div_id, display_type) {
 		}
 
 		//SD/ Prepare link and push them to input_links
-		links = new_data['links'] ;
+		var links = new_data['links'] ;
 		if(typeof new_data['links'] !== undefined && new_data['links'] != null) {
 			for (var s = 0; s < links.length; s++) {
 				var target = this.find_node_index(links[s]['target']);
@@ -471,7 +473,7 @@ function Graph(div_id, display_type) {
 		//SD/ Define window ENDS ===============================================
 
 		//SD/ Define title
-		node_text = this.nodeEnter.append('text')
+		var node_text = this.nodeEnter.append('text')
 			.attr("id", function(d) { return _this.div_id + "_video_title_" + d.id})
 			.attr("height", 60)
 			.attr("class",  function(d) { return "word_cloud"+ " " + _this.div_id + "_word_cloud_" + d.id})
@@ -488,7 +490,7 @@ function Graph(div_id, display_type) {
 	}
 
 	Graph.prototype.displayLinks = function() {
-		_this = this ;
+		var _this = this ;
 		
 		this.link = this.svg.selectAll(".link").data(this.input_links);
 			this.linkEnter=this.link.enter().append("line")
@@ -526,8 +528,8 @@ function Graph(div_id, display_type) {
 	}
 
 	Graph.prototype.boundedTick = function() {
-		node = this.svg.selectAll(".node");
-		link = this.svg.selectAll(".link");
+		var node = this.svg.selectAll(".node");
+		var link = this.svg.selectAll(".link");
 		var _this = this ;
 
 		node.attr("cx", function(d) { return d.x; })
@@ -604,6 +606,7 @@ function Graph(div_id, display_type) {
 	}
 	
 	Graph.prototype.dragend = function(d) {
+		var _this = this ;
 		d3.select("#" + _this.div_id + "_rect_node_" + d.id).classed("fixed", d.fixed = true);
 	}
 	
@@ -636,7 +639,7 @@ function Graph(div_id, display_type) {
 
 	//SD/ Draw an SVG word cloud
 	Graph.prototype.draw_cloud = function(hyperEventId) {
-		_this = this ;
+		var _this = this ;
 	
 		for(var i in this.input_nodes)
 			if(this.input_nodes[i].id == hyperEventId)
@@ -647,18 +650,18 @@ function Graph(div_id, display_type) {
 		(
 			function(data)
 			{
-				allWords = [] ;
-				countWords = [] ;
-				topWords = [] ;
+				var allWords = [] ;
+				var countWords = [] ;
+				var topWords = [] ;
 			
 				//SD/ Common word to https://github.com/jdf/cue.language/tree/master/src/cue/lang/stop
-				englishCommons = ["i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
-				dict = $.merge(englishCommons, ["laughter", "applause"]) ;
-				dict = $.merge(englishCommons, ["", "--"]) ;
+				var englishCommons = ["i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
+				var dict = $.merge(englishCommons, ["laughter", "applause"]) ;
+				var dict = $.merge(englishCommons, ["", "--"]) ;
 
 				//SD/ Extract all words in lowercase from transcript sentences
 				for(var i in data['transcripts']) {
-					line = data['transcripts'][i].value.toLowerCase() ;
+					var line = data['transcripts'][i].value.toLowerCase() ;
 					line = line.split(",").join(" ") ;
 					line = line.split(".").join(" ") ;
 					line = line.split("\"").join(" ") ;
@@ -670,7 +673,7 @@ function Graph(div_id, display_type) {
 
 				//SD/ Count words found
 				for(var i in allWords) {
-					found = false ;
+					var found = false ;
 					for(var j in countWords) {
 						if(allWords[i] == countWords[j].text) {
 							countWords[j].size++ ;
@@ -697,8 +700,8 @@ function Graph(div_id, display_type) {
 					return (a.size > b.size) ? -1 : ((a.size < b.size) ? 1 : 0) ;
 				});
 
-				maxCount = countWords[0].size ;
-				percentCount = 100 / maxCount ;
+				var maxCount = countWords[0].size ;
+				var percentCount = 100 / maxCount ;
 				
 				//SD/ Display only the top30 of words
 				for(var i=0 ; i<20 ; i++) {
@@ -890,14 +893,14 @@ function Graph(div_id, display_type) {
 			this.from = from ;
 		}
 
-		_this = this ;
-		from = typeof from !== 'undefined' ? from : null;
-		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
+		var _this = this ;
+		var from = typeof from !== 'undefined' ? from : null;
+		var firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
 		//SD/ Get default settings
-		max_neighbours = $("#" + this.div_id + "_form .user_neighbours").val() ;
-		max_depth = $("#" + this.div_id + "_form .user_depth").val() ;
-		max_size = $("#" + this.div_id + "_form .user_size").val() ;
+		var max_neighbours = $("#" + this.div_id + "_form .user_neighbours").val() ;
+		var max_depth = $("#" + this.div_id + "_form .user_depth").val() ;
+		var max_size = $("#" + this.div_id + "_form .user_size").val() ;
 
 		//SD/ Update settings
 		window["update_" + this.div_id + "_value"](firstRun) ;
@@ -947,8 +950,12 @@ function Graph(div_id, display_type) {
 
 		//SD/ Switch elements
 		$('#' + this.div_id).show() ;
-		//SI/ hide player iframe
+		//SI/ hide player iframe or list
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"hidden","height":"0px","width":"0px"});
+		//SD/ Add a display none rule only if no iframe (incompatible)
+		if ($('#' + this.div_id + '_list iframe').length <= 0)
+			$('#' + this.div_id + '_list').css("display", "none") ;
+			
 		$('.side_block').hide() ;
 
 		$('#' + this.div_id + '_params').show() ;

@@ -21,7 +21,7 @@
 	}
 
 	function update_{{div_id}}_value(firstRun){
-		firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
+		var firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
 		var range = $("#{{div_id}}_form .user_size") ;
 		var text = $("#{{div_id}}_form .user_size_text") ;
@@ -46,7 +46,7 @@
 		
 		//if($("#{{div_id}}").html() == '')
 		if(firstRun == true)
-			$("#{{ div_id }}_params").hide();
+			$("#{{ div_id }}_params").parent().hide();
 	}
 	
 	function toggle_{{ div_id }}() {

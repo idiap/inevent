@@ -17,21 +17,21 @@ function Graph(div_id, display_type) {
 
 	//SD/ Define some graph level depending on max nodes
 	this.graphLevel = [{},{
-			'max_size':21,
-			'distance':200,
-			'rect_size':[75.0, 56.0]
+			'max_size':199,
+			'distance':50,
+			'rect_size':[7.5, 7.5]
 		},{
-			'max_size':51,
-			'distance':150,
-			'rect_size':[37.5, 28.0]
-		},{
-			'max_size':101,
+			'max_size':99,
 			'distance':100,
 			'rect_size':[15.0, 15.0]
 		},{
-			'max_size':201,
-			'distance':50,
-			'rect_size':[7.5, 7.5]
+			'max_size':49,
+			'distance':150,
+			'rect_size':[37.5, 28.0]
+		},{
+			'max_size':19,
+			'distance':200,
+			'rect_size':[75.0, 56.0]
 		}
 	] ;
 	
@@ -60,11 +60,11 @@ function Graph(div_id, display_type) {
 	}
 
 	Graph.prototype.getLevel = function() {
-		if(this.max_size < this.graphLevel[1].max_size)
+		if(this.max_size > this.graphLevel[1].max_size)
 			return 1 ;
-		if(this.max_size < this.graphLevel[2].max_size)
+		if(this.max_size > this.graphLevel[2].max_size)
 			return 2 ;
-		if(this.max_size < this.graphLevel[3].max_size)
+		if(this.max_size > this.graphLevel[3].max_size)
 			return 3 ;
 
 		return 4 ;
@@ -819,9 +819,9 @@ function Graph(div_id, display_type) {
 					'<div>' +
 						'<div class="pull-left" style="width:140px;"></div>' +
 						'<div class="pull-right">' +
-							'<span title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');"><i class="icon-zoom-in"></i></span>' + 
+							'<span title="Zoom out" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');"><i class="icon-zoom-out"></i></span>' +
 							'<span><input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input></span>' +
-							'<span title="Zoom out" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');"><i class="icon-zoom-out"></i></span>' +
+							'<span title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');"><i class="icon-zoom-in"></i></span>' + 
 							'<span title="Advanced settings" onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;"><i class="icon-cog"></i></span>' +
 						'</div>' +
 					'</div>' +

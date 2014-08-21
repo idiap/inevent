@@ -822,7 +822,7 @@ function Graph(div_id, display_type) {
 							'<span title="Zoom out" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');"><i class="icon-zoom-out"></i></span>' +
 							'<span><input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input></span>' +
 							'<span title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');"><i class="icon-zoom-in"></i></span>' + 
-							'<span title="Advanced settings" onclick="$(\'#' + this.div_id + '_params\').parent().toggle().animate() ;"><i class="icon-cog"></i></span>' +
+							'<span title="Advanced settings" onclick="$(\'#' + this.div_id + '_params\').parent().toggle() ;"><i class="icon-cog"></i></span>' +
 						'</div>' +
 					'</div>' +
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'

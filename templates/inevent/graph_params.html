@@ -1,25 +1,4 @@
 <script>
-	function toggle_{{div_id}}_content(type) {
-		if(type == "emotion")
-		{
-			if($("#{{div_id}}_form .user_emotion").hasClass("active")) {
-				$('#{{div_id}} line.emotion-type').hide() ;
-			}
-			else {
-				$('#{{div_id}} line.emotion-type').show();
-			}
-		}
-		else
-		{
-			if($("#{{div_id}}_form .user_content").hasClass("active")) {
-				$('#{{div_id}} line.content-type').hide();
-			}
-			else {
-				$('#{{div_id}} line.content-type').show();
-			}
-		}
-	}
-
 	function update_{{div_id}}_value(firstRun){
 		var firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
@@ -115,9 +94,6 @@
 			<div class="control-group">
 				<label>Relation Type</label>
 				<div class="btn-group" data-toggle="buttons-checkbox">
-					<button type="button" class="user_content btn btn-small active" onclick="toggle_{{div_id}}_content('content');">Content</button>
-					<button type="button" class="user_emotion btn btn-small active" onclick="toggle_{{div_id}}_content('emotion');">Emotions</button>
-					<!--<button type="button" class="btn btn-primary">Popularit&eacute;</button>-->
 				</div>
 				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>
 			</div>

@@ -916,6 +916,8 @@ function Graph(div_id, display_type) {
 				this.set_list_tab() ;
 		}
 		
+		this.drawEmotions() ;
+		
 		//SD/ Display 5 firsts video as origin
 		if(this.from == null) {
 			Dajaxice.inevent.get_graph_head(
@@ -981,6 +983,32 @@ function Graph(div_id, display_type) {
 		$('.side_block').show() ;
 
 		$('#' + this.div_id + '_params').hide() ;
+	}
+
+	Graph.prototype.setEmotion = function(emotion) {
+		if($("#" + this.div_id + "_container .emotions-buttons ." + emotion).html() != emotion) {
+			$("#" + this.div_id + "_container .emotions-buttons div div").html("").css("padding-right", "16px") ;
+			$("#" + this.div_id + "_container .emotions-buttons ." + emotion).html(emotion).css("padding-right", "26px") ;
+			$("#" + this.div_id + "_container .user_emotions input").val(0) ;
+			$("#" + this.div_id + "_container .user_" + emotion).val(60) ;
+		}
+		else {
+			$("#" + this.div_id + "_container .emotions-buttons ." + emotion).html("").css("padding-right", "16px") ;
+			$("#" + this.div_id + "_container .user_emotions input").val(100) ;
+		}
+	}
+
+	Graph.prototype.drawEmotions = function() {
+		var htmlContent = "" ;
+		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
+		
+		for(var i in emotions) {
+			htmlContent += '<div onclick="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');">' ;
+			htmlContent += '<div class="' + emotions[i] + '" style="background-image:url(/static/inevent/images/' + emotions[i] + '.png);"></div>' ;
+			htmlContent += '</div>' ;
+		}
+		
+		$("#" + this.div_id + "_container .emotions-buttons").html(htmlContent) ;
 	}
 
 function Queue() {

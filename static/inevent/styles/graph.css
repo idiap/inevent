@@ -63,7 +63,10 @@ rect.secondary {
 	width:20%;
 }
 
-.graph_container { position:relative; overflow:auto; }
+.graph_container {
+	position:relative;
+	overflow:auto;
+}
 
 .graph_container div.graph:after {
 	content: "Explore similar Events";
@@ -79,22 +82,55 @@ rect.secondary {
 	border-radius: 4px 0px;
 }
 
-.graph_container div.graph span {
+.graph_container span {
 	border:1px solid #ddd;
 	padding:10px;
 	background-color:#ffffff;
 	margin-left:10px;
-	border-radius: 4px 0px;
+	border-radius: 4px ;
+}
+
+.graph_container .graph_sidepane {
+	position:absolute;
+	top:60px;
+	right:0;
+}
+
+.graph_container .emotions-buttons {
+	float:right;
+	width:16px;
+}
+
+.graph_container .emotions-buttons>div {
+	border:1px solid #ddd;
+	padding:10px;
+	background-color:#ffffff;
+	border-radius: 4px ;
+	margin-right:0;
+	margin-bottom:10px;
+	height:16px;
+	overflow:hidden;
+	line-height:0;
+	text-transform:capitalize;
+	float:right;
+}
+
+.graph_container .emotions-buttons div>div {
+	background-size: 16px 16px;
+	background-repeat:no-repeat;
+	background-position:right top ;
+	padding-right:16px;
+	height:16px;
+	line-height:1.3em;
 }
 
 .graph_params {
+	position:absolute;
 	margin-bottom: 20px;
 	background-color: #ffffff;
 	border: 1px solid #E3E3E3;
 	border-radius: 4px;
 	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
-	position:absolute;
-	top:60px;
 }
 
 .graph_params .nav-header { margin-bottom:20px; padding-left:0; }

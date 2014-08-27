@@ -656,7 +656,8 @@ function Graph(div_id, display_type) {
 			
 				//SD/ Common word to https://github.com/jdf/cue.language/tree/master/src/cue/lang/stop
 				var englishCommons = ["i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
-				var dict = $.merge(englishCommons, ["laughter", "applause"]) ;
+				var dict = $.merge(englishCommons, ["pony strap"]) ;
+				var dict = $.merge(englishCommons, ["laughter", "applause", "um", "uh"]) ;
 				var dict = $.merge(englishCommons, ["", "--"]) ;
 
 				//SD/ Extract all words in lowercase from transcript sentences
@@ -668,7 +669,45 @@ function Graph(div_id, display_type) {
 					line = line.split("(").join(" ") ;
 					line = line.split(")").join(" ") ;
 					words = line.split(" ") ;
-					allWords = $.merge(allWords, words) ;
+					
+					//SD/ TODO Here remove the words
+					//SD/ Remove common words
+					//SD/ TODO choose dict depending on language ?
+					for(var i in words) {
+						for(var j in dict) {
+							if(words[i] != null) {
+								if(dict[j].search(" ") < 0){
+									//SD for one single word to compare
+									if(dict[j] == words[i] || words[i].length <= 1) {
+										delete words[i] ;
+									}
+								}
+								else {
+									//SD/ for a sentence to compare
+									var elements = dict[j].split(" ") ;
+									var element_matches = true ;
+								
+									for(var k in elements) {
+										var word_position = parseInt(i) + parseInt(k) ;
+										
+										if(elements[k] != words[word_position]) {
+											element_matches = false ;
+										}
+									}
+								
+									if(element_matches) {
+										for(var k=0 ; k<elements.length ; k++) {
+											var word_position = parseInt(i) + parseInt(k) ;
+											delete words[word_position] ;
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					if(words.length > 0)
+						allWords = $.merge(allWords, words) ;
 				}
 
 				//SD/ Count words found
@@ -680,19 +719,8 @@ function Graph(div_id, display_type) {
 							found = true ;
 						}
 					}
-					if(!found)
+					if(!found && allWords[i] != null)
 						countWords.push({ text: allWords[i], size: 1 }) ;
-				}
-
-				//SD/ Remove common words
-				//SD/ TODO choose dict depending on language ?
-				dict = englishCommons ;
-				for(var i in dict) {
-					for(var j in countWords) {
-						if(dict[i] == countWords[j].text) {
-							delete countWords[j] ;
-						}
-					}
 				}
 
 				// sort array by descending frequency | http://stackoverflow.com/a/8837505
@@ -703,11 +731,13 @@ function Graph(div_id, display_type) {
 				var maxCount = countWords[0].size ;
 				var percentCount = 100 / maxCount ;
 				
-				//SD/ Display only the top30 of words
+				//SD/ Display only the top20 of words with 5 as minimal size
 				for(var i=0 ; i<20 ; i++) {
 					topWords[i] = countWords[i] ;
-					topWords[i].size = (percentCount * topWords[i].size / 3) + 10 ;
+					topWords[i].size = (percentCount * topWords[i].size / 3) + 5 ;
 				}
+
+				console.log(topWords) ;
 
 				//SD/ Draw the cloud
 				var fill = d3.scale.category20();
@@ -827,6 +857,9 @@ function Graph(div_id, display_type) {
 					'</div>' +
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
 				) ;
+
+				this.drawEmotions() ;
+
 				this.loadGraph(data, $("#" + this.div_id + "_container").width());
 
 				if(max_size > 0) {

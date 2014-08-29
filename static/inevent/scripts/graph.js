@@ -781,7 +781,7 @@ function Graph(div_id, display_type) {
 							});
 				}
 			},
-			{'transcript_url': transcriptUrl, 'event_id': hyperEventId, 'error_callback': display_graph_error}
+			{'transcript_url': transcriptUrl, 'event_id': hyperEventId, 'error_callback': this.display_graph_error}
 		);
 	}
 
@@ -866,7 +866,7 @@ function Graph(div_id, display_type) {
 					this.addElement(data)
 					var first = this.pickElement() ;
 		
-					params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+					params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': this.display_graph_error} ;
 					Dajaxice.inevent.get_graph_neighbours(function(data){
 						_this.display_graph(data, _this.display_graph);}, params) ;
 				}
@@ -875,11 +875,11 @@ function Graph(div_id, display_type) {
 			}
 			else
 			{
-				display_graph_error('No data returned from server.') ;
+				this.display_graph_error('No data returned from server.') ;
 			}
 		}
 		catch(e){
-			display_graph_error(e) ;
+			this.display_graph_error(e) ;
 		}
 	}
 
@@ -904,7 +904,7 @@ function Graph(div_id, display_type) {
 					var first = this.pickElement() ;
 		
 					if(callback != undefined && this.increment_id == INCREMENT_ID[div_id]) {
-						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': this.display_graph_error} ;
 						callback(
 							Dajaxice.inevent.get_graph_neighbours(function(data){
 								_this.display_graph(data, _this.display_graph.bind(this)); }, params)
@@ -917,7 +917,7 @@ function Graph(div_id, display_type) {
 			}
 		}
 		catch(e){
-			display_graph_error(e) ;
+			this.display_graph_error(e) ;
 		}
 	}
 
@@ -953,14 +953,14 @@ function Graph(div_id, display_type) {
 		if(this.from == null) {
 			Dajaxice.inevent.get_graph_head(
 				function(data){_this.display_graph_head(data, video_switch=false, max_neighbours, max_depth, max_size);},
-				{'num_of_events': 5, 'error_callback': display_graph_error}
+				{'num_of_events': 5, 'error_callback': this.display_graph_error}
 			);
 		}
 		//SD/ Or display the specific choosen from ID video as origin
 		else if(this.from === parseInt(this.from)) {
 			Dajaxice.inevent.get_event_head(
 				function(data) {_this.display_graph_head(data, video_switch=true, max_neighbours, max_depth, max_size);},
-				{'id': _this.from, 'error_callback': display_graph_error});
+				{'id': _this.from, 'error_callback': this.display_graph_error});
 		}
 		//SD/ Or display the specific choosen video from data as origin
 		else {
@@ -1016,6 +1016,10 @@ function Graph(div_id, display_type) {
 		$('#' + this.div_id + '_params').hide() ;
 	}
 
+	Graph.prototype.display_graph_error = function(error) {
+		$('#' + this.div_id).html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
+	}
+
 function Queue() {
 	this.queue = [] ;
 }
@@ -1041,10 +1045,6 @@ function Queue() {
 /*SD/ ==========================================================================
 Function called to display graph and get data
 ==============================================================================*/
-
-function display_graph_error(error) {
-	$('#graph').html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
-}
 
 //SD/ If windows is resized
 $( window ).resize(function() {

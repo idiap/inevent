@@ -858,8 +858,6 @@ function Graph(div_id, display_type) {
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
 				) ;
 
-				this.drawEmotions() ;
-
 				this.loadGraph(data, $("#" + this.div_id + "_container").width());
 
 				if(max_size > 0) {

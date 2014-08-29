@@ -656,7 +656,8 @@ function Graph(div_id, display_type) {
 			
 				//SD/ Common word to https://github.com/jdf/cue.language/tree/master/src/cue/lang/stop
 				var englishCommons = ["i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "whose", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "will", "would", "should", "can", "could", "ought", "i'm", "you're", "he's", "she's", "it's", "we're", "they're", "i've", "you've", "we've", "they've", "i'd", "you'd", "he'd", "she'd", "we'd", "they'd", "i'll", "you'll", "he'll", "she'll", "we'll", "they'll", "isn't", "aren't", "wasn't", "weren't", "hasn't", "haven't", "hadn't", "doesn't", "don't", "didn't", "won't", "wouldn't", "shan't", "shouldn't", "can't", "cannot", "couldn't", "mustn't", "let's", "that's", "who's", "what's", "here's", "there's", "when's", "where's", "why's", "how's", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "upon", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "say", "says", "said", "shall"] ;
-				var dict = $.merge(englishCommons, ["laughter", "applause"]) ;
+				var dict = $.merge(englishCommons, ["pony strap"]) ;
+				var dict = $.merge(englishCommons, ["laughter", "applause", "um", "uh"]) ;
 				var dict = $.merge(englishCommons, ["", "--"]) ;
 
 				//SD/ Extract all words in lowercase from transcript sentences
@@ -668,7 +669,45 @@ function Graph(div_id, display_type) {
 					line = line.split("(").join(" ") ;
 					line = line.split(")").join(" ") ;
 					words = line.split(" ") ;
-					allWords = $.merge(allWords, words) ;
+					
+					//SD/ TODO Here remove the words
+					//SD/ Remove common words
+					//SD/ TODO choose dict depending on language ?
+					for(var i in words) {
+						for(var j in dict) {
+							if(words[i] != null) {
+								if(dict[j].search(" ") < 0){
+									//SD for one single word to compare
+									if(dict[j] == words[i] || words[i].length <= 1) {
+										delete words[i] ;
+									}
+								}
+								else {
+									//SD/ for a sentence to compare
+									var elements = dict[j].split(" ") ;
+									var element_matches = true ;
+								
+									for(var k in elements) {
+										var word_position = parseInt(i) + parseInt(k) ;
+										
+										if(elements[k] != words[word_position]) {
+											element_matches = false ;
+										}
+									}
+								
+									if(element_matches) {
+										for(var k=0 ; k<elements.length ; k++) {
+											var word_position = parseInt(i) + parseInt(k) ;
+											delete words[word_position] ;
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					if(words.length > 0)
+						allWords = $.merge(allWords, words) ;
 				}
 
 				//SD/ Count words found
@@ -680,19 +719,8 @@ function Graph(div_id, display_type) {
 							found = true ;
 						}
 					}
-					if(!found)
+					if(!found && allWords[i] != null)
 						countWords.push({ text: allWords[i], size: 1 }) ;
-				}
-
-				//SD/ Remove common words
-				//SD/ TODO choose dict depending on language ?
-				dict = englishCommons ;
-				for(var i in dict) {
-					for(var j in countWords) {
-						if(dict[i] == countWords[j].text) {
-							delete countWords[j] ;
-						}
-					}
 				}
 
 				// sort array by descending frequency | http://stackoverflow.com/a/8837505
@@ -703,11 +731,13 @@ function Graph(div_id, display_type) {
 				var maxCount = countWords[0].size ;
 				var percentCount = 100 / maxCount ;
 				
-				//SD/ Display only the top30 of words
+				//SD/ Display only the top20 of words with 5 as minimal size
 				for(var i=0 ; i<20 ; i++) {
 					topWords[i] = countWords[i] ;
-					topWords[i].size = (percentCount * topWords[i].size / 3) + 10 ;
+					topWords[i].size = (percentCount * topWords[i].size / 3) + 5 ;
 				}
+
+				console.log(topWords) ;
 
 				//SD/ Draw the cloud
 				var fill = d3.scale.category20();
@@ -751,7 +781,7 @@ function Graph(div_id, display_type) {
 							});
 				}
 			},
-			{'transcript_url': transcriptUrl, 'event_id': hyperEventId, 'error_callback': display_graph_error}
+			{'transcript_url': transcriptUrl, 'event_id': hyperEventId, 'error_callback': this.display_graph_error}
 		);
 	}
 
@@ -836,7 +866,7 @@ function Graph(div_id, display_type) {
 					this.addElement(data)
 					var first = this.pickElement() ;
 		
-					params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+					params = {'event_id': first['id'], 'count': 1, 'depth': 1, 'num_of_similar': this.max_neighbours, 'error_callback': this.display_graph_error} ;
 					Dajaxice.inevent.get_graph_neighbours(function(data){
 						_this.display_graph(data, _this.display_graph);}, params) ;
 				}
@@ -845,11 +875,11 @@ function Graph(div_id, display_type) {
 			}
 			else
 			{
-				display_graph_error('No data returned from server.') ;
+				this.display_graph_error('No data returned from server.') ;
 			}
 		}
 		catch(e){
-			display_graph_error(e) ;
+			this.display_graph_error(e) ;
 		}
 	}
 
@@ -874,7 +904,7 @@ function Graph(div_id, display_type) {
 					var first = this.pickElement() ;
 		
 					if(callback != undefined && this.increment_id == INCREMENT_ID[div_id]) {
-						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': display_graph_error} ;
+						params = {'event_id': first['id'], 'count': data['count'] + 1, 'depth': first['depth'] + 1, 'num_of_similar': this.max_neighbours, 'error_callback': this.display_graph_error} ;
 						callback(
 							Dajaxice.inevent.get_graph_neighbours(function(data){
 								_this.display_graph(data, _this.display_graph.bind(this)); }, params)
@@ -887,7 +917,7 @@ function Graph(div_id, display_type) {
 			}
 		}
 		catch(e){
-			display_graph_error(e) ;
+			this.display_graph_error(e) ;
 		}
 	}
 
@@ -925,14 +955,14 @@ function Graph(div_id, display_type) {
 		if(this.from == null) {
 			Dajaxice.inevent.get_graph_head(
 				function(data){_this.display_graph_head(data, video_switch=false, max_neighbours, max_depth, max_size);},
-				{'num_of_events': 5, 'error_callback': display_graph_error}
+				{'num_of_events': 5, 'error_callback': this.display_graph_error}
 			);
 		}
 		//SD/ Or display the specific choosen from ID video as origin
 		else if(this.from === parseInt(this.from)) {
 			Dajaxice.inevent.get_event_head(
 				function(data) {_this.display_graph_head(data, video_switch=true, max_neighbours, max_depth, max_size);},
-				{'id': _this.from, 'error_callback': display_graph_error});
+				{'id': _this.from, 'error_callback': this.display_graph_error});
 		}
 		//SD/ Or display the specific choosen video from data as origin
 		else {
@@ -1012,6 +1042,9 @@ function Graph(div_id, display_type) {
 		}
 		
 		$("#" + this.div_id + "_container .emotions-buttons").html(htmlContent) ;
+
+	Graph.prototype.display_graph_error = function(error) {
+		$('#' + this.div_id).html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
 	}
 
 function Queue() {
@@ -1039,10 +1072,6 @@ function Queue() {
 /*SD/ ==========================================================================
 Function called to display graph and get data
 ==============================================================================*/
-
-function display_graph_error(error) {
-	$('#graph').html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
-}
 
 //SD/ If windows is resized
 $( window ).resize(function() {

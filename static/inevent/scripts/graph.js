@@ -858,8 +858,6 @@ function Graph(div_id, display_type) {
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
 				) ;
 
-				this.drawEmotions() ;
-
 				this.loadGraph(data, $("#" + this.div_id + "_container").width());
 
 				if(max_size > 0) {
@@ -870,6 +868,8 @@ function Graph(div_id, display_type) {
 					Dajaxice.inevent.get_graph_neighbours(function(data){
 						_this.display_graph(data, _this.display_graph);}, params) ;
 				}
+
+				this.drawEmotions() ;
 			}
 			else
 			{
@@ -946,8 +946,6 @@ function Graph(div_id, display_type) {
 			else
 				this.set_list_tab() ;
 		}
-		
-		this.drawEmotions() ;
 		
 		//SD/ Display 5 firsts video as origin
 		if(this.from == null) {

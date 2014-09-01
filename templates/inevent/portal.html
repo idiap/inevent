@@ -16,13 +16,18 @@
 					<div id="graph_recent" class="graph" style="display:none">
 						<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
 					</div>
-					
-					<div class="col-fluid span3 pull-right" style="margin-right:10px;">
-						<div id="graph_recent_params" class="graph_params span3">
-							{% include "inevent/graph_params.html" with div_id="graph_recent" %}
+
+					<div class="graph_sidepane col-fluid span3 pull-right">
+						<div>
+							<div id="graph_recent_params" class="graph_params span12">
+								{% include "inevent/graph_params.html" with div_id="graph_recent" %}
+							</div>
+						</div>
+
+						<div class="emotions-buttons">
 						</div>
 					</div>
-					
+
 					<div id="graph_recent_list">
 						{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
 					</div>
@@ -61,6 +66,9 @@
 
 					<div class="col-fluid span3 pull-right hide" style="margin-right:10px;">
 						<div id="graph_search_params" class="graph_params well span3">
+						</div>
+						
+						<div class="emotions-buttons">
 						</div>
 					</div>
 				</div>

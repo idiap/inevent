@@ -870,8 +870,6 @@ function Graph(div_id, display_type) {
 					Dajaxice.inevent.get_graph_neighbours(function(data){
 						_this.display_graph(data, _this.display_graph);}, params) ;
 				}
-			
-				//$('#graph_button').prop('disabled', false);
 			}
 			else
 			{
@@ -990,8 +988,7 @@ function Graph(div_id, display_type) {
 		//SD/ Add a display none rule only if no iframe (incompatible)
 		if ($('#' + this.div_id + '_list iframe').length <= 0)
 			$('#' + this.div_id + '_list').css("display", "none") ;
-			
-		$('.side_block').hide() ;
+		$('#' + this.div_id + '_container .graph_sidepane').show() ;
 
 		$('#' + this.div_id + '_params').show() ;
 	}
@@ -1013,7 +1010,7 @@ function Graph(div_id, display_type) {
 		$('#' + this.div_id).hide() ;
 		//SI/ show player iframe
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"visible","height":this.graph_height,"width":"100%"});
-		$('.side_block').show() ;
+		$('#' + this.div_id + '_container .graph_sidepane').hide() ;
 
 		$('#' + this.div_id + '_params').hide() ;
 	}
@@ -1042,6 +1039,7 @@ function Graph(div_id, display_type) {
 		}
 		
 		$("#" + this.div_id + "_container .emotions-buttons").html(htmlContent) ;
+	}
 
 	Graph.prototype.display_graph_error = function(error) {
 		$('#' + this.div_id).html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');

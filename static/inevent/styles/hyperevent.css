@@ -28,6 +28,7 @@ html, body {
 
 .hyperevent {
 	margin-bottom: 20px;
+	position:relative;
 }
 
 .hyperevent-title, .hyperevent-metadata {
@@ -45,10 +46,9 @@ html, body {
 }
 
 .provider {
-	position: relative;
-	font-size: 8px;
+	position: absolute;
 	bottom: 20px;
-	left: 0px;
+	left: -5px;
 }
 
 .provider-center {

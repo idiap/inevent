@@ -1034,7 +1034,7 @@ function Graph(div_id, display_type) {
 		
 		for(var i in emotions) {
 			htmlContent += '<div onclick="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');">' ;
-			htmlContent += '<div class="' + emotions[i] + '" style="background-image:url(/static/inevent/images/' + emotions[i] + '.png);"></div>' ;
+			htmlContent += '<div class="' + emotions[i] + '"></div>' ;
 			htmlContent += '</div>' ;
 		}
 		

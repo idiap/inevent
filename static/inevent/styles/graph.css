@@ -102,6 +102,13 @@ rect.secondary {
 	width:16px;
 }
 
+.graph_container .emotions-buttons .ingenious	{ background-image:url(../images/ingenious.png); }
+.graph_container .emotions-buttons .fascinating	{ background-image:url(../images/fascinating.png); }
+.graph_container .emotions-buttons .funny		{ background-image:url(../images/funny.png); }
+.graph_container .emotions-buttons .inspiring	{ background-image:url(../images/inspiring.png); }
+.graph_container .emotions-buttons .persuasive	{ background-image:url(../images/persuasive.png); }
+.graph_container .emotions-buttons .courageous	{ background-image:url(../images/courageous.png); }
+
 .graph_container .emotions-buttons>div {
 	border:1px solid #ddd;
 	padding:10px;

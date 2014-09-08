@@ -851,8 +851,7 @@ function Graph(div_id, display_type) {
 				//SD/ Erease graph container and draw graph
 				$('#' + this.div_id).html(
 					'<div>' +
-						'<div class="pull-left" style="width:140px;"></div>' +
-						'<div class="pull-right">' +
+						'<div class="zoom pull-right">' +
 							'<span title="Zoom out" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');"><i class="icon-zoom-out"></i></span>' +
 							'<span><input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input></span>' +
 							'<span title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');"><i class="icon-zoom-in"></i></span>' + 
@@ -1019,28 +1018,37 @@ function Graph(div_id, display_type) {
 
 	Graph.prototype.setEmotion = function(emotion) {
 		if($("#" + this.div_id + "_container .emotions-buttons ." + emotion).html() != emotion) {
-			$("#" + this.div_id + "_container .emotions-buttons div div").html("").css("padding-right", "16px") ;
-			$("#" + this.div_id + "_container .emotions-buttons ." + emotion).html(emotion).css("padding-right", "26px") ;
 			$("#" + this.div_id + "_container .user_emotions input").val(0) ;
 			$("#" + this.div_id + "_container .user_" + emotion).val(60) ;
 		}
 		else {
-			$("#" + this.div_id + "_container .emotions-buttons ." + emotion).html("").css("padding-right", "16px") ;
 			$("#" + this.div_id + "_container .user_emotions input").val(100) ;
 		}
 	}
 
 	Graph.prototype.drawEmotions = function() {
 		var htmlContent = "" ;
-		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
 		
+		htmlContent += '<h5>Style</h5>' ;
+		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
 		for(var i in emotions) {
-			htmlContent += '<div onclick="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');">' ;
-			htmlContent += '<div class="' + emotions[i] + '"></div>' ;
-			htmlContent += '</div>' ;
+			htmlContent += '<p>' ;
+				htmlContent += '<input type="checkbox" onclick="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
+			htmlContent += '</p>' ;
 		}
 		
-		$("#" + this.div_id + "_container .emotions-buttons").html(htmlContent) ;
+		htmlContent += '<hr>' ;
+
+		htmlContent += '<h5>Type</h5>' ;
+		htmlContent += '<p><input type="checkbox"> Discussion</p>' ;
+		htmlContent += '<p><input type="checkbox"> Lecture</p>' ;
+
+		htmlContent += '<hr>' ;
+
+		htmlContent += '<h5>Date</h5>' ;
+		htmlContent += '<p><input type="range"></p>' ;
+
+		$("#" + this.div_id + "_container .filter-container").html(htmlContent) ;
 	}
 
 	Graph.prototype.display_graph_error = function(error) {

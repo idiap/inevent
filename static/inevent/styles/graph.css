@@ -82,7 +82,7 @@ rect.secondary {
 	border-radius: 4px 0px;
 }
 
-.graph_container span {
+.graph_container .zoom span {
 	border:1px solid #ddd;
 	padding:10px;
 	background-color:#ffffff;
@@ -97,39 +97,37 @@ rect.secondary {
 	margin-right:20px;
 }
 
-.graph_container .emotions-buttons {
-	float:right;
-	width:16px;
-}
-
-.graph_container .emotions-buttons .ingenious	{ background-image:url(../images/ingenious.png); }
-.graph_container .emotions-buttons .fascinating	{ background-image:url(../images/fascinating.png); }
-.graph_container .emotions-buttons .funny		{ background-image:url(../images/funny.png); }
-.graph_container .emotions-buttons .inspiring	{ background-image:url(../images/inspiring.png); }
-.graph_container .emotions-buttons .persuasive	{ background-image:url(../images/persuasive.png); }
-.graph_container .emotions-buttons .courageous	{ background-image:url(../images/courageous.png); }
-
-.graph_container .emotions-buttons>div {
+.graph_container .filter-container {
 	border:1px solid #ddd;
-	padding:10px;
+	padding:0;
 	background-color:#ffffff;
 	border-radius: 4px ;
 	margin-right:0;
-	margin-bottom:10px;
-	height:16px;
 	overflow:hidden;
 	line-height:0;
 	text-transform:capitalize;
 	float:right;
 }
 
-.graph_container .emotions-buttons div>div {
+.graph_container .filter-container .ingenious	{ background-image:url(../images/ingenious.png); }
+.graph_container .filter-container .fascinating	{ background-image:url(../images/fascinating.png); }
+.graph_container .filter-container .funny		{ background-image:url(../images/funny.png); }
+.graph_container .filter-container .inspiring	{ background-image:url(../images/inspiring.png); }
+.graph_container .filter-container .persuasive	{ background-image:url(../images/persuasive.png); }
+.graph_container .filter-container .courageous	{ background-image:url(../images/courageous.png); }
+
+.graph_container .filter-container p,
+.graph_container .filter-container h5 {
+	margin:10px 10px;
+}
+
+.graph_container .filter-container p>span {
 	background-size: 16px 16px;
 	background-repeat:no-repeat;
-	background-position:right top ;
-	padding-right:16px;
+	width:16px;
 	height:16px;
-	line-height:1.3em;
+	display:block;
+	float:left;
 }
 
 .graph_params {

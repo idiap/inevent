@@ -58,16 +58,6 @@
 			<div id="graph_event_tabs"></div>
 		</div>
 
-		<div id="graph_event_list" class="row-fluid">
-			<div class="col-fluid span9">
-				<iframe id="hePlayer" width="100%" height="700px" src='http://inevent.haifa.il.ibm.com/player.jsp?hyperEventId={{ hyperevent.id }}'style='border:none;'> </iframe>
-			</div>
-
-			<div class="col-fluid span3 well side_block">
-				<div class="row-fluid" id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id %}</div>
-			</div>
-		</div>
-
 		<div id="graph_event_container" class="row-fluid graph_container">
 			<div class="col-fluid span12">
 				<div id="graph_event" style="display:none;" class="graph well">
@@ -86,6 +76,17 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="graph_event_list" class="row-fluid">
+			<div class="col-fluid span9">
+				<iframe id="hePlayer" width="100%" height="700px" src='http://inevent.haifa.il.ibm.com/player.jsp?hyperEventId={{ hyperevent.id }}'style='border:none;'> </iframe>
+			</div>
+
+			<div class="col-fluid span3 well side_block">
+				<div class="row-fluid" id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id %}</div>
+			</div>
+		</div>
+
 	</div>
 
 	{% include "inevent/search_result_tab.html" %}

@@ -201,14 +201,15 @@ function Graph(div_id, display_type) {
 			for (var s = 0; s < links.length; s++) {
 				var target = this.find_node_index(links[s]['target']);
 				var source = this.find_node_index(links[s]['source']);
-				
 				if (target!=-1 && source!=-1) {
 					this.input_links.push({
 						"target":target,
 						"source":source,
 						"type":links[s]['type'],
 						"depth":links[s]['depth'],
-						"weight":links[s]['weight']
+						"weight":links[s]['weight'],
+						"target_id":links[s]['target'],
+						"source_id":links[s]['source'],
 					 })
 				}
 				else{
@@ -410,7 +411,7 @@ function Graph(div_id, display_type) {
 				.on("click", function(d) { d3.event.stopPropagation(); _this.play_event(d);})
 				.append("xhtml:body")
 				.attr("xmlns","http://www.w3.org/1999/xhtml")
-				.html('<button class="btn btn-small" value="btn" type="button"> <i class="icon-play"></i> Play</button> ');
+				.html('<button class="btn btn-small" value="btn" type="button"> <i class="icon-play"></i> Go</button> ');
 
 			this.nodeEnter.append('svg:foreignObject')
 				.attr("id", function(d) { return _this.div_id + "_center_" + d.id})
@@ -520,7 +521,8 @@ function Graph(div_id, display_type) {
 				.attr("x1", function(d) { return d.source.x})
 				.attr("y1", function(d) { return d.source.y})
 				.attr("x2", function(d) { return d.target.x})
-				.attr("y2", function(d) { return d.target.y});
+				.attr("y2", function(d) { return d.target.y})
+				.attr("id",function(d) { return _this.div_id + "_"+ d.target_id + "_" + d.source_id});
 		
 		this.link.exit().remove();
 		//SD/ Push lines to background
@@ -1044,7 +1046,16 @@ function Graph(div_id, display_type) {
 	Graph.prototype.display_graph_error = function(error) {
 		$('#' + this.div_id).html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
 	}
-
+	
+	
+	Graph.prototype.hideNodesAndTheirLinks = function (ids) {
+		var node = svg.selectAll(".node").data(ids).style("visibility","hidden");
+	}
+	
+	Graph.prototype.ShowNodesAndTheirLinks = function (ids) {
+		var node = svg.selectAll(".node").data(ids).style("visibility","visible");
+	}
+	
 function Queue() {
 	this.queue = [] ;
 }

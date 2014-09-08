@@ -7,7 +7,7 @@ function Graph(div_id, display_type) {
 	this.div_id = div_id ;
 	this.from = null ;
 	this.graph_height = 700 ;
-	this.display_type = typeof display_type !== 'undefined' ? display_type : "list" ;
+	this.display_type = typeof display_type !== 'undefined' ? display_type : "graph" ;
 
 	this.listTabTitle = { "icon": "icon-th-list", "text":"View as List", "size":12 } ;
 	this.graphTabTitle = { "icon": "icon-th-large", "text":"View as Graph", "size":12 } ;
@@ -943,10 +943,10 @@ function Graph(div_id, display_type) {
 			this.printTab() ;
 			
 			//SI/ choosing between a list and a graph view
-			if(this.display_type == "graph")
-				this.set_graph_tab() ;
-			else
+			if(this.display_type == "list")
 				this.set_list_tab() ;
+			else
+				this.set_graph_tab() ;
 		}
 		
 		//SD/ Display 5 firsts video as origin

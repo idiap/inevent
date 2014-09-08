@@ -52,16 +52,15 @@
 				<div id="navMenu">
 					{% block menu_inevent_page %}
 						<ul class="tabbable nav">
-							<li id="tab_recent"><a href="#tab1" data-toggle="tab">Most Recent Talks</a></li>
-							<li id="tab_favorite"><a href="#tab2" data-toggle="tab">Favorite Talks</a></li>
-							<li id="tab_search"><a href="#tab3" data-toggle="tab">Current Search</a></li>
-							
 							{% include "search.html" with search_form=search_form from="inevent" %}
 						</ul>
 					{% endblock %}
 				</div>
 
 				<div id='loginWidget' class="pull-right">
+					<a href="/api/">API</a> -
+					<a href="http://www.inevent-project.eu/">About</a> - 
+
 					{% include "inevent/login.html" %}
 				</div>
 			</div>
@@ -73,18 +72,8 @@
 				
 				{% include "advanced_form.html" with search_form=search_form from="inevent" %}
 			</div>
-			
 		</div>
-		
-		<div id="footer">
-			<div class="container">
-				<p>
-					<a href="/api/">API Documentation</a> -
-					<a href="http://www.inevent-project.eu/">About us</a>
-				</p>
-			</div>
-		</div>
-		
+
 		{% dajaxice_js_import %}
 	</body>
 </html>

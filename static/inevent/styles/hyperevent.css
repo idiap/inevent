@@ -101,3 +101,11 @@ html, body {
 .form-horizontal .control-label {
 	text-align: left;
 }
+
+#loginWidget {
+	line-height:3em;
+}
+
+#loginWidget .btn-group {
+	margin-top: -3px;
+}

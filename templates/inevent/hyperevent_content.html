@@ -13,16 +13,12 @@
 	<script src="http://releases.flowplayer.org/js/flowplayer-3.2.12.min.js"></script>
 {% endblock %}
 
-{% block menu_inevent_page %}
-
-{% endblock %}
-
 {% load seconds %}
 
 {% block content_inevent_page %}
 
-<div class="row-fluid nihilo">
-	<div class="container-fluid span12">
+<div class="tab-content">
+	<div class="tab-pane active" id="tab1">
 
 		<div class="row-fluid">
 			<div class="col-fluid span9">
@@ -90,8 +86,9 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
+
+	{% include "inevent/search_result_tab.html" %}
 </div>
 
 

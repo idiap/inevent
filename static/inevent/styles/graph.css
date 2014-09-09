@@ -68,8 +68,19 @@ rect.secondary {
 	overflow:hidden;
 }
 
+#graph_recent_container div.graph:after {
+	content:"Latest events";
+}
+
+#graph_search_container div.graph:after {
+	content:"Top matches";
+}
+
+#graph_event_container div.graph:after {
+	content:"Chosen event";
+}
+
 .graph_container div.graph:after {
-	content: "Top matches";
 	position: absolute;
 	top: 0px;
 	left: 0px;

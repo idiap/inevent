@@ -69,17 +69,21 @@ rect.secondary {
 }
 
 .graph_container div.graph:after {
-	content: "Explore similar Events";
+	content: "Top matches";
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	padding: 10px 14px;
-	font-size: 12px;
+	padding-left:38px ;
+	font-size: 14px;
 	font-weight: bold;
-	background-color: #ffffff;
 	border: 1px solid #DDD;
 	color: #9DA0A4;
 	border-radius: 4px 0px;
+	
+	background:url(../images/blue.png) #fff 14px 14px;
+	background-size: 12px 12px;
+	background-repeat:no-repeat;
 }
 
 .graph_container .zoom span {

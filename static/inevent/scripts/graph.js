@@ -1099,12 +1099,20 @@ function Graph(div_id, display_type) {
 		var htmlContent = "" ;
 		
 		htmlContent += '<h5>Style</h5>' ;
+		htmlContent += '<table><tr><td>' ;
 		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
-		for(var i in emotions) {
+		for(var i=0 ; i < emotions.length / 2 ; i++) {
 			htmlContent += '<p>' ;
 				htmlContent += '<input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
 			htmlContent += '</p>' ;
 		}
+		htmlContent += '</td><td>' ;
+		for(var i=emotions.length / 2 ; i < emotions.length ; i++) {
+			htmlContent += '<p>' ;
+				htmlContent += '<input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
+			htmlContent += '</p>' ;
+		}
+		htmlContent += '</td></tr></table>' ;
 		
 		htmlContent += '<hr>' ;
 

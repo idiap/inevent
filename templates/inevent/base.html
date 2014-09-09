@@ -51,16 +51,15 @@
 		<div id="wrap">
 
 			<div class="navbar navbar-inner" style="padding-left:0;">
-				<a href="/" class="nav nav-pills pull-left" style="padding-left:65px;background:url('{{ STATIC_URL }}inevent/images/logo_notext.png') -15px 14px; background-repeat:no-repeat;">
+				<div class="nav pull-left span8">
+					<a href="/" class="nav nav-pills pull-left" style="padding-left:65px;background:url('{{ STATIC_URL }}inevent/images/logo_notext.png') -15px 14px; background-repeat:no-repeat;">
 					<h3>inEvent</h3>
-				</a>
-
-				<div id="navMenu">
-					{% block menu_inevent_page %}
-						<ul class="tabbable nav">
+					</a>
+					<div class="nav pull-right">
+						{% block menu_inevent_page %}
 							{% include "search.html" with search_form=search_form from="inevent" %}
-						</ul>
-					{% endblock %}
+						{% endblock %}
+					</div>
 				</div>
 
 				<div id='loginWidget' class="pull-right">

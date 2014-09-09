@@ -177,6 +177,7 @@ function Graph(div_id, display_type) {
 
 		this.displayLinks();
 		this.displayNodes();
+
 	}
 	
 	Graph.prototype.updateGraph = function(new_data) {
@@ -199,18 +200,31 @@ function Graph(div_id, display_type) {
 		var links = new_data['links'] ;
 		if(typeof new_data['links'] !== undefined && new_data['links'] != null) {
 			for (var s = 0; s < links.length; s++) {
-				var target = this.find_node_index(links[s]['target']);
-				var source = this.find_node_index(links[s]['source']);
+				//links[s]['target'] contains hyperevent Id and target_index 
+				//returns its corresponding graph id 
+				source_id = links[s]['source']
+				target_id = links[s]['target']
+				var target = this.find_node_index(target_id);
+				var source = this.find_node_index(source_id);
 				if (target!=-1 && source!=-1) {
-					this.input_links.push({
+					link = {
 						"target":target,
 						"source":source,
 						"type":links[s]['type'],
 						"depth":links[s]['depth'],
 						"weight":links[s]['weight'],
-						"target_id":links[s]['target'],
-						"source_id":links[s]['source'],
-					 })
+						"source_id":source_id,
+						"target_id":target_id,
+					 }
+				this.input_links.push(link)
+				/*	index = this.input_links.length - 1 
+					if (this.input_nodes[target].links == undefined ) {
+					   this.input_nodes[target]['links']=[link]
+					}
+					else {
+						this.input_nodes[target].links.push(link)
+					}*/
+						
 				}
 				else{
 					if (target == -1){
@@ -225,8 +239,10 @@ function Graph(div_id, display_type) {
 
 		this.displayLinks();
 		this.displayNodes();
-
+		
 		this.force.start();
+
+		
 	}
 
 	Graph.prototype.play_event = function(d) {
@@ -257,8 +273,9 @@ function Graph(div_id, display_type) {
 				return ;
 			}
 		}
-	
-		this.input_nodes.push(candidate_node) ;
+
+		this.input_nodes.push(candidate_node);
+
 	}
 	
 	Graph.prototype.displayNodes = function() {
@@ -522,7 +539,7 @@ function Graph(div_id, display_type) {
 				.attr("y1", function(d) { return d.source.y})
 				.attr("x2", function(d) { return d.target.x})
 				.attr("y2", function(d) { return d.target.y})
-				.attr("id",function(d) { return _this.div_id + "_"+ d.target_id + "_" + d.source_id});
+				.attr("id",function(d) { return _this.div_id + "_link_"+ d.source_id + "_" + d.target_id});
 		
 		this.link.exit().remove();
 		//SD/ Push lines to background
@@ -1101,12 +1118,45 @@ function Graph(div_id, display_type) {
 	}
 	
 	
-	Graph.prototype.hideNodesAndTheirLinks = function (ids) {
-		var node = svg.selectAll(".node").data(ids).style("visibility","hidden");
+	Graph.prototype.ToggleNodesAndTheirLinks = function (ids, visibility_type) {
+		items = this.selectGraphsItemsFromHypereventIds(ids);
+		var _this = this;
+		var nodes = items[0]		
+		nodes.forEach(function(node){
+			$('#'+_this.div_id + "_node_" + node.id).attr("visibility",visibility_type);
+			
+		})	
+		var links = items[1]		
+		links.forEach(function(link){
+			$('#'+_this.div_id + "_link_" + link.source.id+"_"+link.target.id).attr("visibility",visibility_type);
+			
+		})
+		
+		/*	
+		this.svg.selectAll(".node").data(items[0])
+		.attr("id", function(d) { return _this.div_id + "_node_" + d.id;})
+		.style("visibility",visibility_type);
+		this.svg.selectAll(".link").data(items[1])
+		.attr("id", function(d) { return _this.div_id + "_node_" + d.id;})
+		.style("visibility",visibility_type); */
 	}
 	
-	Graph.prototype.ShowNodesAndTheirLinks = function (ids) {
-		var node = svg.selectAll(".node").data(ids).style("visibility","visible");
+	Graph.prototype.showNodesAndTheirLinks = function (ids) {
+		this.ToggleNodesAndTheirLinks(ids,'true')
+	}
+	
+	Graph.prototype.hideNodesAndTheirLinks = function (ids) {
+		this.ToggleNodesAndTheirLinks(ids,'hidden')
+	}
+	
+	Graph.prototype.selectGraphsItemsFromHypereventIds = function (ids) {
+		var selected_nodes = this.input_nodes.filter(function (l) {
+			return ids.indexOf(l.id)!=-1;
+		});
+		var selected_links = this.input_links.filter(function (l) {
+			return (ids.indexOf(l.source.id)!=-1 || ids.indexOf(l.target.id!=-1));
+	});
+		return [selected_nodes, selected_links];
 	}
 	
 function Queue() {

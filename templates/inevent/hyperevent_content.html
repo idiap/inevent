@@ -22,10 +22,10 @@
 
 		<div class="row-fluid">
 			<div class="col-fluid span9">
-				<h2 id="center-element" class="pull-left" style="margin-right:20px;">
+				<h3 id="center-element" class="pull-left" style="margin-right:20px;">
 					<img src="{{ hyperevent.snapshot_url }}" style="height:50px">
 					{{ hyperevent.title }}
-				</h2>
+				</h3>
 
 				<!-- AddThis Button BEGIN -->
 				<div id="addthis" class="addthis_toolbox addthis_default_style pull-left" style="margin-top:20px">
@@ -45,10 +45,10 @@
 			<div class="col-fluid span9">
 				{% if hyperevent.description or hyperevent.tags %}
 					{{ hyperevent.description }}
-					{% if hyperevent.description and hyperevent.tags %}
-						<br/>
+					{% if hyperevent.tags and hyperevent.tags|length > 0 %}
+						</br>
+						<strong>Tags:</strong> {{ hyperevent.tags }}
 					{% endif %}
-					<strong>Tags:</strong> {{ hyperevent.tags }}
 				{% endif %}
 				
 			</div>
@@ -94,7 +94,7 @@
 
 
 
-<script type="text/javascript">
+<script type = "text/javascript" >
 	
 	/*	$(document).ready(function() {
 		if ($("#toggle_transcript").length>0){
@@ -141,7 +141,7 @@
 		graphs[div_id].setTabsTitle({"icon":"icon-film", "text":"Watch Event", "size":9}, {"text":"More Events" })
 
 		/*When the variable is returned by Django it turns all quotes into &quot;. Using {{someDjangoVariable|safe}} causes a Javascript error. */
-
+		$('.graph_container').content = 'Chosen event'
 		$("#" + div_id + "_form .user_neighbours").val(3) ;
 		$("#" + div_id + "_form .user_depth").val(2) ;
 		$("#" + div_id + "_form .user_size").val(20) ;

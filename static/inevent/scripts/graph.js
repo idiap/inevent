@@ -1055,7 +1055,7 @@ function Graph(div_id, display_type) {
 		}
 
 		//SD/ Display all nodes and hide out of date range
-		this.showAllNodesAndTheirLinks() ;
+		this.showAll() ;
 		this.hideNodesAndTheirLinks(toHide) ;
 
 		//SD/ Hide Discusssions if necessary
@@ -1109,8 +1109,8 @@ function Graph(div_id, display_type) {
 			arrows: false,
 			symmetricPositionning: true,
 			range: {min: 0},
-			bounds: {min: new Date(2003, 0, 1), max: Date.now()},
-			defaultValues: {min: new Date(2003, 0, 1), max: Date.now()},
+			bounds: {min: new Date(2000, 0, 1), max: Date.now()},
+			defaultValues: {min: new Date(2000, 0, 1), max: Date.now()},
 		}) ;
 		$("#" + this.div_id + "_dateFilter").bind("valuesChanged", function(e, data){ _this.applyFilter() }) ;
 	}

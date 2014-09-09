@@ -41,7 +41,9 @@ function send_search_request(page_num, from, form) {
 }
 
 function display_results(data) {
-	$('#navMenu a[href="#tab3"]').tab('show') ;
+	//$('#navMenu a[href="#tab3"]').tab('show') ;
+	$('#tab1').hide() ;
+	$('#tab3').show() ;
 	
 	$('#search_list').spin(false);
 	$('#search_option_button').removeClass('disabled');

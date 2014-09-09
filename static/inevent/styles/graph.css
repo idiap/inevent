@@ -65,7 +65,7 @@ rect.secondary {
 
 .graph_container {
 	position:relative;
-	overflow:auto;
+	overflow:hidden;
 }
 
 .graph_container div.graph:after {
@@ -103,10 +103,9 @@ rect.secondary {
 	background-color:#ffffff;
 	border-radius: 4px ;
 	margin-right:0;
-	overflow:hidden;
-	line-height:0;
 	text-transform:capitalize;
 	float:right;
+	width:250px;
 }
 
 .graph_container .filter-container .ingenious	{ background-image:url(../images/ingenious.png); }

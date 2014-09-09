@@ -1045,10 +1045,17 @@ function Graph(div_id, display_type) {
 
 		htmlContent += '<hr>' ;
 
-		htmlContent += '<h5>Date</h5>' ;
-		htmlContent += '<p><input type="range"></p>' ;
+		htmlContent += '<h5>Date</h5><br>' ;
+		htmlContent += '<p><div id="' + this.div_id + '_dateFilter"></div></p>' ;
 
 		$("#" + this.div_id + "_container .filter-container").html(htmlContent) ;
+		$("#" + this.div_id + "_dateFilter").dateRangeSlider({
+			arrows: false,
+			symmetricPositionning: true,
+			range: {min: 0},
+			bounds: {min: new Date(2012, 0, 1), max: Date.now()},
+			defaultValues: {min: new Date(2012, 0, 1), max: Date.now()},
+		}) ;
 	}
 
 	Graph.prototype.display_graph_error = function(error) {

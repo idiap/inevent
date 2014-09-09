@@ -120,7 +120,7 @@ rect.secondary {
 	margin-right:0;
 	text-transform:capitalize;
 	float:right;
-	width:250px;
+	width:270px;
 }
 
 .graph_container .filter-container .ingenious	{ background-image:url(../images/ingenious.png); }
@@ -133,6 +133,11 @@ rect.secondary {
 .graph_container .filter-container p,
 .graph_container .filter-container h5 {
 	margin:10px 10px;
+}
+
+.graph_container .filter-container hr {
+	padding:0;
+	margin:0;
 }
 
 .graph_container .filter-container p>span {
@@ -151,6 +156,7 @@ rect.secondary {
 	border: 1px solid #E3E3E3;
 	border-radius: 4px;
 	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
+	z-index:1;
 }
 
 .graph_params .nav-header { margin-bottom:20px; padding-left:0; }

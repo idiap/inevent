@@ -1120,35 +1120,31 @@ function Graph(div_id, display_type) {
 	}
 	
 	
-	Graph.prototype.ToggleNodesAndTheirLinks = function (ids, visibility_type) {
-		items = this.selectGraphsItemsFromHypereventIds(ids);
+	Graph.prototype.ToggleNodesAndTheirLinks = function (nodes, links, visibility_type) {	
 		var _this = this;
-		var nodes = items[0]		
 		nodes.forEach(function(node){
-			$('#'+_this.div_id + "_node_" + node.id).attr("visibility",visibility_type);
+			$('#'+_this.div_id + "_node_" + node.id).attr("opacity",visibility_type);
 			
-		})	
-		var links = items[1]		
+		})		
 		links.forEach(function(link){
-			$('#'+_this.div_id + "_link_" + link.source.id+"_"+link.target.id).attr("visibility",visibility_type);
+			$('#'+_this.div_id + "_link_" + link.source.id+"_"+link.target.id).attr("opacity",visibility_type);
 			
 		})
-		
-		/*	
-		this.svg.selectAll(".node").data(items[0])
-		.attr("id", function(d) { return _this.div_id + "_node_" + d.id;})
-		.style("visibility",visibility_type);
-		this.svg.selectAll(".link").data(items[1])
-		.attr("id", function(d) { return _this.div_id + "_node_" + d.id;})
-		.style("visibility",visibility_type); */
+
 	}
 	
 	Graph.prototype.showNodesAndTheirLinks = function (ids) {
-		this.ToggleNodesAndTheirLinks(ids,'true')
+		items = this.selectGraphsItemsFromHypereventIds(ids);
+		this.ToggleNodesAndTheirLinks(items[0], items[1],'1')
 	}
 	
 	Graph.prototype.hideNodesAndTheirLinks = function (ids) {
-		this.ToggleNodesAndTheirLinks(ids,'hidden')
+		items = this.selectGraphsItemsFromHypereventIds(ids);
+		this.ToggleNodesAndTheirLinks(items[0], items[1],'0.2')
+	}
+	
+	Graph.prototype.showAll = function (ids) {
+		this.ToggleNodesAndTheirLinks(this.input_nodes,this.input_links,'1')
 	}
 	
 	Graph.prototype.selectGraphsItemsFromHypereventIds = function (ids) {
@@ -1156,9 +1152,15 @@ function Graph(div_id, display_type) {
 			return ids.indexOf(l.id)!=-1;
 		});
 		var selected_links = this.input_links.filter(function (l) {
-			return (ids.indexOf(l.source.id)!=-1 || ids.indexOf(l.target.id!=-1));
-	});
-		return [selected_nodes, selected_links];
+			return (ids.indexOf(parseInt(l.source.id))!=-1);
+		});
+		var selected_links_1 = this.input_links.filter(function (l) {
+			return (ids.indexOf(parseInt(l.target.id))!=-1);	
+		});
+	
+		//alert(selected_links.length)
+		//alert(selected_links_1.length)
+		return [selected_nodes, selected_links.concat(selected_links_1)];
 	}
 	
 function Queue() {

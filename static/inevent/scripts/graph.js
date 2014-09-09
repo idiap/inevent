@@ -1043,22 +1043,59 @@ function Graph(div_id, display_type) {
 		}
 	}
 
+	Graph.prototype.toggleDiscussion = function(object) {
+		if(!object.checked) {
+			var toHide = new Array() ;
+			for(var i in this.input_nodes)
+				if(this.input_nodes[i].providerName == "Radvision")
+					toHide.push(this.input_nodes[i].id) ;
+
+			console.log(toHide) ;
+		}
+	}
+
+	Graph.prototype.toggleLecture = function(object) {
+		if(!object.checked) {
+			var toHide = new Array() ;
+			for(var i in this.input_nodes)
+				if(this.input_nodes[i].providerName == "TED" || this.input_nodes[i].providerName == "Klewel")
+					toHide.push(this.input_nodes[i].id) ;
+
+			console.log(toHide) ;
+		}
+	}
+
+	Graph.prototype.toggleDate = function(data) {
+		var toHide = new Array() ;
+		var nodeDate = null ;
+		var sliderDates = $("#" + this.div_id + "_dateFilter").dateRangeSlider("values");
+		
+		for(var i in this.input_nodes) {
+			nodeDate = new Date(this.input_nodes[i].date_ms) ;
+			if(nodeDate.getTime() < data.values.min || nodeDate.getTime() > data.values.max)
+				toHide.push(this.input_nodes[i].id) ;
+		}
+
+		console.log(toHide) ;
+	}
+
 	Graph.prototype.drawEmotions = function() {
+		var _this = this ;
 		var htmlContent = "" ;
 		
 		htmlContent += '<h5>Style</h5>' ;
 		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
 		for(var i in emotions) {
 			htmlContent += '<p>' ;
-				htmlContent += '<input type="checkbox" onclick="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
+				htmlContent += '<input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
 			htmlContent += '</p>' ;
 		}
 		
 		htmlContent += '<hr>' ;
 
 		htmlContent += '<h5>Type</h5>' ;
-		htmlContent += '<p><input type="checkbox"> Discussion</p>' ;
-		htmlContent += '<p><input type="checkbox"> Lecture</p>' ;
+		htmlContent += '<p><input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].toggleDiscussion(this)"> Discussion</p>' ;
+		htmlContent += '<p><input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].toggleLecture(this)"> Lecture</p>' ;
 
 		htmlContent += '<hr>' ;
 
@@ -1070,9 +1107,10 @@ function Graph(div_id, display_type) {
 			arrows: false,
 			symmetricPositionning: true,
 			range: {min: 0},
-			bounds: {min: new Date(2012, 0, 1), max: Date.now()},
-			defaultValues: {min: new Date(2012, 0, 1), max: Date.now()},
+			bounds: {min: new Date(2003, 0, 1), max: Date.now()},
+			defaultValues: {min: new Date(2003, 0, 1), max: Date.now()},
 		}) ;
+		$("#" + this.div_id + "_dateFilter").bind("valuesChanged", function(e, data){ _this.toggleDate(data) }) ;
 	}
 
 	Graph.prototype.display_graph_error = function(error) {

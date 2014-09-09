@@ -1056,40 +1056,42 @@ function Graph(div_id, display_type) {
 		}
 	}
 
-	Graph.prototype.toggleDiscussion = function(object) {
-		if(!object.checked) {
+	Graph.prototype.applyFilter = function() {
+		var toHide = new Array() ;
+		var nodeDate = null ;
+		var sliderDates = $("#" + this.div_id + "_dateFilter").dateRangeSlider("values");
+
+		for(var i in this.input_nodes) {
+			nodeDate = new Date(this.input_nodes[i].date_ms) ;
+			if(nodeDate.getTime() < sliderDates.min || nodeDate.getTime() > sliderDates.max)
+				toHide.push(this.input_nodes[i].id) ;
+		}
+
+		//SD/ Display all nodes and hide out of date range
+		this.showAll() ;
+		this.hideNodesAndTheirLinks(toHide) ;
+
+		//SD/ Hide Discusssions if necessary
+		if($("#" + this.div_id + "_discussionFilter")[0].checked !== true) {
 			var toHide = new Array() ;
 			for(var i in this.input_nodes)
 				if(this.input_nodes[i].providerName == "Radvision")
 					toHide.push(this.input_nodes[i].id) ;
 
 			console.log(toHide) ;
+			this.hideNodesAndTheirLinks(toHide) ;
 		}
-	}
 
-	Graph.prototype.toggleLecture = function(object) {
-		if(!object.checked) {
+		//SD/ Hide Lecturers if necessary
+		if($("#" + this.div_id + "_lectureFilter")[0].checked !== true) {
 			var toHide = new Array() ;
 			for(var i in this.input_nodes)
 				if(this.input_nodes[i].providerName == "TED" || this.input_nodes[i].providerName == "Klewel")
 					toHide.push(this.input_nodes[i].id) ;
 
 			console.log(toHide) ;
+			this.hideNodesAndTheirLinks(toHide) ;
 		}
-	}
-
-	Graph.prototype.toggleDate = function(data) {
-		var toHide = new Array() ;
-		var nodeDate = null ;
-		var sliderDates = $("#" + this.div_id + "_dateFilter").dateRangeSlider("values");
-		
-		for(var i in this.input_nodes) {
-			nodeDate = new Date(this.input_nodes[i].date_ms) ;
-			if(nodeDate.getTime() < data.values.min || nodeDate.getTime() > data.values.max)
-				toHide.push(this.input_nodes[i].id) ;
-		}
-
-		console.log(toHide) ;
 	}
 
 	Graph.prototype.drawEmotions = function() {
@@ -1107,8 +1109,8 @@ function Graph(div_id, display_type) {
 		htmlContent += '<hr>' ;
 
 		htmlContent += '<h5>Type</h5>' ;
-		htmlContent += '<p><input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].toggleDiscussion(this)"> Discussion</p>' ;
-		htmlContent += '<p><input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].toggleLecture(this)"> Lecture</p>' ;
+		htmlContent += '<p><input id="' + this.div_id + '_discussionFilter" type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> Discussion</p>' ;
+		htmlContent += '<p><input id="' + this.div_id + '_lectureFilter" type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> Lecture</p>' ;
 
 		htmlContent += '<hr>' ;
 
@@ -1120,10 +1122,10 @@ function Graph(div_id, display_type) {
 			arrows: false,
 			symmetricPositionning: true,
 			range: {min: 0},
-			bounds: {min: new Date(2003, 0, 1), max: Date.now()},
-			defaultValues: {min: new Date(2003, 0, 1), max: Date.now()},
+			bounds: {min: new Date(2000, 0, 1), max: Date.now()},
+			defaultValues: {min: new Date(2000, 0, 1), max: Date.now()},
 		}) ;
-		$("#" + this.div_id + "_dateFilter").bind("valuesChanged", function(e, data){ _this.toggleDate(data) }) ;
+		$("#" + this.div_id + "_dateFilter").bind("valuesChanged", function(e, data){ _this.applyFilter() }) ;
 	}
 
 	Graph.prototype.display_graph_error = function(error) {

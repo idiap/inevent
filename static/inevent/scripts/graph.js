@@ -8,6 +8,7 @@ function Graph(div_id, display_type) {
 	this.from = null ;
 	this.graph_height = 700 ;
 	this.display_type = typeof display_type !== 'undefined' ? display_type : "graph" ;
+	this.firstShow = false ;
 
 	this.listTabTitle = { "icon": "icon-th-list", "text":"View as List", "size":12 } ;
 	this.graphTabTitle = { "icon": "icon-th-large", "text":"View as Graph", "size":12 } ;
@@ -901,8 +902,6 @@ function Graph(div_id, display_type) {
 					Dajaxice.inevent.get_graph_neighbours(function(data){
 						_this.display_graph(data, _this.display_graph);}, params) ;
 				}
-
-				this.drawEmotions() ;
 			}
 			else
 			{
@@ -1000,6 +999,8 @@ function Graph(div_id, display_type) {
 	}
 
 	Graph.prototype.set_graph_tab = function() {
+		_this = this ;
+		
 		//SD/ Switch active button
 		if($('#' + this.div_id + '_list_tab').hasClass('active')==true)
 			$('#' + this.div_id + '_list_tab').removeClass('active') ;
@@ -1013,7 +1014,14 @@ function Graph(div_id, display_type) {
 		}
 
 		//SD/ Switch elements
-		$('#' + this.div_id).show() ;
+		$('#' + this.div_id).show(0, function() {
+			if(_this.firstShow === false) {
+				_this.drawEmotions() ;
+			}
+			
+			_this.firstShow = true ;
+		}) ;
+		
 		//SI/ hide player iframe or list
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"hidden","height":"0px","width":"0px"});
 		//SD/ Add a display none rule only if no iframe (incompatible)

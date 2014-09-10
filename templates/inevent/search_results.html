@@ -56,6 +56,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		div_id = "graph_search" ;
+		INCREMENT_ID[div_id] = 0 ;
 		graphs[div_id] = new Graph("graph_search") ;
 
 		$("#" + div_id + "_form .user_neighbours").val(3) ;

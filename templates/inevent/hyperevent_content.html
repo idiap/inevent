@@ -132,9 +132,8 @@
 	}
 
 	$(document).ready(function() {
-		INCREMENT_ID["graph_event"] = 0 ;
 		div_id = "graph_event" ;
-
+		INCREMENT_ID[div_id] = 0 ;
 		if("{{display_type}}" != undefined)
 			var display = "{{ display_type }}".replace(/&quot;/g,"\"") ;
 		else

@@ -79,10 +79,9 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#tab_recent').addClass("active") ;
-			INCREMENT_ID["graph_recent"] = 0 ;
-			INCREMENT_ID["graph_search"] = 0 ;
 
 			div_id = "graph_recent" ;
+			INCREMENT_ID[div_id] = 0 ;
 			graphs[div_id] = new Graph(div_id) ;
 
 			$("#" + div_id + "_form .user_neighbours").val(3) ;

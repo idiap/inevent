@@ -8,7 +8,8 @@ function Graph(div_id, display_type) {
 	this.from = null ;
 	this.graph_height = 700 ;
 	this.display_type = typeof display_type !== 'undefined' ? display_type : "graph" ;
-	this.firstShow = false ;
+	this.firstShow = true ;
+	this.graphDrawn = false ;
 
 	this.listTabTitle = { "icon": "icon-th-list", "text":"View as List", "size":12 } ;
 	this.graphTabTitle = { "icon": "icon-th-large", "text":"View as Graph", "size":12 } ;
@@ -174,11 +175,15 @@ function Graph(div_id, display_type) {
 		//SD/ Set parameters in local vars
 		this.input_nodes = data.slice(0) ;
 
-		this.initVars();
+		this.initVars() ;
 
-		this.displayLinks();
-		this.displayNodes();
+		this.displayLinks() ;
+		this.displayNodes() ;
 
+		this.graphDrawn = true ;
+		if(!this.firstShow) {
+			this.drawEmotions() ;
+		}
 	}
 	
 	Graph.prototype.updateGraph = function(new_data) {
@@ -1013,15 +1018,14 @@ function Graph(div_id, display_type) {
 			$('#' + this.div_id + '_tabs div').addClass('span' + this.graphTabTitle.size) ;
 		}
 
-		//SD/ Switch elements
 		$('#' + this.div_id).show(0, function() {
-			if(_this.firstShow === false) {
+			if(_this.firstShow && _this.graphDrawn) {
 				_this.drawEmotions() ;
 			}
-			
-			_this.firstShow = true ;
-		}) ;
 		
+			_this.firstShow = false ;
+		}) ;
+
 		//SI/ hide player iframe or list
 		$('#' + this.div_id + '_list').css({"display":"block","visibility":"hidden","height":"0px","width":"0px"});
 		//SD/ Add a display none rule only if no iframe (incompatible)

@@ -23,7 +23,10 @@
 		<div class="row-fluid">
 			<div class="col-fluid span9">
 				<h3 id="center-element" class="pull-left" style="margin-right:20px;">
-					<img src="{{ hyperevent.snapshot_url }}" style="height:50px">
+					{% if hyperevent.snapshot_url %}
+						<img src="{{ hyperevent.snapshot_url }}" style="height:50px">
+					{% endif %}
+					
 					{{ hyperevent.title }}
 				</h3>
 

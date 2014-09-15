@@ -112,7 +112,7 @@ rect.secondary {
 	margin-right:20px;
 }
 
-.graph_container .filter-container {
+.graph_container .filter {
 	border:1px solid #ddd;
 	padding:0;
 	background-color:#ffffff;
@@ -123,24 +123,24 @@ rect.secondary {
 	width:270px;
 }
 
-.graph_container .filter-container .ingenious	{ background-image:url(../images/ingenious.png); }
-.graph_container .filter-container .fascinating	{ background-image:url(../images/fascinating.png); }
-.graph_container .filter-container .funny		{ background-image:url(../images/funny.png); }
-.graph_container .filter-container .inspiring	{ background-image:url(../images/inspiring.png); }
-.graph_container .filter-container .persuasive	{ background-image:url(../images/persuasive.png); }
-.graph_container .filter-container .courageous	{ background-image:url(../images/courageous.png); }
+.graph_container .filter .ingenious	{ background-image:url(../images/ingenious.png); }
+.graph_container .filter .fascinating	{ background-image:url(../images/fascinating.png); }
+.graph_container .filter .funny		{ background-image:url(../images/funny.png); }
+.graph_container .filter .inspiring	{ background-image:url(../images/inspiring.png); }
+.graph_container .filter .persuasive	{ background-image:url(../images/persuasive.png); }
+.graph_container .filter .courageous	{ background-image:url(../images/courageous.png); }
 
-.graph_container .filter-container p,
-.graph_container .filter-container h5 {
+.graph_container .filter p,
+.graph_container .filter h5 {
 	margin:10px 10px;
 }
 
-.graph_container .filter-container hr {
+.graph_container .filter hr {
 	padding:0;
 	margin:0;
 }
 
-.graph_container .filter-container p>span {
+.graph_container .filter p>span {
 	background-size: 16px 16px;
 	background-repeat:no-repeat;
 	width:16px;

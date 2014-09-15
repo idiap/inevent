@@ -165,7 +165,7 @@ function Graph(div_id, display_type) {
 				&& container.has(e.target).length === 0) // ... nor a descendant of the container
 			{
 				if(container.is(':visible'))
-					container.parent().toggle() ;
+					_this.switchParams() ;
 			}
 		});
 		
@@ -891,7 +891,7 @@ function Graph(div_id, display_type) {
 							'<span title="Zoom out" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() - 1) + ');"><i class="icon-zoom-out"></i></span>' +
 							'<span><input onchange="graphs[\'' + this.div_id + '\'].setLevel(this.value);" class="input-medium" type="range" min="1" max="4" step="1" value="' + this.getLevel() + '"></input></span>' +
 							'<span title="Zoom in" onclick="graphs[\'' + this.div_id + '\'].setLevel(' + (this.getLevel() + 1) + ');"><i class="icon-zoom-in"></i></span>' + 
-							'<span title="Advanced settings" onclick="$(\'#' + this.div_id + '_params\').parent().toggle() ;"><i class="icon-cog"></i></span>' +
+							'<span title="Advanced settings" onclick="graphs[\'' + this.div_id + '\'].switchParams()"><i class="icon-cog"></i></span>' +
 						'</div>' +
 					'</div>' +
 					'<div class="progress progress-striped active"><div id="' + this.div_id + '_progress" class="bar" style="width:0%"></div></div>'
@@ -916,6 +916,18 @@ function Graph(div_id, display_type) {
 		catch(e){
 			this.display_graph_error(e) ;
 		}
+	}
+
+	Graph.prototype.switchParams = function() {
+		var params = $('#' + this.div_id + '_params') ;
+		var filters = $('#' + this.div_id + '_sidepane .filter')
+		
+		params.parent().toggle() ;
+		
+		if(params.is(":visible"))
+			filters.hide() ;
+		else
+			filters.show() ;
 	}
 
 	//SD/ update graph with children data
@@ -1137,7 +1149,7 @@ function Graph(div_id, display_type) {
 		htmlContent += '<h5>Date</h5><br>' ;
 		htmlContent += '<p><div id="' + this.div_id + '_dateFilter"></div></p>' ;
 
-		$("#" + this.div_id + "_container .filter-container").html(htmlContent) ;
+		$("#" + this.div_id + "_sidepane .filter").html(htmlContent) ;
 		$("#" + this.div_id + "_dateFilter").dateRangeSlider({
 			arrows: false,
 			symmetricPositionning: true,

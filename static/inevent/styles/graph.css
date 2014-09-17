@@ -68,35 +68,6 @@ rect.secondary {
 	overflow:hidden;
 }
 
-#graph_recent_container div.graph:after {
-	content:"Latest events";
-}
-
-#graph_search_container div.graph:after {
-	content:"Top matches";
-}
-
-#graph_event_container div.graph:after {
-	content:"Chosen event";
-}
-
-.graph_container div.graph:after {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	padding: 10px 14px;
-	padding-left:38px ;
-	font-size: 14px;
-	font-weight: bold;
-	border: 1px solid #DDD;
-	color: #9DA0A4;
-	border-radius: 4px 0px;
-	
-	background:url(../images/blue.png) #fff 14px 14px;
-	background-size: 12px 12px;
-	background-repeat:no-repeat;
-}
-
 .graph_container .zoom span {
 	border:1px solid #ddd;
 	padding:10px;
@@ -122,6 +93,8 @@ rect.secondary {
 	float:right;
 	width:270px;
 }
+
+.graph_container .filter span.legend { background-color:red; width:12px; height:12px; margin-right:10px; margin-top:4px; }
 
 .graph_container .filter .ingenious	{ background-image:url(../images/ingenious.png); }
 .graph_container .filter .fascinating	{ background-image:url(../images/fascinating.png); }

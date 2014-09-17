@@ -1121,7 +1121,19 @@ function Graph(div_id, display_type) {
 	Graph.prototype.drawEmotions = function() {
 		var _this = this ;
 		var htmlContent = "" ;
-		
+
+		var blueLegendTitle = "Latest events" ;
+		if(this.div_id == "graph_search")
+			blueLegendTitle = "Top matches";
+		else if(this.div_id == "graph_event")
+			blueLegendTitle = "Chosen event";
+
+		htmlContent += '<h5>Legend</h5>' ;
+		htmlContent += '<p><span class="legend" style="background-color:' + this.color.blue + ';"></span>' + blueLegendTitle + '</p>' ;
+		htmlContent += '<p><span class="legend" style="background-color:' + this.color.grey + ';"></span> Next events</p>' ;
+
+		htmlContent += '<hr>' ;
+
 		htmlContent += '<h5>Style</h5>' ;
 		htmlContent += '<table><tr><td>' ;
 		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;

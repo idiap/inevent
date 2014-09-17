@@ -1248,7 +1248,7 @@ Function called to display graph and get data
 $( window ).resize(function() {
 	//SD/ adapt graph size with container width
 	for(i in graphs) {
-		graphs[i].setWidth($("#" + this.div_id + "_container").width()) ;
+		graphs[i].setWidth($("#" + graphs[i].div_id + "_container").width()) ;
 		window["update_" + graphs[i].div_id + "_value"](false) ;
 	}
 });

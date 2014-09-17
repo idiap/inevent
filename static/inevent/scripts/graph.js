@@ -977,6 +977,10 @@ function Graph(div_id, display_type) {
 		var from = typeof from !== 'undefined' ? from : null;
 		var firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
+		if(this.from == null && from != null) {
+			this.from = $.extend(true, [], from) ;
+		}
+
 		//SD/ Get default settings
 		var max_neighbours = $("#" + this.div_id + "_form .user_neighbours").val() ;
 		var max_depth = $("#" + this.div_id + "_form .user_depth").val() ;
@@ -1011,7 +1015,7 @@ function Graph(div_id, display_type) {
 		}
 		//SD/ Or display the specific choosen video from data as origin
 		else {
-			this.display_graph_head(this.from, video_switch=false, max_neighbours, max_depth, max_size) ;
+			this.display_graph_head($.extend(true, [], this.from), video_switch=false, max_neighbours, max_depth, max_size) ;
 		}
 	}
 

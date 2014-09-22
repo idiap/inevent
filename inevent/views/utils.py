@@ -2,6 +2,7 @@ import json
 import datetime
 import requests
 import calendar
+import urllib
 
 rest_base_url = "http://inevent.haifa.il.ibm.com/rest/"
 rest_url_retrieval = rest_base_url + "retrieval/"
@@ -110,11 +111,20 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
                         # print url
                         #=======================================================
 
-#                    
-#
-#   
+                elif(track['mimeType'] == 'inevent/emotion') :
+                    if(len(files) > 0) :
+                        file = files[0]
+                        url = rest_url_retrieval + "getTrackFile/" + file['fileName'] + "?trackId=" + str(file['trackId'])
+                        hyperevent['emotion_url'] = url
+                        
+                        response = urllib.urlopen(url)
+                        emotions = json.loads(response.read())
+                        
+                        hyperevent['emotions'] = {}
+                        for i in xrange(len(emotions['emotion_classes'])) :
+                            hyperevent['emotions'].update({emotions['emotion_classes'][i].lower(): emotions['emotion_scores'][i]})
 
-    return hyperevent   
+    return hyperevent
 
 def to_lower(s):
    if len(s) == 0:

@@ -4,7 +4,7 @@
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab1">
 			<div class="row-fluid">
-				<div class="col-fluid spa12">
+				<div class="col-fluid span12">
 			<!--		<h2>Most Recent Talks</h2> -->
 					<div id="graph_recent_tabs"></div>
 				</div>
@@ -28,7 +28,8 @@
 					</div>
 
 					<div id="graph_recent_list">
-						<div class='lead'> Latest events</div>
+						<div class="lead">Latest events</div>
+						
 						{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
 					</div>
 				</div>

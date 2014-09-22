@@ -17,6 +17,8 @@ function Graph(div_id, display_type) {
 	//SD/ Set node sizes
 	this.big_rect = [375.0, 300] ;
 
+	this.mainEmotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
+
 	//SD/ Define some graph level depending on max nodes
 	this.graphLevel = [{},{
 			'max_size':199,
@@ -245,10 +247,9 @@ function Graph(div_id, display_type) {
 
 		this.displayLinks();
 		this.displayNodes();
-		
-		this.force.start();
 
-		
+		this.force.start();
+		this.applyFilter() ;
 	}
 
 	Graph.prototype.play_event = function(d) {
@@ -1074,6 +1075,7 @@ function Graph(div_id, display_type) {
 		$('#' + this.div_id + '_params').hide() ;
 	}
 
+	//SD/ Deprecated function since applyFilter exists
 	Graph.prototype.setEmotion = function(emotion) {
 		if($("#" + this.div_id + "_container .emotions-buttons ." + emotion).html() != emotion) {
 			$("#" + this.div_id + "_container .user_emotions input").val(0) ;
@@ -1084,6 +1086,7 @@ function Graph(div_id, display_type) {
 		}
 	}
 
+	//SD/ Choose which node and links have to be opacified depending on user choice
 	Graph.prototype.applyFilter = function() {
 		var toHide = new Array() ;
 		var nodeDate = null ;
@@ -1106,7 +1109,7 @@ function Graph(div_id, display_type) {
 				if(this.input_nodes[i].providerName == "Radvision")
 					toHide.push(this.input_nodes[i].id) ;
 
-			console.log(toHide) ;
+			//console.log(toHide) ;
 			this.hideNodesAndTheirLinks(toHide) ;
 		}
 
@@ -1117,9 +1120,43 @@ function Graph(div_id, display_type) {
 				if(this.input_nodes[i].providerName == "TED" || this.input_nodes[i].providerName == "Klewel")
 					toHide.push(this.input_nodes[i].id) ;
 
-			console.log(toHide) ;
+			//console.log(toHide) ;
 			this.hideNodesAndTheirLinks(toHide) ;
 		}
+
+		//SD/ Hide depending on Emotions
+		if($("#" + this.div_id + "_noEmotionFilter")[0].checked !== true) {
+			this.toggleEmotionFilter(true) ;
+		
+			var toHide = new Array() ;
+			for(var i in this.input_nodes) {
+				var display = false ;
+
+				for(var j in this.mainEmotions) {
+					if(this.input_nodes[i].emotions !== undefined) {
+						if(this.input_nodes[i].emotions[this.mainEmotions[j]] !== undefined) {
+							if($("#" + this.div_id + "_" + this.mainEmotions[j] + "Filter")[0].checked !== false && this.input_nodes[i].emotions[this.mainEmotions[j]] > 0.6)
+								display = true ;
+						}
+					}
+				}
+
+				if(display == false)
+					toHide.push(this.input_nodes[i].id) ;
+			}
+
+			//console.log(toHide) ;
+			this.hideNodesAndTheirLinks(toHide) ;
+		}
+		else
+			this.toggleEmotionFilter(false) ;
+	}
+
+	Graph.prototype.toggleEmotionFilter = function(choice) {
+		if(choice)
+			$("#" + this.div_id + "_sidepane .filter table input").prop('disabled', false);
+		else
+			$("#" + this.div_id + "_sidepane .filter table input").prop('disabled', true);
 	}
 
 	Graph.prototype.drawEmotions = function() {
@@ -1134,22 +1171,22 @@ function Graph(div_id, display_type) {
 
 		htmlContent += '<h5>Legend</h5>' ;
 		htmlContent += '<p><span class="legend" style="background-color:' + this.color.blue + ';"></span>' + blueLegendTitle + '</p>' ;
-		htmlContent += '<p><span class="legend" style="background-color:' + this.color.grey + ';"></span> Next events</p>' ;
+		htmlContent += '<p><span class="legend" style="background-color:' + this.color.grey + ';"></span> Related events</p>' ;
 
 		htmlContent += '<hr>' ;
 
+		htmlContent += '<p class="pull-right"><input id="' + this.div_id + '_noEmotionFilter" type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> display all</p>' ;
 		htmlContent += '<h5>Style</h5>' ;
 		htmlContent += '<table><tr><td>' ;
-		var emotions = Array("ingenious", "fascinating", "funny", "inspiring", "persuasive", "courageous") ;
-		for(var i=0 ; i < emotions.length / 2 ; i++) {
+		for(var i=0 ; i < this.mainEmotions.length / 2 ; i++) {
 			htmlContent += '<p>' ;
-				htmlContent += '<input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
+				htmlContent += '<input id="' + this.div_id + '_' + this.mainEmotions[i] + 'Filter" type="checkbox" checked="checked" disabled="disabled" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> <span class="' + this.mainEmotions[i] + '"></span> ' + this.mainEmotions[i] ;
 			htmlContent += '</p>' ;
 		}
 		htmlContent += '</td><td>' ;
-		for(var i=emotions.length / 2 ; i < emotions.length ; i++) {
+		for(var i=this.mainEmotions.length / 2 ; i < this.mainEmotions.length ; i++) {
 			htmlContent += '<p>' ;
-				htmlContent += '<input type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].setEmotion(\'' + emotions[i] + '\');"> <span class="' + emotions[i] + '"></span> ' + emotions[i] ;
+				htmlContent += '<input id="' + this.div_id + '_' + this.mainEmotions[i] + 'Filter" type="checkbox" checked="checked" disabled="disabled" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> <span class="' + this.mainEmotions[i] + '"></span> ' + this.mainEmotions[i] ;
 			htmlContent += '</p>' ;
 		}
 		htmlContent += '</td></tr></table>' ;

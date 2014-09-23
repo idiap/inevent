@@ -310,6 +310,9 @@ function Graph(div_id, display_type) {
 			.attr("id", function(d) { return _this.div_id + "_node_" + d.id;})
 			.attr("class", "node")
 			.on("click", function(d) {
+				if($("#" + _this.div_id + "_node_" + d.id).css("opacity") < 1)
+					return ;
+					
 				_this.mouseover(d, _this.div_id + "_word_cloud_" + d.id, _this.div_id + "_video_title_" + d.id);
 			})
 			//SD/ TODO Reactive double click to release node with some good idea

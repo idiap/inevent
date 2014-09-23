@@ -1212,7 +1212,7 @@ function Graph(div_id, display_type) {
 			bounds: {min: new Date(2000, 0, 1), max: Date.now()},
 			defaultValues: {min: new Date(2000, 0, 1), max: Date.now()},
 		}) ;
-		$("#" + this.div_id + "_dateFilter").bind("valuesChanged", function(e, data){ _this.applyFilter() }) ;
+		$("#" + this.div_id + "_dateFilter").bind("valuesChanging", function(e, data){ _this.applyFilter() }) ;
 	}
 
 	Graph.prototype.display_graph_error = function(error) {

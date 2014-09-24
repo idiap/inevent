@@ -6,28 +6,51 @@ function display_title(node_title, title_id) {
 	var node = d3.select("#" + title_id)
 	node.text("");
 
-	var words = node_title.split(" ");
-	var length = node_title.length;
-	var total_on_current_line = 0;
-	var temp_text = "";
+	var words = node_title.split(" ") ;
+	var length = node_title.length ;
+	var line_count = 1 ;
+	var temp_text = "" ;
+	var line_space = 15 ;
+	var offset = (30 - (line_space * (line_count - 1))) / 2 ;
+
+	node.append("tspan").text("") ;
+
 	for (var i = 0; i < length; i++) {
 		if (words[i] != undefined) {
-			temp_text = temp_text + ' ' + words[i];
-			total_on_current_line = total_on_current_line + 1 + words[i].length;
+			old_text = temp_text ;
+			temp_text = temp_text + ' ' + words[i] ;
+			element = d3.selectAll("#" + title_id + " tspan") ;
+			last = element.size() - 1 ;
 
-			if (total_on_current_line * 5 > $("#" + title_id).attr("width")) {
-				node.append("tspan").text(temp_text.trim()).attr("x", $("#" + title_id).attr("x")).attr("dy", "15");
-				total_on_current_line = 0;
-				temp_text = "";
+			//SD/ Write the text in the last tspan
+			d3.select(element[0][last]).text(temp_text.trim()).attr("x", $("#" + title_id).attr("x")).attr("dy", line_space) ;
+			d3.select(element[0][0]).attr("dy", offset) ;
+
+			//SD/ If necessary, write a new line
+			//SD/ The last substraction (value 95) is the thumbnail image
+			if (document.getElementById(title_id).getBBox().width > $("#" + title_id).attr("width") - 95) {
+				//SD/ Update data before new line
+				line_count++ ;
+				offset = (30 - (line_space * (line_count - 1))) / 2 ;
+				d3.select(element[0][last]).text(old_text.trim()) ;
+
+				//SD/ Write the new line with last word
+				temp_text = words[i] ;
+				node.append("tspan").text(temp_text).attr("x", $("#" + title_id).attr("x"));
+
+				//SD/ Redistribute line position depending on line quantity
+				$("#" + title_id + " tspan").each(function( index ) {
+					$( this ).attr("dy", line_space) ;
+				});
+				d3.select(element[0][0]).attr("dy", offset) ;
 			}
 		}
 
-	};
-	if (temp_text.length > 1) {
-		node.append("tspan").text(temp_text.trim()).attr("x", $("#" + title_id).attr("x")).attr("dy", "15");
-
 	}
-
+	
+	//if (temp_text.length > 1) {
+	//	node.append("tspan").text(temp_text.trim()).attr("x", $("#" + title_id).attr("x")).attr("dy", "15");
+	//}
 }
 
 function zoom_in(d,ref_id, rect_id, min_x, max_x, min_y, max_y,display_class) {

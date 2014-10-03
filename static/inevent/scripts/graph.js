@@ -626,18 +626,21 @@ function Graph(div_id, display_type) {
 	}
 	
 	Graph.prototype.addElement = function(nodes) {
+		added_nodes = []
 		if(typeof nodes !== undefined && nodes != null) {
 			//SD/ Remove some neighbours if nodes limit reached
 			var rest = this.max_size - this.input_nodes.length ;
 			if(nodes.length > rest)
 				nodes.splice(rest , nodes.length - rest) ;
-			
+				
 			//SD/ Enqueue neighbours
 			for(var i = 0 ; i < nodes.length ; i++) {
 				if(!this.isExcluded(nodes[i]['id']) && (nodes[i]['depth'] <= this.max_depth || this.max_depth == 6))
 					this.queue.enQueue(nodes[i]) ;
+					added_nodes.push(nodes[i]);
 			}
 		}
+		return added_nodes;
 	}
 	
 	Graph.prototype.stillElement = function() {
@@ -883,7 +886,7 @@ function Graph(div_id, display_type) {
 				}
 
 				//SD/ If max_size is zero, init a data table
-				if(max_size == 0)
+				if(this.max_size == 0)
 					data = [] ;
 
 				//SD/ Erease graph container and draw graph
@@ -901,7 +904,7 @@ function Graph(div_id, display_type) {
 
 				this.loadGraph(data, $("#" + this.div_id + "_container").width());
 
-				if(max_size > 0) {
+				if(this.max_size > 0) {
 					this.addElement(data)
 					var first = this.pickElement() ;
 		
@@ -940,12 +943,13 @@ function Graph(div_id, display_type) {
 			if(data['nodes'] != undefined && (typeof data != "XMLHttpRequest"))
 			{
 				this.addExclusion(data['caller_id']) ;
-				this.addElement(data['nodes']) ;
+				added_nodes = this.addElement(data['nodes']) ;
 
-				if(data['nodes'].length > 0) {
+				if(added_nodes.length > 0) {
+					
 					//SD/ Graph node and prepare its links for next neighbours
-					if(data['nodes'][0]['depth'] <= this.max_depth || this.max_depth == 6)
-						this.updateGraph({'nodes': data['nodes'], 'caller_id': data['caller_id'], 'links': data['links']}) ;
+				//	if(added_nodes[0]['depth'] <= this.max_depth || this.max_depth == 6)
+						this.updateGraph({'nodes': added_nodes, 'caller_id': data['caller_id'], 'links': data['links']}) ;
 				}
 
 				//SD/ Check exclusion for next node

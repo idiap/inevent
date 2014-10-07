@@ -228,16 +228,15 @@ def call_inevent_search(request,form,page_num = 1):
             post_data['title'] = title
         if (start_date!=None):
         	post_data['startDate'] = long(time.mktime(start_date.timetuple()) * 1000)
-        	print post_data['startDate']
         if (end_date!=None):
-            post_data['endDate'] = long(time.mktime(start_date.timetuple()) * 1000)
+            post_data['endDate'] = long(time.mktime(end_date.timetuple()) * 1000)
 
- 
+ 	   
         if keywords!=None:
             if int(page_num) == 1:
                 first = 0
             else:
-                first = (limit * int(page_num)) - 1 
+                first = (limit * int(page_num)) - 1     
             post_data.update({"firstResult":first, "maxResults": limit, "orderBy":"DATE", "asc":"false"})
 
             url = "searchHyperEvents?" + "searchQuery="+keywords  

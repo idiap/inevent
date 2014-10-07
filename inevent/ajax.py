@@ -4,12 +4,12 @@ from inevent.pagination import Pagination
 import requests
 import json
 import datetime
+import time
 from inevent.views.utils import parse_hyperevent, get_most_recent_events, get_event, get_inEvent_data, get_similar_events, parse_hyperevents, check_user_login, do_user_register
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from time import clock, time
+#from time import clock, time
 import re
-import datetime
 from django.conf import settings
 
 
@@ -52,7 +52,7 @@ def get_transcript(request,transcript_url, event_id=None):
 
 @dajaxice_register
 def graph_related_talks(request,event_id):
-    print event_id
+#    print event_id
     event = get_event(event_id,False,True)
     event = data_convert([event])[0]
     event['similar_events'] = data_convert(event['similar_events'])
@@ -172,7 +172,7 @@ def srt_to_dict(srtText):
         if len(st)>=3:
             #  work around for klewel srt transcript files that are sent with an extra line
             if (st[0]==''):
-                print 'additional line in parsed string'
+#                print 'additional line in parsed string'
                 split = st[2].split(' --> ')
                 index = 3
             else:
@@ -226,10 +226,11 @@ def call_inevent_search(request,form,page_num = 1):
             post_data['speaker'] = speaker
         if (title!=None and len(title)!=0):    
             post_data['title'] = title
-        if (start_date!=None): 
-            post_data['start_date'] = start_date.strftime('%s.%f')
+        if (start_date!=None):
+        	post_data['startDate'] = long(time.mktime(start_date.timetuple()) * 1000)
+        	print post_data['startDate']
         if (end_date!=None):
-            post_data['end_date'] = end_date.strftime('%s.%f')   
+            post_data['endDate'] = long(time.mktime(start_date.timetuple()) * 1000)
 
  
         if keywords!=None:

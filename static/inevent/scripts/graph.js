@@ -916,7 +916,7 @@ function Graph(div_id, display_type, keywords) {
 			}
 			else
 			{
-				this.display_graph_error('No data returned from server.') ;
+				this.display_graph_error('No results returned.') ;
 			}
 		}
 		catch(e){
@@ -1176,7 +1176,7 @@ function Graph(div_id, display_type, keywords) {
 		var blueLegendTitle = "Latest events" ;
 		if(this.div_id == "graph_search")
 		{
-			blueLegendTitle = typeof this.keywords !== 'undefined' ? "Top matches for: " + this.keywords.toLowerCase() : "Top matches";
+			blueLegendTitle = typeof this.keywords !== 'undefined' && this.keywords.length>0 && !(/^\s*$/).test(this.keywords) ? "Top matches for: " + this.keywords.toLowerCase() : "Top matches for your query";
 		}
 		   
 		else if(this.div_id == "graph_event")
@@ -1227,7 +1227,9 @@ function Graph(div_id, display_type, keywords) {
 	}
 
 	Graph.prototype.display_graph_error = function(error) {
-		$('#' + this.div_id).html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
+	//	$('#' + this.div_id).html('<div class="alert alert-error" style ="margin-top:100px;position:relative;margin-bottom:100px">Unable to load graph. Please try again later.<br/>' + error + '</div>');
+	    $('#' + this.div_id).html('<div class="alert alert-info" style ="position:relative"> No results returned. <br/></div>');
+	
 	}
 	
 	

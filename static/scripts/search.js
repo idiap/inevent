@@ -7,6 +7,7 @@ function on_click(event){
 
 function on_click_adv(event){
 	event.preventDefault(); 
+	clear_search_box();
 	send_search_request('1', event.data.from, event.data.form);
 }
 
@@ -71,10 +72,12 @@ function validate_input(inputValue){
 }
 
 function clear_search_box()
-{
-	if ($("#search_box")!='undefined' && $("#search_box").attr('class').indexOf('error')!=-1) {
-		$("#search_box").removeClass("error");
+{ //&& 
+	if ($("#search_box")!=undefined) {
 		$("#search_input").val("");
+		if ($("#search_box").hasClass('error'))
+			$("#search_box").removeClass("error");
+		
 	}
 }
 

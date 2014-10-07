@@ -33,7 +33,7 @@
 			</div>
 
 			<div id="graph_search_list">
-				<div class='lead'> Top matches</div>
+				<div class='lead'> Top matches for {{ keywords }}</div>
 				{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
 				<div class="pull-right">
 					{% if pagination.has_previous %}
@@ -57,7 +57,7 @@
 	$(document).ready(function() {
 		div_id = "graph_search" ;
 		INCREMENT_ID[div_id] = 0 ;
-		graphs[div_id] = new Graph("graph_search") ;
+		graphs[div_id] = new Graph("graph_search", undefined,"{{ keywords }}") ;
 
 		$("#" + div_id + "_form .user_neighbours").val(3) ;
 		$("#" + div_id + "_form .user_depth").val(2) ;

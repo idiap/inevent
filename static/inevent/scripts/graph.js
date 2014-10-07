@@ -1,9 +1,9 @@
 var INCREMENT_ID = Array() ; //SD/ Unique ID for each graph object call needed to stop callbak from old objects
 
 // CLASS WIDGET MANAGER
-function Graph(div_id, display_type) {
+function Graph(div_id, display_type, keywords) {
 	//SD/ Persistant variable ==================================================
-	
+	this.keywords = keywords;
 	this.div_id = div_id ;
 	this.from = null ;
 	this.graph_height = 700 ;
@@ -181,8 +181,9 @@ function Graph(div_id, display_type) {
 
 		this.displayLinks() ;
 		this.displayNodes() ;
-
+		
 		this.graphDrawn = true ;
+
 		if(!this.firstShow) {
 			this.drawEmotions() ;
 		}
@@ -1174,13 +1175,16 @@ function Graph(div_id, display_type) {
 
 		var blueLegendTitle = "Latest events" ;
 		if(this.div_id == "graph_search")
-			blueLegendTitle = "Top matches";
+		{
+			blueLegendTitle = typeof this.keywords !== 'undefined' ? "Top matches for: " + this.keywords.toLowerCase() : "Top matches";
+		}
+		   
 		else if(this.div_id == "graph_event")
 			blueLegendTitle = "Chosen event";
 
 		htmlContent += '<h5>Legend</h5>' ;
 		htmlContent += '<p><span class="legend" style="background-color:' + this.color.blue + ';"></span>' + blueLegendTitle + '</p>' ;
-		htmlContent += '<p><span class="legend" style="background-color:' + this.color.grey + ';"></span> Related events</p>' ;
+		htmlContent += '<p><span class="legend" style="background-color:' + this.color.grey + ';"></span> Similar events</p>' ;
 
 		htmlContent += '<hr>' ;
 

@@ -247,6 +247,10 @@ def call_inevent_search(request,form,page_num = 1):
                 pagination = Pagination(count, limit)
                 pagination.page(int(page_num))
                 data = {'hyperevents':hyperevents, 'keywords':keywords, 'count':count, 'pagination':pagination, 'searchable':chosen}
+                if post_data.has_key('startDate'):
+                	data.update({'startDate':post_data['startDate']})
+                if post_data.has_key('startDate'):
+                	data.update({'endDate':post_data['endDate']})	
             else:
                 data = {'error_callback':"Search request can't be performed. Please try again later"}
     else:

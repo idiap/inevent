@@ -1134,21 +1134,22 @@ function Graph(div_id, display_type, keywords) {
 		}
 
 		//SD/ Hide depending on Emotions
-		if($("#" + this.div_id + "_noEmotionFilter")[0].checked !== true) {
-			this.toggleEmotionFilter(true) ;
+
 		
 			var toHide = new Array() ;
 			for(var i in this.input_nodes) {
-				var display = false ;
+				var display = true ;
 
-				for(var j in this.mainEmotions) {
-					if(this.input_nodes[i].emotions !== undefined) {
-						if(this.input_nodes[i].emotions[this.mainEmotions[j]] !== undefined) {
-							if($("#" + this.div_id + "_" + this.mainEmotions[j] + "Filter")[0].checked !== false && this.input_nodes[i].emotions[this.mainEmotions[j]] > 0.6)
-								display = true ;
+					for(var j in this.mainEmotions) {
+						node = this.input_nodes[i]
+						emotion = this.mainEmotions[j]
+						current = $("#" + this.div_id + "_" + emotion + "Filter")
+						if (current[0].checked == true) {
+							if (node.emotions ==undefined || node.emotions[emotion]==undefined || node.emotions[emotion] <55)
+							  display = false
 						}
+						
 					}
-				}
 
 				if(display == false)
 					toHide.push(this.input_nodes[i].id) ;
@@ -1156,18 +1157,9 @@ function Graph(div_id, display_type, keywords) {
 
 			//console.log(toHide) ;
 			this.hideNodesAndTheirLinks(toHide) ;
-		}
+		
 	}
 
-	Graph.prototype.toggleEmotionFilter = function(choice) {
-		if(choice) {
-			$("#" + this.div_id + "_noEmotionFilter").prop('checked', false) ;
-		}
-		else {
-			$("#" + this.div_id + "_sidepane .filter table input").prop('checked', false);
-			$("#" + this.div_id + "_noEmotionFilter").prop('checked', true) ;
-		}
-	}
 
 	Graph.prototype.drawEmotions = function() {
 		var _this = this ;
@@ -1188,18 +1180,17 @@ function Graph(div_id, display_type, keywords) {
 
 		htmlContent += '<hr>' ;
 
-		htmlContent += '<p class="pull-right"><input id="' + this.div_id + '_noEmotionFilter" type="checkbox" checked="checked" onchange="graphs[\'' + this.div_id + '\'].toggleEmotionFilter(false);graphs[\'' + this.div_id + '\'].applyFilter()"> display all</p>' ;
 		htmlContent += '<h5>Style</h5>' ;
 		htmlContent += '<table><tr><td>' ;
 		for(var i=0 ; i < this.mainEmotions.length / 2 ; i++) {
 			htmlContent += '<p>' ;
-				htmlContent += '<input id="' + this.div_id + '_' + this.mainEmotions[i] + 'Filter" type="checkbox" onchange="graphs[\'' + this.div_id + '\'].toggleEmotionFilter(true);graphs[\'' + this.div_id + '\'].applyFilter()"> <span class="' + this.mainEmotions[i] + '"></span> ' + this.mainEmotions[i] ;
+				htmlContent += '<input id="' + this.div_id + '_' + this.mainEmotions[i] + 'Filter" type="checkbox" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> <span class="' + this.mainEmotions[i] + '"></span> ' + this.mainEmotions[i] ;
 			htmlContent += '</p>' ;
 		}
 		htmlContent += '</td><td>' ;
 		for(var i=this.mainEmotions.length / 2 ; i < this.mainEmotions.length ; i++) {
 			htmlContent += '<p>' ;
-				htmlContent += '<input id="' + this.div_id + '_' + this.mainEmotions[i] + 'Filter" type="checkbox" onchange="graphs[\'' + this.div_id + '\'].toggleEmotionFilter(true);graphs[\'' + this.div_id + '\'].applyFilter()"> <span class="' + this.mainEmotions[i] + '"></span> ' + this.mainEmotions[i] ;
+				htmlContent += '<input id="' + this.div_id + '_' + this.mainEmotions[i] + 'Filter" type="checkbox" onchange="graphs[\'' + this.div_id + '\'].applyFilter()"> <span class="' + this.mainEmotions[i] + '"></span> ' + this.mainEmotions[i] ;
 			htmlContent += '</p>' ;
 		}
 		htmlContent += '</td></tr></table>' ;

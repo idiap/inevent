@@ -57,7 +57,7 @@
 	$(document).ready(function() {
 		div_id = "graph_search" ;
 		INCREMENT_ID[div_id] = 0 ;
-		graphs[div_id] = new Graph("graph_search", undefined,"{{ keywords }}") ;
+		graphs[div_id] = new Graph("graph_search", undefined,"{{ keywords }}", "{{startDate}}", "{{endDate}}") ;
 
 		$("#" + div_id + "_form .user_neighbours").val(3) ;
 		$("#" + div_id + "_form .user_depth").val(2) ;

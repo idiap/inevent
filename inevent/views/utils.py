@@ -122,7 +122,7 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
                         
                         hyperevent['emotions'] = {}
                         for i in xrange(len(emotions['emotion_classes'])) :
-                            hyperevent['emotions'].update({emotions['emotion_classes'][i].lower(): emotions['emotion_scores'][i]})
+                            hyperevent['emotions'].update({emotions['emotion_classes'][i].lower(): emotions['emotion_scores'][i]*100})
 
     return hyperevent
 

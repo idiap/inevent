@@ -68,9 +68,9 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
                 presenters.append(display_name)
     #                           if (first_participant and first_participant.has_key('role') and first_participant['role']=='LECTURER' and first_participant['participant'])
             hyperevent['presenters'] = presenters
-        elif(key=='mediaProvider' and event[key]['name']!=None):
+        elif(key=='owner' and event[key]['displayName']!=None):
 #            print event[key]
-            hyperevent['providerName']  = event[key]['name']
+            hyperevent['displayName']  = event[key]['displayName']
         elif (key == 'tracks'):  # Video, slides, and snapshot
             tracks = event[key]
             for track in tracks:

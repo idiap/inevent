@@ -73,7 +73,7 @@
 		<td>Parent (HyperEvent)</td>
 	</tr><tr>
 		<th>childrenIds</th>
-		<td>List of long</td>
+		<td>List of Long</td>
 		<td>Children (HyperEvent)</td>
 	</tr><tr>
 		<th>name</th>
@@ -96,6 +96,10 @@
 		<td>Integer</td>
 		<td>Duration</td>
 	</tr><tr>
+		<th>Owner</th>
+		<td><a href="#UserDTO">User</a></td>
+		<td>The user who owns the hyperevent</td>
+	</tr><tr>
 		<th>customData</th>
 		<td>List of <a href="#CustomDataDTO">CustomData</a></td>
 		<td><a href="#CustomDataDTO">CustomData</a> are supplemetary data sent by provider</td>
@@ -109,11 +113,11 @@
 		<td>Participations who map <a href="#ParticipantDTO">Participant</a> id and role</td>
 	</tr><tr>
 		<th>tags</th>
-		<td>List of <a href="#TagDTO">Tag</a><br/>(time, person, offset, value)</td>
+		<td>List of <a href="#TagDTO">Tag</a><br/>(date, user, offset, value)</td>
 		<td>Tags</td>
 	</tr><tr>
 		<th>comments</th>
-		<td>List of <a href="CommentDTO">Comments</a><br/>(time, person, value replyTo)</td>
+		<td>List of <a href="CommentDTO">Comments</a><br/>(date, user, text)</td>
 		<td>Comments</td>
 	</tr><tr>
 		<th>children</th>
@@ -136,17 +140,17 @@
 	</tr>
 	<tr>
 		<th>views</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>Number of views</td>
 	</tr>
 	<tr>
 		<th>likes</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>Number of likes</td>
 	</tr>
 	<tr>
 		<th>dislikes</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>Number of dislikes</td>
 	</tr>
 </table>
@@ -184,7 +188,7 @@
 		<th>Description</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>trackType</th>
@@ -204,7 +208,7 @@
 		<td>Describe the track</td>
 	</tr><tr>
 		<th>parentId</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>Parent <a href="#HyperEventDTO">HyperEvent</a></td>
 	</tr><tr>
 		<th>files</th>
@@ -236,7 +240,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>startDate</th>
@@ -256,7 +260,7 @@
 		<td>file MIME/Type</td>
 	</tr><tr>
 		<th>trackId</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>Related <a href="#TrackDTO">Track</a> id</td>
 	</tr>
 </table>
@@ -285,7 +289,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>participant</th>
@@ -293,7 +297,7 @@
 		<td>Participants</td>
 	</tr><tr>
 		<th>hyperEventId</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>HyperEvent</td>
 	</tr><tr>
 		<th>role</th>
@@ -329,7 +333,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>firstName</th>
@@ -386,11 +390,11 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>hyperEventId</th>
-		<td>long</td>
+		<td>Long</td>
 		<td><a href="#HyperEventDTO">HyperEvent</a> reference</td>
 	</tr><tr>
 		<th>creationDate</th>
@@ -434,7 +438,7 @@
 		<td>ID</td>
 	</tr><tr>
 		<th>parentId</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID of the parent <a href="#HyperEventDTO">HyperEvent</a></td>
 	</tr><tr>
 		<th>linkType</th>
@@ -494,11 +498,15 @@
 	</tr><tr>
 		<th>hyperEventId</th>
 		<td>Long</td>
-		<td>The ID of the commented <a href="#UserDTO">Hyperevent</a></td>
+		<td>The ID of the commented <a href="#HyperEventDTO">Hyperevent</a></td>
 	</tr><tr>
 		<th>text</th>
 		<td>String</td>
 		<td>Comment</td>
+	</tr><tr>
+		<th>date</th>
+		<td>Long</td>
+		<td>Date</td>
 	</tr>
 </table>
 
@@ -517,7 +525,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>hyperEvents</th>
@@ -610,10 +618,18 @@
 		<td>Integer
 		<td>For pagination purposes, last result to return</td>
 	</tr><tr>
-		<th>orderBy</th>
+		<th>orderBy <span class="label label-info">optional</span></th>
 		<td>String</td>
-		<th>status <span class="label label-info">optional</span></th>
-		<td>Results ordering options</td>
+		<td>Results ordering options: <br/>
+			<ul>
+				<li>date</li>
+				<li>title</li>
+				<li>speaker</li>
+				<li>likes</li>
+				<li>dislikes</li>
+				<li>views</li>
+			</ul>
+		</td>
 	</tr><tr>
 		<th>asc</th>
 		<td>Boolean</td>
@@ -653,7 +669,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>speakerId</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>Current speaker identified by processing</td>
 	</tr><tr>
 		<th>startDate</th>
@@ -750,7 +766,7 @@
 		<td>ID</td>
 	</tr><tr>
 		<th>speakers</th>
-		<td>List of long</td>
+		<td>List of Long</td>
 		<td>Speakers identification</td>
 	</tr><tr>
 		<th>segments</th>
@@ -790,27 +806,27 @@
 			</ul>
 		</td>
 	</tr><tr>
-		<th>peopleAverage <span class="label label-info">Optional</span></th>
+		<th>peopleAverage <span class="label label-info">optional</span></th>
 		<td>Float</td>
 		<td></td>
 	</tr><tr>
-		<th>animationsNb <span class="label label-info">Optional</span></th>
+		<th>animationsNb <span class="label label-info">optional</span></th>
 		<td>Integer</td>
 		<td></td>
 	</tr><tr>
-		<th>dynamicContentNb <span class="label label-info">Optional</span></th>
+		<th>dynamicContentNb <span class="label label-info">optional</span></th>
 		<td>Integer</td>
 		<td></td>
 	</tr><tr>
-		<th>slidesNb <span class="label label-info">Optional</span></th>
+		<th>slidesNb <span class="label label-info">optional</span></th>
 		<td>Integer</td>
 		<td></td>
 	</tr><tr>
-		<th>talkRatio <span class="label label-info">Optional</span></th>
+		<th>talkRatio <span class="label label-info">optional</span></th>
 		<td>Float</td>
 		<td></td>
 	</tr><tr>
-		<th>videoName <span class="label label-info">Optional</span></th>
+		<th>videoName <span class="label label-info">optional</span></th>
 		<td>String</td>
 		<td></td>
 	</tr>
@@ -860,11 +876,11 @@
 		<td>milli timestamp</td>
 		<td>To time</td>
 	</tr><tr>
-		<th>participantsInteraction <span class="label label-info">Optional</span></th>
+		<th>participantsInteraction <span class="label label-info">optional</span></th>
 		<td>Integer</td>
 		<td>Quantify how participants are interacting (value from 0 to 100)</td>
 	</tr><tr>
-		<th>streams <span class="label label-info">Optional</span></th>
+		<th>streams <span class="label label-info">optional</span></th>
 		<td>List of <a href="#StreamDTO">Stream</a></td>
 		<td></td>
 	</tr>
@@ -1081,7 +1097,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>activityIntervals</th>
@@ -1139,7 +1155,7 @@
 		<th>Value</th>
 	</tr><tr>
 		<th>id</th>
-		<td>long</td>
+		<td>Long</td>
 		<td>ID</td>
 	</tr><tr>
 		<th>faceSizeAverage</th>
@@ -1356,7 +1372,7 @@ From here REST API declaration
 		<td>hyperEventId</td>
 		<td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 
@@ -1397,14 +1413,14 @@ From here REST API declaration
 		<td>hyperEventID</td>
 		<td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr><tr>
 		<td>N/A</td>
 		<td>List of linked <a href="#HyperEventDTO">HyperEvent</a> IDs</td>
 		<td>Body</td>
 		<td>
 			application/json<br/>
-			(list of long values)
+			(list of Long values)
 		</td>
 	</tr>
 </table>
@@ -1557,7 +1573,7 @@ Example of track might be:
 		<td>trackID</td>
 		<td>ID of the <a href="#TrackDTO">Track</a> to delete</td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 
@@ -1598,7 +1614,7 @@ Example of track might be:
 		<td>trackField</td>
 		<td>ID of the track's <a href="#FileDTO">File</a></td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 
@@ -1651,7 +1667,7 @@ Example of track might be:
 		<td>taskId</td>
 		<td>ID of the task</td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 
@@ -1696,7 +1712,7 @@ Example of track might be:
 		<td>hyperEventId</td>
 		<td>ID of <a href="#HyperEventDTO">HyperEvent</a></td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 
@@ -1783,9 +1799,9 @@ Example of track might be:
 		<td>hyperEventId</td>
 		<td><a href="#HyperEventDTO">HyperEvent</a> id</td>
 		<td>QueryParam</td>
-		<td><a href="#FilterDTO">long</a></td>
+		<td><a href="#FilterDTO">Long</a></td>
 	</tr><tr>
-		<td>N/A <span class="label label-info">Optional</span></td>
+		<td>N/A <span class="label label-info">optional</span></td>
 		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
 		<td>Body</td>
 		<td><a href="#FilterDTO">Filter</a></td>
@@ -1831,12 +1847,12 @@ Example of track might be:
 		<td>trackId</td>
 		<td>ID of <a href="#TrackDTO">Track</a></td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr><tr>
-		<td>start <span class="label label-info">Optional</span></td>
+		<td>start <span class="label label-info">optional</span></td>
 		<td>The starting position the <a href="#FileDTO">File</a> is downloaded from</td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 
@@ -1879,12 +1895,12 @@ Example of track might be:
 		<td>trackId</td>
 		<td>ID of <a href="#TrackDTO">Track</a></td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr><tr>
-		<td>start <span class="label label-info">Optional</span></td>
+		<td>start <span class="label label-info">optional</span></td>
 		<td>The starting position the file is downloaded from</td>
 		<td>QueryParam</td>
-		<td>long</td>
+		<td>Long</td>
 	</tr>
 </table>
 

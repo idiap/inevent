@@ -50,6 +50,7 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
         elif (key=='tags'):
             cleaned_tags = ''
             tags = event['tags']
+#            print tags
             if (tags and tags[0].has_key('value')):
                 for tag in tags:
                     cleaned_tags = tag['value'] + " "   # .strip("\n")
@@ -70,7 +71,7 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
             hyperevent['presenters'] = presenters
         elif(key=='owner' and event[key]['displayName']!=None):
 #            print event[key]
-            hyperevent['displayName']  = event[key]['displayName']
+            hyperevent['providerName']  = event[key]['displayName']
         elif (key == 'tracks'):  # Video, slides, and snapshot
             tracks = event[key]
             for track in tracks:

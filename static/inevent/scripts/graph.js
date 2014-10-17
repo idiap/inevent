@@ -1098,49 +1098,25 @@ function Graph(div_id, display_type, keywords) {
 			return ;
 		
 		var toHide = new Array() ;
-		var nodeDate = null ;
+		
 		var sliderDates = $("#" + this.div_id + "_dateFilter").dateRangeSlider("values");
 
-		for(var i in this.input_nodes) {
-			nodeDate = new Date(this.input_nodes[i].date_ms) ;
-			if(nodeDate.getTime() < sliderDates.min || nodeDate.getTime() > sliderDates.max)
-				toHide.push(this.input_nodes[i].id) ;
-		}
-
-		//SD/ Display all nodes and hide out of date range
 		this.showAll() ;
-		this.hideNodesAndTheirLinks(toHide) ;
 
-		//SD/ Hide Discusssions if necessary
-		if($("#" + this.div_id + "_discussionFilter")[0].checked !== true) {
-			var toHide = new Array() ;
-			for(var i in this.input_nodes)
-				if(this.input_nodes[i].providerName == "Radvision")
-					toHide.push(this.input_nodes[i].id) ;
-
-			//console.log(toHide) ;
-			this.hideNodesAndTheirLinks(toHide) ;
-		}
-
-		//SD/ Hide Lecturers if necessary
-		if($("#" + this.div_id + "_lectureFilter")[0].checked !== true) {
-			var toHide = new Array() ;
-			for(var i in this.input_nodes)
-				if(this.input_nodes[i].providerName == "TED" || this.input_nodes[i].providerName == "Klewel")
-					toHide.push(this.input_nodes[i].id) ;
-
-			//console.log(toHide) ;
-			this.hideNodesAndTheirLinks(toHide) ;
-		}
-
-		//SD/ Hide depending on Emotions
-
-		
-			var toHide = new Array() ;
-			for(var i in this.input_nodes) {
+		discussion = $("#" + this.div_id + "_discussionFilter")[0].checked
+		lecture = $("#" + this.div_id + "_lectureFilter")[0].checked
+			
+		for(var i in this.input_nodes) {
+				
 				var display = true ;
-
-					for(var j in this.mainEmotions) {
+				//SD/ Display all nodes and hide out of date range
+				var nodeDate = new Date(this.input_nodes[i].date_ms) ;
+				if (nodeDate !=undefined) {
+					if(nodeDate.getTime() < sliderDates.min || nodeDate.getTime() > sliderDates.max)
+				    display = false
+				}
+				//SD/ Hide depending on Emotions
+				for(var j in this.mainEmotions) {
 						node = this.input_nodes[i]
 						emotion = this.mainEmotions[j]
 						current = $("#" + this.div_id + "_" + emotion + "Filter")
@@ -1150,6 +1126,15 @@ function Graph(div_id, display_type, keywords) {
 						}
 						
 					}
+					//SD/ Hide Discusssions if necessary
+					providerName = this.input_nodes[i].providerName
+				//	today we rely on providerName, but it would be better in the future when we will have more
+				//	provider, to have a specific field name "type"
+					if ((discussion == false) && (providerName == 'Radvision'))
+						 display = false
+					if  ((lecture == false) && (providerName == 'Klewel' || providerName == 'TED'))
+						 display = false
+					
 
 				if(display == false)
 					toHide.push(this.input_nodes[i].id) ;

@@ -165,7 +165,7 @@
 	"owner": {},
 	"name": "Lecture 01",
 	"description": "Algebra",
-	"createdDateTime": "1330380000000",
+	"creationDate": "1330380000000",
 	"duration": 1800000,
 	"customData": [],
 	"tags": [],
@@ -672,18 +672,18 @@
 		<td>Long</td>
 		<td>Current speaker identified by processing</td>
 	</tr><tr>
-		<th>startDate</th>
-		<td>milli timestamp</td>
-		<td>From date</td>
+		<th>startTime</th>
+		<td>Float</td>
+		<td>Start time in milliseconds</td>
 	</tr><tr>
-		<th>endDate</th>
-		<td>milli timestamp</td>
-		<td>To date</td>
+		<th>endTime</th>
+		<td>Float</td>
+		<td>End time in milliseconds</td>
 	</tr><tr>
-		<th>soundType</th>
+		<th>classes</th>
 		<td>String</td>
 		<td>
-			Ambiant sound could be: <br/>
+			Possible Sound class or type: <br/>
 			<ul>
 				<li>silence</li>
 				<li>speech</li>
@@ -693,24 +693,37 @@
 			</ul>
 		</td>
 	</tr><tr>
-		<th>words</th>
-		<td>List of <a href="#WordDTO">Word</a></td>
-		<td></td>
+		<th>spokenWords <span class="label label-info">optional</span></th>
+		<td>List of spoken <a href="#WordDTO">Words</a></td>
+		<td>Only when the segment belongs to the "speech" class</td>
 	</tr>
 </table>
-
-<div class="alert">Why using a date instead if millisecond time only value ??</div>
 
 <p>AudioSegment is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
+// Segment of class "silence"
 {
 	"speakerId":0,
-	"startDate":1398287417648,
-	"endDate":1398287421648,
-	"soundType":"silence",
-	"words":[]
+	"startTime":1398287417648,
+	"endTime":1398287421648,
+	"class":"silence",
 }
+
+</code></pre>
+
+<pre><code class="language-javascript">
+// Segment of class "speech"
+{ "startTime": 0.00, 
+  				  "endTime": 0.73, 
+  				  "classId": "speech", 
+  				  "speakerId": "speaker_0", 
+				  "spokenWords":	[
+   					{ "wordStart":0.02, "wordEnd":0.18, "wordId":"GOOD", "wordConfidence":0.64 },
+   					{ "wordStart":0.18, "wordEnd":0.73, "wordId":"MORNING", "wordConfidence":0.58 },
+  				    { "wordStart":0.73, "wordEnd":1.02, "wordId":"EVERYONE", "wordConfidence":0.49 }]
+  				  }
+
 </code></pre>
 
 <h4 id="WordDTO">Word</h4>
@@ -723,21 +736,23 @@
 		<th>Type</th>
 		<th>Value</th>
 	</tr><tr>
-		<th>WordId</th>
+		<th>wordId</th>
 		<td>String</td>
 		<td>the actual word</td>
 	</tr><tr>
 		<th>wordStart</th>
-		<td>milisecond timestamp</td>
-		<td>Beginning of the word</td>
+		<td>Float</td>
+		<td>Beginning of the word in milliseconds</td>
 	</tr><tr>
 		<th>wordEnd</th>
-		<td>milisecond timestamp</td>
-		<td>End of the word</td>
+		<td>Float</td>
+		<td>End of the word in milliseconds</td>
 	</tr><tr>
 		<th>wordConfidence</th>
 		<td>Float</td>
+		<td>Confidence value. Varies from 0 to 1.</td>
 	</tr>
+	
 </table>
 
 <p>Word is represented here in JSON format:</p>
@@ -749,6 +764,8 @@
 	"wordEnd":12000,
 	"wordConfidence":0.9
 }
+
+
 </code></pre>
 
 <h4 id="AugmentedAsrDTO">AugmentedASR</h4>
@@ -761,28 +778,41 @@
 		<th>Type</th>
 		<th>Value</th>
 	</tr><tr>
-		<th>id</th>
-		<td>String <span class="label label-important">really ?</span></td>
-		<td>ID</td>
-	</tr><tr>
 		<th>speakers</th>
 		<td>List of Long</td>
 		<td>Speakers identification</td>
 	</tr><tr>
 		<th>segments</th>
-		<td>List of <a href="#SegmentDTO">Segment</a></td>
-		<td><span class="label label-warning">need this data</span></td>
+		<td>List of <a href="#AudioSegmentDTO">Segments</a></td>
+	</tr><tr>
+		<th>classes</th>
+		<td>List of sound classes</td>
 	</tr>
 </table>
 
 <p>AugmentedASR is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"id":"id 1",
-	"speakers":[],
-	"segments":[]
-}
+{	"speakers": ["speaker_0", "speaker_2", "speaker_1", "speaker_3"],
+ 	"classes":  ["speech", "silence", "music", "laugh", "applause"],
+ 	"segments": [
+  				{ "startTime": 0.00, 
+  				  "endTime": 0.73, 
+  				  "classId": "speech", 
+  				  "speakerId": "speaker_0", 
+				  "spokenWords":	[
+   					{ "wordStart":0.02, "wordEnd":0.18, "wordId":"GOOD", "wordConfidence":0.64 },
+   					{ "wordStart":0.18, "wordEnd":0.73, "wordId":"MORNING", "wordConfidence":0.58 },
+  				    { "wordStart":0.73, "wordEnd":1.02, "wordId":"EVERYONE", "wordConfidence":0.49 }]
+  				  },
+  			  { "startTime": 0.73, 
+  			    "endTime": 0.78, 
+  			    "classId": 
+  			    "silence" }, 
+  			  ...
+   	]
+ }  
+ 
 </code></pre>
 
 <h3>Video Processing</h3>
@@ -798,7 +828,7 @@
 		<th>type</th>
 		<td>String</td>
 		<td>
-			Type of analytic
+			Type of video analytic
 			<ul>
 				<li>slides</li>
 				<li>lecture</li>
@@ -869,16 +899,16 @@
 		</td>
 	</tr><tr>
 		<th>startTime</th>
-		<td>milli timestamp</td>
-		<td>From time</td>
+		<td>Float</td>
+		<td>Start time in milliseconds</td>
 	</tr><tr>
 		<th>endTime</th>
-		<td>milli timestamp</td>
-		<td>To time</td>
+		<td>Float</td>
+		<td>End time in milliseconds</td>
 	</tr><tr>
 		<th>participantsInteraction <span class="label label-info">optional</span></th>
 		<td>Integer</td>
-		<td>Quantify how participants are interacting (value from 0 to 100)</td>
+		<td>Percentage value representation of level of interaction between participants</td>
 	</tr><tr>
 		<th>streams <span class="label label-info">optional</span></th>
 		<td>List of <a href="#StreamDTO">Stream</a></td>

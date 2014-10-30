@@ -34,6 +34,7 @@ In your local repository create a settings_local.py file which overwrites DEBUG 
 
 ```python
 DEBUG = True
+STATIC_URL = "/static/"
 SECRET_KEY = "fdlet034msd09w4jfqjvl094ujopfaoo43jfa"
 ```
 

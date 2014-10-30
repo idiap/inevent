@@ -112,8 +112,8 @@ function Graph(div_id, display_type, keywords) {
 			.attr("height", this.graph_height);
 
 		this.color = {	black:"black",
-						blue:"#0088cc",
-						grey:"grey"} ;
+						central:"#0088cc",
+						similar:"grey"} ;
 
 		this.endOfGraph = false ;
 
@@ -350,8 +350,8 @@ function Graph(div_id, display_type, keywords) {
 			})
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
-				if(d.depth < 1) { return _this.color.blue }
-				return _this.color.grey ;
+				if(d.depth < 1) { return _this.color.central }
+				return _this.color.similar ;
 			})
 			.attr("rx", "5")
 			.attr('x', function(d) {
@@ -404,7 +404,7 @@ function Graph(div_id, display_type, keywords) {
 			.attr("width", this.big_rect[0])
 			.style("stroke", function(d) {
 				//SD/ Color in blue first node only
-				if(d.depth < 1) { return _this.color.blue } else { return _this.color.grey }
+				if(d.depth < 1) { return _this.color.central } else { return _this.color.similar }
 			})
 			.style("fill","white") // Make the nodes hollow looking
 			.style("stroke-width", 2) // Give the node strokes some thickness
@@ -555,9 +555,9 @@ function Graph(div_id, display_type, keywords) {
 
 					//SD/ Color in blue links of first node only
 					if(d.depth < 2)
-						{ return _this.color.blue }
+						{ return _this.color.central }
 					else
-						{ return _this.color.grey }
+						{ return _this.color.similar }
 				})
 				.attr("x1", function(d) { return d.source.x})
 				.attr("y1", function(d) { return d.source.y})
@@ -1160,8 +1160,8 @@ function Graph(div_id, display_type, keywords) {
 			blueLegendTitle = "Chosen event";
 
 		htmlContent += '<h5>Legend</h5>' ;
-		htmlContent += '<p><span class="legend" style="background-color:' + this.color.blue + ';"></span>' + blueLegendTitle + '</p>' ;
-		htmlContent += '<p><span class="legend" style="background-color:' + this.color.grey + ';"></span> Similar events</p>' ;
+		htmlContent += '<p><span class="legend" style="background-color:' + this.color.central + ';"></span>' + blueLegendTitle + '</p>' ;
+		htmlContent += '<p><span class="legend" style="background-color:' + this.color.similar + ';"></span> Similar events</p>' ;
 
 		htmlContent += '<hr>' ;
 

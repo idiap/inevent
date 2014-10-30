@@ -13,7 +13,13 @@ Prerequist
 sudo aptitude install python2.7 python-dev python-pip
 ```
 
-Run pip to resolve dependencies with command
+Download the code from github:
+-------------------------------
+git clone https://github.com/idiap/inevent.git
+
+
+Install the required packages using pip (requirements.txt is inside the inevent repository)
+-------------------------------------------------------------------------------------------
 
 ```sh
 sudo pip install -r requirements.txt

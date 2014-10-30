@@ -34,7 +34,7 @@ SECRET_KEY = "fdlet034msd09w4jfqjvl094ujopfaoo43jfa"
 Run server with the following command
 
 ```sh
-./manage runserver 127.0.0.1:8000
+python manage.py runserver 127.0.0.1:8000
 ```
 
 To access in a web browser under 127.0.0.1:8000

@@ -890,7 +890,7 @@ function Graph(div_id, display_type, keywords) {
 				if(this.max_size == 0)
 					data = [] ;
 
-				//SD/ Erease graph container and draw graph
+				//SD/ Erase graph container and draw graph
 				$('#' + this.div_id).html(
 					'<div>' +
 						'<div class="zoom pull-right">' +

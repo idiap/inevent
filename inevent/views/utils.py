@@ -15,7 +15,7 @@ def get_similar_events(event_id, limit=5):
 #                     , "orderBy":"DATE", "asc":"false"}
 
     
-def parse_hyperevent(event, only_basic_info, include_recommendation = False):
+def parse_hyperevent(event, only_basic_info = False, include_recommendation = False, link_type='all'):
     hyperevent = {}
     for key in event.iterkeys():
     #                   title field looks like 'talk_150' so not needed..  
@@ -37,10 +37,11 @@ def parse_hyperevent(event, only_basic_info, include_recommendation = False):
 #                 {u'confidence': 0.0, u'linkedEvent': None, u'parentId': 1261, u'relevance': 0.9651, u'type': None, u'id': 34031}
                  linked_id = recommended_event['id']
                  if (linked_id!=event['id']):
-                     re = {}
-                     re['event'] = get_event(linked_id, False) 
-                     re['relevance'] = recommended_event['relevance']
-                     recommendations.append(re)
+                     if link_type=='all' or re['type']==link_type:
+                         re = {}
+                         re['event'] = get_event(linked_id, False) 
+                         re['relevance'] = recommended_event['relevance']
+                         recommendations.append(re)
             hyperevent['similar_events'] =  recommendations           
         elif (key=='date' and event['date']!=None):                     
 #            somehow digits sent are more than expected and without dividing by 100, it's out of range
@@ -145,6 +146,13 @@ def example_hyperevent():
     hyperevent['transcripts'] = clean_entries
     hyperevent['snapshot_url'] = rest_url_retrieval + "getTrackFile/snapshot.jpg?trackId=1058"
     return hyperevent 
+
+
+#TODO limit number of recommended_events and group recommended items together
+def get_emotion_based_links(id):
+    url = "getHyperEvent?hyperEventId="+str(id)
+    event = get_inEvent_data(url)
+    return parse_hyperevent(event, True, True, 'EBR')
 
 def get_event(id, only_basic_info=True, graph_mode=False, raw_data=False):
     url = "getHyperEvent?hyperEventId="+str(id)

@@ -34,7 +34,7 @@ from django.conf import settings
 @dajaxice_register
 def get_transcript(request,transcript_url, event_id=None):
 #	print transcript_url
-#	sample: http://srv-inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/transcript.srt?trackId=1733
+#	sample: ..../rest/retrieval/getTrackFile/transcript.srt?trackId=1733
 	data = {}
 	try:
 		response = requests.get(transcript_url)

@@ -4,7 +4,7 @@ import requests
 import calendar
 import urllib
 
-rest_base_url = "http://inevent.haifa.il.ibm.com/rest/"
+rest_base_url = "http://inevent.klewel.com:8081/rest/"
 rest_url_retrieval = rest_base_url + "retrieval/"
 rest_url_user = rest_base_url + "user/"
 rest_url_management = rest_base_url + "archiving/"

@@ -46,7 +46,7 @@
 
 	<p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve HyperEvents</p>
 
-	<div class="alert alert-info">In this API all date variables (ie: creationDate) are transmitted in mili timestamp format and all time (ie: startTime) in miliseconds.</div>
+	<!--<div class="alert alert-info"> http://inevent.klewel.com:8081/rest/</div>-->
 
 	<h2>DTO definitions</h2>
 
@@ -245,11 +245,12 @@
 	</tr><tr>
 		<th>startDate</th>
 		<td>Date</td>
-		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+		<td>milli timestamp</td>
 	</tr><tr>
 		<th>endDate</th>
 		<td>Date</td>
-		<td>When in <a href="#TrackDTO">Track</a> ?</td>
+		<td>milli timestamp</td>
+		<!--<td>When in <a href="#TrackDTO">Track</a> ?</td>-->
 	</tr><tr>
 		<th>fileName</th>
 		<td>String</td>
@@ -261,7 +262,7 @@
 	</tr><tr>
 		<th>trackId</th>
 		<td>Long</td>
-		<td>Related <a href="#TrackDTO">Track</a> id</td>
+		<td>Corresponding <a href="#TrackDTO">Track</a> id</td>
 	</tr>
 </table>
 
@@ -657,7 +658,7 @@
 
 <p>Function using this DTO: <a href="#searchHyperEvents">searchHyperEvents</a></p>
 
-<h3>Audio Processing</h3>
+<h3>Audio Processing Output</h3>
 
 <h4 id="AudioSegmentDTO">AudioSegment</h4>
 
@@ -818,7 +819,7 @@
  
 </code></pre>
 
-<h3>Video Processing</h3>
+<h3>Video Processing Output</h3>
 
 <h4 id="VideoAnalyticDTO">VideoAnalytic</h4>
 
@@ -1939,50 +1940,13 @@ Example of track might be:
 
 <div class="alert alert-info"><b>Example:</b> http://inevent.klewel.com:8081/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167</div>
 
-<h3>Process file</h3>
+<h3>Processing</h3>
 
-<p>Processes video <a href="#FileDTO">File</a> and returns analytic's result.</p>
+<h4>Initiate Session </h4>
 
-<p>Request parameters</p>
 
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/processFile?fileName=&lt;fileName&gt;</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>application/json (analytic's processing output in JSON format)</td>
-	</tr>
-</table>
-
-<p>Method parameters</p>
-
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>fileName</td>
-		<td>Name of the <a href="#FileDTO">File</a> to process</td>
-		<td>QueryParam</td>
-		<td>String</td>
-	</tr>
-</table>
-
-<h3>Process file</h3>
-
-<p>Processes video <a href="#FileDTO">File</a> using Segmentation object received by calling to diarization service. Returns aggregated <a href="#AugmentedASRDTO">AugmentedASR</a> result containing merged ASR and diarization data.</p>
+<p>Initiates a session against specific analytics’ service.</b>
+All consecutive requests use the ID of the allocated session to make correlations over requests.</p>
 
 <p>Request parameters</p>
 
@@ -1992,7 +1956,7 @@ Example of track might be:
 		<th>Value</th>
 	</tr><tr>
 		<th>URL</th>
-		<td>/processFile?fileName=<fileName>&lt;fileName&gt;</td>
+		<td>/initiateSession</td>
 	</tr><tr>
 		<th>Method</th>
 		<td>POST</td>
@@ -2001,7 +1965,7 @@ Example of track might be:
 		<td>application/json</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>application/json (<a href="#AugmentedASRDTO">AugmentedASR</a> object)</td>
+		<td>application/json (newly created Session)</td>
 	</tr>
 </table>
 
@@ -2014,19 +1978,36 @@ Example of track might be:
 		<th>ParameterType</th>
 		<th>ValueType</th>
 	</tr><tr>
-		<td>fileName</td>
-		<td>Name of the file to process</td>
-		<td>QueryParam</td>
-		<td>String</td>
-	</tr><tr>
 		<td>N/A</td>
-		<td><a href="#SegmentDTO">Segment</a> object received by calling to diarization service</td>
+		<td>The <a href="#HyperEventDTO">HyperEvent</a> to process</td>
 		<td>Body</td>
 		<td>application/json</td>
 	</tr>
 </table>
 
+<h4>Process</h4>
 
+<p>Triggers audio or video processing on the video files sent.</p>
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/process</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>POST</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>application/zip</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>N/A</td>
+	</tr>
+</table>
 
 <p>Method parameters</p>
 
@@ -2037,14 +2018,99 @@ Example of track might be:
 		<th>ParameterType</th>
 		<th>ValueType</th>
 	</tr><tr>
-		<td>fileName</td>
-		<td>Name of the <a href="#FileDTO">File</a> to process</td>
+		<td>sessionId</td>
+		<td>Session ID</td>
 		<td>QueryParam</td>
-		<td>String</td>
+		<td>Long</td>
+	</tr><tr>
+		<td>N/A</td>
+		<td>Content of the <a href="#FileDTO">Files</a></td>
+		<td>Body</td>
+		<td>application/zip</td>
+	</tr><tr>
+
+</table>
+
+<h4>Poll</h4>
+
+<p>Polls a session to get processing status.</p>
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/poll</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>text/plain <br/> Status options: IDLE, IN_PROGRESS, SUCCESS, FAILURE</td>
 	</tr>
 </table>
 
-	</div>
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>sessionId</td>
+		<td>Session ID</td>
+		<td>QueryParam</td>
+		<td>Long</td>
+</table>
+
+<h4>Get result</h4>
+
+<p>Returns output of a completed processing request.</p>
+<p>Request parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>URL</th>
+		<td>/getResult</td>
+	</tr><tr>
+		<th>Method</th>
+		<td>GET</td>
+	</tr><tr>
+		<th>Accept</th>
+		<td>N/A</td>
+	</tr><tr>
+		<th>Return</th>
+		<td>multipart/form-data <br/> Contains JSON string representing analytics output (and optionnaly a zipped produced files).</td>
+	</tr>
+</table>
+
+<p>Method parameters</p>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+		<th>ParameterType</th>
+		<th>ValueType</th>
+	</tr><tr>
+		<td>sessionId</td>
+		<td>Session ID</td>
+		<td>QueryParam</td>
+		<td>Long</td>
+</table>
+
+
+</div>
 
 </div>
 </div>

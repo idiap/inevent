@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>	Inevent | API </title>
 	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/api.css"type="text/css" />	
 	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css" />
 	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/jquery.tocify.css" />
 	
@@ -13,7 +14,6 @@
 	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.spin.js"></script>
 	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery-ui-widget.min.js"></script>
 	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.tocify.min.js"></script>
-	
 	
 
 	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/prism.css">
@@ -44,8 +44,8 @@
 
 	<h2>Description</h2>
 
-	<p>The API specifications were developed during the inEvent projects to be able to exchange data and metadata via Web services, between the end-user plateform, the backend archiving system, and the processing modules. </p>
-
+	<p>The API specifications were developed during the inEvent projects to be able to exchange data and 
+		metadata via Web services, between the end-user plateform, the backend archiving system, and the processing modules.</p>
 	<!--<div class="alert alert-info"> http://inevent.klewel.com:8081/rest/</div>-->
 
 	<h2>DTO definitions</h2>
@@ -1243,6 +1243,13 @@ From here REST API declaration
 
 <h2>REST API</h2>
 
+<p class='well api-example'>
+	<b>The inEvent backend server is compliant with these API specifications.</br>
+	It can receive user management, archiving, and retrieval REST requests at the following address:</b> 
+	<a>http://inevent.klewel.com:8081/rest/</a>
+</p>	
+
+
 <h3>User management</h3>
 
 <h4>Login</h4>
@@ -1479,7 +1486,7 @@ Example of track might be:
 <ul>
 	<li>flash video file</li>
 	<li>sequence of slides</li>
-	<li>transcript (ASR result) - the format needs to be discussed with WP2</li>
+	<li><a href="#VideoAnalyticDTO">Video analytic</a></li>
 </ul>
 
 <p>Request parameters</p>
@@ -1892,7 +1899,9 @@ Example of track might be:
 	</tr>
 </table>
 
-<div class="alert alert-info"><b>Example:</b> http://inevent.klewel.com:8081/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167</div>
+<div class='well api-example'>
+  <b>Example: </b><a href='http://inevent.klewel.com:8081/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167'>http://inevent.klewel.com:8081/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167</a>
+</div>
 
 <h4>Get track file raw</h4>
 
@@ -1940,7 +1949,9 @@ Example of track might be:
 	</tr>
 </table>
 
-<div class="alert alert-info"><b>Example:</b> http://inevent.klewel.com:8081/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167</div>
+<div class='well api-example'> 
+	<b>Example: </b><a href='http://inevent.klewel.com:8081/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167'>http://inevent.klewel.com:8081/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167</a>
+</div> 
 
 <h3>Processing</h3>
 
@@ -1989,7 +2000,7 @@ All consecutive requests use the ID of the allocated session to make correlation
 
 <h4>Process</h4>
 
-<p>Triggers audio or video processing on the video files sent.</p>
+<p>Triggers audio or video processing on the video files sent.<br>Three processing Web services have been developed in compliance with the API specifications. They are described at the end of the section.</p>
 <p>Request parameters</p>
 
 <table class="table">
@@ -2092,7 +2103,7 @@ All consecutive requests use the ID of the allocated session to make correlation
 		<td>N/A</td>
 	</tr><tr>
 		<th>Return</th>
-		<td>multipart/form-data <br/> Contains JSON string representing analytics output (and optionnaly a zipped produced files).</td>
+		<td>multipart/form-data <br/> Contains JSON string representing analytics output (and possibly zipped files).</td>
 	</tr>
 </table>
 
@@ -2111,7 +2122,34 @@ All consecutive requests use the ID of the allocated session to make correlation
 		<td>Long</td>
 </table>
 
+<h5>Speaker diarization</h5>
+<div class='well api-example'>
+	<p>The base URL to specify in the REST request:<a> http://lab.idiap.ch/ineventrest:80.</a></p> 
+	<p>It takes as input the speaker diarization output as well as the <a href="#FileDTO">raw video file</a> of a meeting or a presentation.</p> 
+	<p>A JSON object with a list of <a href="#AudioSegmentDTO"> audio segments</a> is returned as a response to a "getResult" request.</p> 
+</div>
 
+<h5>(Augmented) Automatic Speech Recognition</h5>
+<div class='well api-example'>
+	<p>The URL to specify in the REST request: <a>http://majestic.inf.ed.ac.uk:8080.</a></p> 
+	<p>It takes as input the speaker diarization output (href) as well as the <a href="#FileDTO">video file.</a></p> 
+	<p>An <a href="#AugmentedAsrDTO">Augmented transcript</a> is returned in JSON format as a response to a "getResult" request. 
+		</br> Audio segments are split into different audio classes (e.g. speech, silence, applause) and for speech segments, <a href="#WordDTO">words</a> are returned.</p> 
+
+</div>
+
+<h5>Video analytics</h5>	
+	<div class='well api-example'>
+	<p> The URL to specify in the REST "process" request: <a>http://inevent.hhi.fraunhofer.de:80.</a></p>
+		<ul>
+			<li>when a <a href="#FileDTO">single video input </a> of a meeting is sent (e.g. Radvision), video analysis extracts thumbnails along with participant name and detects active speakers.</li>
+			<li>when a <a href="#FileDTO">single video input </a> of a lecture is sent (e.g. TED talks), temporal video segmentation and classification
+				is performed to identify talk vs. presentation segments.</li> 
+			<li>when <a href="#FileDTO"> input lecture files </a> for presentation and slides are separately recorded  and sent (e.g. Klewel talks), 
+				slide changes, animation, and dynamic content are detected.</li>
+		</ul>
+	<p>A <a href="#VideoAnalyticDTO">Video analytic</a> JSON object is returned as a response to a "getResult" request.</p> 	
+	</div>		 
 </div>
 
 </div>

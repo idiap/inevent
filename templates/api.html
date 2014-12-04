@@ -697,7 +697,7 @@
 	</tr><tr>
 		<th>spokenWords <span class="label label-info">optional</span></th>
 		<td>List of spoken <a href="#WordDTO">Words</a></td>
-		<td>Only when the segment belongs to the "speech" class</td>
+		<td>Valid for "speech" class and after ASR service is called </td>
 	</tr>
 </table>
 
@@ -770,6 +770,51 @@
 
 </code></pre>
 
+<h4 id="SpeakerDiarizationDTO">Speaker Acoustic Segmentation Output</h4>
+
+<p>The following table describes fields of the SpeakerDiarization data object transfer:</p>
+
+<table class="table">
+	<tr>
+		<th></th>
+		<th>Type</th>
+		<th>Value</th>
+	</tr><tr>
+		<th>speakers</th>
+		<td>List of Long</td>
+		<td>Speakers identification</td>
+	</tr><tr>
+		<th>segments</th>
+		<td>List of <a href="#AudioSegmentDTO">Segments</a></td>
+		<td>List of audio segments</td>
+	</tr><tr>
+		<th>classes</th>
+		<td>List of sound classes</td>
+		<td>List of identified classes</td>
+	</tr>
+</table>
+
+<p>The SpeakerDiarization object is represented here in JSON format:</p>
+
+<pre><code class="language-javascript">
+{	"speakers": ["speaker_0", "speaker_1", "speaker_2", "speaker_3"],
+ 	"classes":  ["speech", "silence", "music", "laugh", "applause"],
+ 	"segments": [
+  				{ "startTime": 0.00, 
+  				  "endTime": 0.73, 
+  				  "classId": "speech", 
+  				  "speakerId": "speaker_0", 
+  				  },
+  			  { "startTime": 0.73, 
+  			    "endTime": 0.78, 
+  			    "classId": 
+  			    "silence" }, 
+  			  ...
+   	]
+ }  
+ 
+</code></pre>
+
 <h4 id="AugmentedAsrDTO">AugmentedASR</h4>
 
 <p>The following table describes fields of AugmentedASR data object transfer:</p>
@@ -794,10 +839,12 @@
 	</tr>
 </table>
 
-<p>AugmentedASR is represented here in JSON format:</p>
+<p>The AugmentedASR output is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{	"speakers": ["speaker_0", "speaker_2", "speaker_1", "speaker_3"],
+	
+// AugmentedASR adds to the SpeakerDiarization objects the spoken words for "speech" classes
+{	"speakers": ["speaker_0", "speaker_1", "speaker_2", "speaker_3"],
  	"classes":  ["speech", "silence", "music", "laugh", "applause"],
  	"segments": [
   				{ "startTime": 0.00, 
@@ -2125,15 +2172,15 @@ All consecutive requests use the ID of the allocated session to make correlation
 <h5>Speaker diarization</h5>
 <div class='well api-example'>
 	<p>The base URL to specify in the REST request:<a> http://lab.idiap.ch/ineventrest:80.</a></p> 
-	<p>It takes as input the speaker diarization output as well as the <a href="#FileDTO">raw video file</a> of a meeting or a presentation.</p> 
-	<p>A JSON object with a list of <a href="#AudioSegmentDTO"> audio segments</a> is returned as a response to a "getResult" request.</p> 
+	<p>It takes as input the <a href="#FileDTO">raw video file</a> of a meeting or a presentation.</p> 
+	<p>The generated <a href="#AugmentedAsrDTO">speaker acoustic segmentation</a> output is returned in JSON format as a response to a "getResult" request. 
 </div>
 
 <h5>(Augmented) Automatic Speech Recognition</h5>
 <div class='well api-example'>
 	<p>The URL to specify in the REST request: <a>http://majestic.inf.ed.ac.uk:8080.</a></p> 
-	<p>It takes as input the speaker diarization output (href) as well as the <a href="#FileDTO">video file.</a></p> 
-	<p>An <a href="#AugmentedAsrDTO">Augmented transcript</a> is returned in JSON format as a response to a "getResult" request. 
+	<p>It takes as input the <a href="#SpeakerDiarizationDTO">speaker diarization</a> output as well as the <a href="#FileDTO">video file.</a></p> 
+	<p>The generated <a href="#AugmentedAsrDTO">augmented transcript</a> is returned in JSON format as a response to a "getResult" request. 
 		</br> Audio segments are split into different audio classes (e.g. speech, silence, applause) and for speech segments, <a href="#WordDTO">words</a> are returned.</p> 
 
 </div>
@@ -2148,7 +2195,7 @@ All consecutive requests use the ID of the allocated session to make correlation
 			<li>when <a href="#FileDTO"> input lecture files </a> for presentation and slides are separately recorded  and sent (e.g. Klewel talks), 
 				slide changes, animation, and dynamic content are detected.</li>
 		</ul>
-	<p>A <a href="#VideoAnalyticDTO">Video analytic</a> JSON object is returned as a response to a "getResult" request.</p> 	
+	<p>The generated <a href="#VideoAnalyticDTO">Video analytic</a> JSON object is returned as a response to a "getResult" request.</p> 	
 	</div>		 
 </div>
 

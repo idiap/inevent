@@ -1,149 +1,165 @@
 <script>
-	function update_{{div_id}}_value(firstRun){
-		var firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
+    function update_{{div_id}}_value(firstRun) {
+        var firstRun = typeof firstRun !== 'undefined' ? firstRun : false;
 
-		var range = $("#{{div_id}}_form .user_size") ;
-		var text = $("#{{div_id}}_form .user_size_text") ;
-		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
-		text.html(range.val()) ;
-		var left = (percent * range.width()) - (percent * text.width()) ;
-		text.css({'margin-left': left + 'px'}) ;
-		
-		var range = $("#{{div_id}}_form .user_depth") ;
-		var text = $("#{{div_id}}_form .user_depth_text") ;
-		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
-		text.html(range.val()) ; if(range.val() == 6) {text.html(text.html() + "+") ;}
-		var left = (percent * range.width()) - (percent * text.width()) ;
-		text.css({'margin-left': left + 'px'}) ;
+        var range = $("#{{div_id}}_form .user_size");
+        var text = $("#{{div_id}}_form .user_size_text");
+        var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min')));
+        text.html(range.val());
+        var left = (percent * range.width()) - (percent * text.width());
+        text.css({'margin-left': left + 'px'});
 
-		var range = $("#{{div_id}}_form .user_neighbours") ;
-		var text = $("#{{div_id}}_form .user_neighbours_text") ;
-		var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min'))) ;
-		text.html(range.val()) ;
-		var left = (percent * range.width()) - (percent * text.width()) ;
-		text.css({'margin-left': left + 'px'}) ;
-		
-		//if($("#{{div_id}}").html() == '')
-		if(firstRun == true)
-			$("#{{ div_id }}_params").parent().hide();
-	}
-	
-	function toggle_{{ div_id }}() {
-		$("#{{ div_id }}_params").parent().toggle() ;
-	}
+        var range = $("#{{div_id}}_form .user_depth");
+        var text = $("#{{div_id}}_form .user_depth_text");
+        var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min')));
+        text.html(range.val());
+        if (range.val() == 6) {
+            text.html(text.html() + "+");
+        }
+        var left = (percent * range.width()) - (percent * text.width());
+        text.css({'margin-left': left + 'px'});
+
+        var range = $("#{{div_id}}_form .user_neighbours");
+        var text = $("#{{div_id}}_form .user_neighbours_text");
+        var percent = ((range.val() - range.attr('min')) / (range.attr('max') - range.attr('min')));
+        text.html(range.val());
+        var left = (percent * range.width()) - (percent * text.width());
+        text.css({'margin-left': left + 'px'});
+
+        //if($("#{{div_id}}").html() == '')
+        if (firstRun == true)
+            $("#{{ div_id }}_params").parent().hide();
+    }
+
+    function toggle_{{ div_id }}() {
+        $("#{{ div_id }}_params").parent().toggle();
+    }
 </script>
 
 <div id="{{ div_id }}_form" style="display:block;">
 
-	<div class="modal-header">
-		<button class="close" aria-hidden="true" type="button" onclick="graphs['{{ div_id }}'].switchParams();">×</button>
-		<h4 class="modal-title">
-			Advanced settings
-		</h4>
-	</div>
+    <div class="modal-header">
+        <button class="close" aria-hidden="true" type="button" onclick="graphs['{{ div_id }}'].switchParams();">×
+        </button>
+        <h4 class="modal-title">
+            Advanced settings
+        </h4>
+    </div>
 
-	<form action="" method="post" id="filterform" class="modal-body">
-		<!--
-		<div class="control-group">
-			<label class="control-label" for="buttonMotCles">Keywords</label>
-			<div class="controls"> 
-				<div class="btn-group" data-toggle="buttons-radio">
-					<select class="input-medium" placeholder=".input-medium">
-						<option>Titre</option>
-						<option>Description</option>
-						<option>Transcription</option>
-						<option>Slide</option> 
-						<option>Tous</option>
-					</select>
-				</div>
-				<input class="input-small" placeholder=".input-small" value=" " id="prependedDropdownButton" type="text">
-			</div>
-		</div>
-		-->
-			
-			<div class="control-group">
-				<label>Max number of event</label>
-				<div class="min-label">0</div>
-				<div class="user-value">
-					<input onchange="graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200" step="10" value="50" id="fader2" list="volsettings"></input><br>
-					<div class="user_size_text user_text">0</div>
-				</div>
-				<div class="max-label">200</div>
-			</div>
+    <form action="" method="post" id="filterform" class="modal-body">
+        <!--
+        <div class="control-group">
+            <label class="control-label" for="buttonMotCles">Keywords</label>
+            <div class="controls">
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <select class="input-medium" placeholder=".input-medium">
+                        <option>Titre</option>
+                        <option>Description</option>
+                        <option>Transcription</option>
+                        <option>Slide</option>
+                        <option>Tous</option>
+                    </select>
+                </div>
+                <input class="input-small" placeholder=".input-small" value=" " id="prependedDropdownButton" type="text">
+            </div>
+        </div>
+        -->
 
-			<div class="control-group">
-				<label>Distance from starting event</label>
-				<div class="min-label">1</div>
-				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1" value="2" id="fader2" list="volsettings"></input><br>
-					<div class="user_depth_text user_text">0</div>
-				</div>
-				<div class="max-label">6+</div>
-			</div>
+        <div class="control-group">
+            <label>Max number of event</label>
 
-			<div class="control-group">
-				<label>Neighbours per event</label>
-				<div class="min-label">1</div>
-				<div class="user-value">
-					<input onchange="window['update_{{div_id}}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)" class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1" max="5" value="3" id="fader2" list="volsettings"></input><br>
-					<div class="user_neighbours_text user_text">0</div>
-				</div>
-				<div class="max-label">5</div>
-			</div>
+            <div class="min-label">0</div>
+            <div class="user-value">
+                <input onchange="graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)"
+                       class="user_size input-medium" placeholder=".input-medium" type="range" min="0" max="200"
+                       step="10" value="50" id="fader2" list="volsettings"></input><br>
 
-			<!--
-			<div class="control-group user_emotions">
-				<label>Just show</label>
-				<div class="btn-group" data-toggle="buttons-checkbox">
-					<p><label style="float:left;width:100px;">Ingenious</label>		<input class="user_ingenious input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
-					<p><label style="float:left;width:100px;">Fascinating</label>	<input class="user_fascinating input-medium"	type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
-					<p><label style="float:left;width:100px;">Funny</label>			<input class="user_funny input-medium"			type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
-					<p><label style="float:left;width:100px;">Inspiring</label>		<input class="user_inspiring input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
-					<p><label style="float:left;width:100px;">Persuasive</label>	<input class="user_persuasive input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
-					<p><label style="float:left;width:100px;">Courageous</label>	<input class="user_courageous input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
-				</div>
-				<p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>
-			</div>
-			-->
-		
-		<!--
+                <div class="user_size_text user_text">0</div>
+            </div>
+            <div class="max-label">200</div>
+        </div>
+
+        <div class="control-group">
+            <label>Distance from starting event</label>
+
+            <div class="min-label">1</div>
+            <div class="user-value">
+                <input onchange="window['update_{{ div_id }}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)"
+                       class="user_depth input-medium" placeholder=".input-medium" type="range" min="1" max="6" step="1"
+                       value="2" id="fader2" list="volsettings"></input><br>
+
+                <div class="user_depth_text user_text">0</div>
+            </div>
+            <div class="max-label">6+</div>
+        </div>
+
+        <div class="control-group">
+            <label>Neighbours per event</label>
+
+            <div class="min-label">1</div>
+            <div class="user-value">
+                <input onchange="window['update_{{ div_id }}_value']();graphs['{{ div_id }}'].start_graph(graphs['{{ div_id }}'].from)"
+                       class="user_neighbours input-medium" placeholder=".input-medium" type="range" min="1" step="1"
+                       max="5" value="3" id="fader2" list="volsettings"></input><br>
+
+                <div class="user_neighbours_text user_text">0</div>
+            </div>
+            <div class="max-label">5</div>
+        </div>
+
+        <!--
+        <div class="control-group user_emotions">
+            <label>Just show</label>
+            <div class="btn-group" data-toggle="buttons-checkbox">
+                <p><label style="float:left;width:100px;">Ingenious</label>		<input class="user_ingenious input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
+                <p><label style="float:left;width:100px;">Fascinating</label>	<input class="user_fascinating input-medium"	type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
+                <p><label style="float:left;width:100px;">Funny</label>			<input class="user_funny input-medium"			type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
+                <p><label style="float:left;width:100px;">Inspiring</label>		<input class="user_inspiring input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
+                <p><label style="float:left;width:100px;">Persuasive</label>	<input class="user_persuasive input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
+                <p><label style="float:left;width:100px;">Courageous</label>	<input class="user_courageous input-medium"		type="range" min="0" step="10" max="100" value="100" id="fader2" list="volsettings"></input></p>
+            </div>
+            <p id="emo-warn" class="text-warning" style="display:none">Emotional data are coming soon...</p>
+        </div>
+        -->
+
+        <!--
 		<div class="control-group">
 			<buttom type="submit" class="btn btn-info" onclick="start_graph('{{ div_id }}')">Update graph</button>
 		</div>
 		-->
-		
-		<!--
-		<div class="control-group">
-			<label class="control-label" for="sourceButton">Source</label>
-			<div class="controls">
-				<div class="btn-group" data-toggle="buttons-radio">
-					<select class="input-medium" placeholder=".input-medium">
-						<option>All</option>
-						<option>Klewel</option>
-						<option>Ted</option>
-						<option>Radvision</option>
-					</select>
-				</div>
-			</div>
-		</div>
 
-		<div class="control-group">
-			<label class="control-label">Start Date</label>
-			<div class="controls">
-				<div class="input-append date" id="dp5" data-date-format="dd/mm/yyyy">
-					<input class="input-small" placeholder=".input-small" name="start_date" style="cursor:pointer" value="dd/mm/yyyy" type="text"><span class="add-on"><i class="icon-th"></i></span>
-				</div>
-			</div>
-		</div>
+        <!--
+        <div class="control-group">
+            <label class="control-label" for="sourceButton">Source</label>
+            <div class="controls">
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <select class="input-medium" placeholder=".input-medium">
+                        <option>All</option>
+                        <option>Klewel</option>
+                        <option>Ted</option>
+                        <option>Radvision</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-		<div class="control-group">
-			<label class="control-label">End Date</label>
-			<div class="controls">
-				<div class="input-append date" id="dp6" data-date-format="dd/mm/yyyy">
-					<input class="input-small" placeholder=".input-small" name="end_date" style="cursor:pointer" value="dd/mm/yyyy" type="text"><span class="add-on"><i class="icon-th"></i></span>
-				</div>
-			</div>
-		</div>
-		-->
-	</form>
+        <div class="control-group">
+            <label class="control-label">Start Date</label>
+            <div class="controls">
+                <div class="input-append date" id="dp5" data-date-format="dd/mm/yyyy">
+                    <input class="input-small" placeholder=".input-small" name="start_date" style="cursor:pointer" value="dd/mm/yyyy" type="text"><span class="add-on"><i class="icon-th"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">End Date</label>
+            <div class="controls">
+                <div class="input-append date" id="dp6" data-date-format="dd/mm/yyyy">
+                    <input class="input-small" placeholder=".input-small" name="end_date" style="cursor:pointer" value="dd/mm/yyyy" type="text"><span class="add-on"><i class="icon-th"></i></span>
+                </div>
+            </div>
+        </div>
+        -->
+    </form>
 </div>

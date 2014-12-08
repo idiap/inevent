@@ -1,14 +1,14 @@
 {% if transcripts %}
-	{% load seconds %}
-	<small>
-		{% for transcript in transcripts %}
-			{% if transcript.startTime %}
-    			<!-- <p> {{ transcript.startTime|seconds:"G:H" }}: <b>{{ transcript.displayName }}</b> {{ transcript.value }} </p> -->
-     		   	<p> {{ transcript.startTime|seconds:"G:H" }}: {{ transcript.value }} </p>
-   			{% else %}
-        		<!-- <p> 00:00: <b>{{ transcript.displayName }}</b> {{ transcript.value }} </p> -->
-        		<p> 00:00: {{ transcript.value }} </p>
-    		{% endif %}    
-		{% endfor %}        
-	</small>
+    {% load seconds %}
+    <small>
+        {% for transcript in transcripts %}
+            {% if transcript.startTime %}
+                <!-- <p> {{ transcript.startTime|seconds:"G:H" }}: <b>{{ transcript.displayName }}</b> {{ transcript.value }} </p> -->
+                <p> {{ transcript.startTime|seconds:"G:H" }}: {{ transcript.value }} </p>
+            {% else %}
+                <!-- <p> 00:00: <b>{{ transcript.displayName }}</b> {{ transcript.value }} </p> -->
+                <p> 00:00: {{ transcript.value }} </p>
+            {% endif %}
+        {% endfor %}
+    </small>
 {% endif %} 	

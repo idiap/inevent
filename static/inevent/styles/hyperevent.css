@@ -1,25 +1,25 @@
 html, body {
-	height:100%;
+    height: 100%;
 }
 
 #navMenu {
-	margin-top:10px;
+    margin-top: 10px;
 }
 
 #wrap {
-	min-height:100%;
-	padding-bottom:60px;
+    min-height: 100%;
+    padding-bottom: 60px;
 }
 
 #footer {
-	background-color:#f5f5f5;
-	height:60px;
-	margin-top:-60px;
-	text-align:center;
+    background-color: #f5f5f5;
+    height: 60px;
+    margin-top: -60px;
+    text-align: center;
 }
 
 #footer .container p {
-	margin:20px 0px;
+    margin: 20px 0px;
 }
 
 /*.hyperevent-name, #transcript, #slides {
@@ -27,85 +27,84 @@ html, body {
 }*/
 
 .hyperevent {
-	margin-bottom: 20px;
-	position:relative;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .hyperevent-title, .hyperevent-metadata {
-	font-size: 12px;
+    font-size: 12px;
 }
 
-.hyperevent-big-title{
-	font-size: 13px;
+.hyperevent-big-title {
+    font-size: 13px;
 }
-
 
 .snap {
-	height: auto;
-	max-width: 80%;
+    height: auto;
+    max-width: 80%;
 }
 
 .provider {
-	position: absolute;
-	bottom: 20px;
-	left: -5px;
+    position: absolute;
+    bottom: 20px;
+    left: -5px;
 }
 
 .provider-center {
-	left: 5px;
-	position: relative;
-	bottom: 50px;
-	z-index: 50;
+    left: 5px;
+    position: relative;
+    bottom: 50px;
+    z-index: 50;
 }
 
 #search_list {
 }
 
 .recording {
-	height: 100px;
+    height: 100px;
 }
 
 .snapshot, .duration {
-	position: absolute;
-	right: 3px;
-	bottom: 5px;
-	margin-bottom: 4px;
+    position: absolute;
+    right: 3px;
+    bottom: 5px;
+    margin-bottom: 4px;
 }
 
-#toggle_transcript,  #toggle_slides, .img-polaroid, .hyperevent_link_to_page {
-	cursor: pointer;
+#toggle_transcript, #toggle_slides, .img-polaroid, .hyperevent_link_to_page {
+    cursor: pointer;
 }
 
 #related_talks .img-polaroid {
-	float:left;
-	margin-right:10px;
-	width:50px;
+    float: left;
+    margin-right: 10px;
+    width: 50px;
 }
 
 #related_talks .img-polaroid, #related_talks .hyperevent-name {
-	margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 /*.event-date, #toggle_transcript,  #toggle_slides  {
 }*/
 
-.error input[type=text]{
-	border-color:#680000;
-	color:#680000;
+.error input[type=text] {
+    border-color: #680000;
+    color: #680000;
 }
 
 #blocOption {
-	margin-left: 4px;
+    margin-left: 4px;
 }
 
 .form-horizontal .control-label {
-	text-align: left;
+    text-align: left;
 }
 
 #loginWidget {
-	line-height:3em;
+    line-height: 3em;
 }
 
 #loginWidget .btn-group {
-	margin-top: -3px;
+    margin-top: -3px;
 }

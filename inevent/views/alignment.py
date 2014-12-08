@@ -10,11 +10,12 @@ SLIDE_ID_IDX = 0
 START_TIME_IDX = 1
 AUTOMATIC_IDX = 2
 
+
 def alignment_index(request, hyperevent_id=None):
     data = {}
     hyperevents = get_some_events(
         num=10
-        ##search_query={
+        # #search_query={
         ##    'startDate': 1355314332000,
         ##    'endDate': 1355314332000
         ##}
@@ -25,6 +26,7 @@ def alignment_index(request, hyperevent_id=None):
 
     template = 'inevent/alignment_index.html'
     return render_to_response(template, data, context_instance=RequestContext(request))
+
 
 def alignment_view(request, hyperevent_id=None):
     data = {}
@@ -41,7 +43,7 @@ def alignment_view(request, hyperevent_id=None):
             data['video_type'] = 'PROBLEM'
         data['slides'] = [{'url': slide['slide_url'], 'startTime': slide['startTime'] / 1000}
                           for slide in hyperevent['slides']]
-        if len(set ([d['startTime'] for d in data['slides']])) > 1:
+        if len(set([d['startTime'] for d in data['slides']])) > 1:
             data['slides'].sort(key=lambda slide: slide['startTime'])
         else:
             data['slides'].sort(key=lambda slide: slide['url'])
@@ -49,11 +51,14 @@ def alignment_view(request, hyperevent_id=None):
     template = 'inevent/alignment_view.html'
     return render_to_response(template, data, context_instance=RequestContext(request))
 
+
 def _is_automatic(slide):
     return slide[AUTOMATIC_IDX] == '1'
 
+
 def _start_time_of(slide):
     return int(slide[START_TIME_IDX])
+
 
 def update(request, hyperevent_id):
     new_data = {
@@ -64,36 +69,38 @@ def update(request, hyperevent_id):
     do_update_hyperevent(new_data)
     return redirect(reverse('alignment_index', args=['']))
 
+
 def edit(request, hyperevent_id):
     data = {}
     if hyperevent_id:
         data = get_event(hyperevent_id, raw_data=True)
 
-	has_video = 0
-	has_slide = 0
-	
-	for track in data['tracks']:
-		if track['mimeType'] == 'inevent/video':
-			for file in track['files'] :
-				if file['mimeType'][0:5] == 'video':
-					has_video = 1
-		elif track['mimeType'] == 'inevent/slides':
-			has_slide = 1
+        has_video = 0
+        has_slide = 0
 
-	data['has_video'] = has_video
-	data['has_slide'] = has_slide
+        for track in data['tracks']:
+            if track['mimeType'] == 'inevent/video':
+                for file in track['files']:
+                    if file['mimeType'][0:5] == 'video':
+                        has_video = 1
+            elif track['mimeType'] == 'inevent/slides':
+                has_slide = 1
+
+        data['has_video'] = has_video
+        data['has_slide'] = has_slide
 
     template = 'inevent/edit.html'
     return render_to_response(template, data, context_instance=RequestContext(request))
 
-def delete(request, hyperevent_id) :
-	if(hyperevent_id > 0) :
-		print do_delete_hyperevent(request, hyperevent_id)
-	
-	return redirect('/alignment/')
+
+def delete(request, hyperevent_id):
+    if (hyperevent_id > 0):
+        print do_delete_hyperevent(request, hyperevent_id)
+
+    return redirect('/alignment/')
+
 
 def align(request, video_id):
-
     # extract information fron parameters
     info = json.loads(request.body)
     slides = info['slides']
@@ -103,7 +110,7 @@ def align(request, video_id):
         video_len = 1
 
     print 'HELLO', info
-    ### PB with TIMESTAMP...
+    # ## PB with TIMESTAMP...
     ###print [s[START_TIME_IDX] for s in slides]
     ###for i in xrange(len(slides)):
     ###    slides[i][START_TIME_IDX] = 0

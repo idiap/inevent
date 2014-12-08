@@ -1,13 +1,13 @@
 # Django settings for portal project.
 import os.path
 
-#SOUTH_TESTS_MIGRATE = False # To disable migrations and use syncdb instead
+# SOUTH_TESTS_MIGRATE = False # To disable migrations and use syncdb instead
 #SKIP_SOUTH_TESTS = True # To disable South's own unit tests
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies" 
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 TIME_ZONE = 'Europe/Zurich'
 
@@ -29,7 +29,7 @@ USE_L10N = True
 
 PROJECT_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
 
-SERVER_PATH = PROJECT_ROOT+'/static/'
+SERVER_PATH = PROJECT_ROOT + '/static/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -46,7 +46,7 @@ STATIC_URL = 'http://inevent.klewel.com/static/inevent_static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-   os.path.join(os.path.dirname(__file__), '../static/'),
+    os.path.join(os.path.dirname(__file__), '../static/'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -96,24 +96,25 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sessions',
     'inevent',
-    'endless_pagination', # testing
+    'endless_pagination',  # testing
     'dajaxice',
 )
 
-DAJAXICE_MEDIA_PREFIX="dajaxice"
+DAJAXICE_MEDIA_PREFIX = "dajaxice"
 
 ROOT_URLCONF = 'portal.urls'
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
 TEMPLATE_CONTEXT_PROCESSORS += (
-     'django.core.context_processors.request',
+    'django.core.context_processors.request',
 )
 
 # Importing local settings for dev environment
 try:
-    from settings_local import * #@UnusedWildImport
+    from settings_local import *  #@UnusedWildImport
 except ImportError as exc:
-#    from datetime import datetime
+    #    from datetime import datetime
     print u"*************************************************************"
     print u"******** No settings_local.py, running in PRODUCTION ********"
     print u"*************************************************************"

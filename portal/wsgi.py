@@ -14,10 +14,11 @@ framework.
 
 """
 import os
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "portal.settings")
 
 
-#site.addsitedir("/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages")
+# site.addsitedir("/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages")
 #sys.path.append("/Users/sandyingram/Documents/Triskel/backend-portal/")
 #sys.path.append("/Users/sandyingram/Documents/Triskel/backend-portal/portal/")
 
@@ -28,7 +29,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(BASE_DIR, '..'))
 import sys
 import site
 
-sys.path.append(BASE_DIR) 
+sys.path.append(BASE_DIR)
 
 sys.path.append(PROJECT_DIR)
 
@@ -41,7 +42,7 @@ prev_sys_path = list(sys.path)
 
 # Add each new site-packages directory.
 for directory in ALLDIRS:
-  site.addsitedir(directory)
+    site.addsitedir(directory)
 
 # Reorder sys.path so new directories at the front.
 new_sys_path = []
@@ -56,6 +57,7 @@ sys.path[:0] = new_sys_path
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
 from django.core.wsgi import get_wsgi_application
+
 application = get_wsgi_application()
 
 # Apply WSGI middleware here.

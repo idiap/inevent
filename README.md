@@ -13,13 +13,7 @@ Prerequist
 sudo aptitude install python2.7 python-dev python-pip
 ```
 
-Download the code from github:
--------------------------------
-git clone https://github.com/idiap/inevent.git
-
-
-Install the required packages using pip (requirements.txt is inside the inevent repository)
--------------------------------------------------------------------------------------------
+Run pip to resolve dependencies with command
 
 ```sh
 sudo pip install -r requirements.txt
@@ -34,14 +28,13 @@ In your local repository create a settings_local.py file which overwrites DEBUG 
 
 ```python
 DEBUG = True
-STATIC_URL = "/static/"
 SECRET_KEY = "fdlet034msd09w4jfqjvl094ujopfaoo43jfa"
 ```
 
 Run server with the following command
 
 ```sh
-python manage.py runserver 127.0.0.1:8000
+./manage runserver 127.0.0.1:8000
 ```
 
 To access in a web browser under 127.0.0.1:8000

@@ -1,38 +1,45 @@
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html;charset=utf-8">
-		<title>404 Not Found</title>
-		<style><!--
-		body {font-family: arial,sans-serif}
-		//--></style>
-	</head>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>404 Not Found</title>
+    <style><!--
+    body {
+        font-family: arial, sans-serif
+    }
+
+    /
+    /
+    --></style>
+</head>
 <body>
 <table border=0 cellpadding=2 cellspacing=0 width=100% summary="">
-   <tr>
-      <td rowspan=3 width=1% nowrap>
-         <b><font size=10>inEvent</font>&nbsp;&nbsp;</b>
-      <td>&nbsp;</td></tr>
-   <tr>
-      <td bgcolor="#003846"><font color="#f7931e"><b>&nbsp;Page Not Found</b></font></td></tr>
-   <tr>
-      <td>&nbsp;</td>
-	</tr>
+    <tr>
+        <td rowspan=3 width=1% nowrap>
+            <b><font size=10>inEvent</font>&nbsp;&nbsp;</b>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td bgcolor="#003846"><font color="#f7931e"><b>&nbsp;Page Not Found</b></font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
 </table>
 <blockquote>
-<h1>Not Found (404)</h1>
-{% if not message %}
-The requested URL <code>{{ request_path }}</code> was not found on this server.
-{% else %}
-<br>{{ message }}
-{% endif %}
+    <h1>Not Found (404)</h1>
+    {% if not message %}
+        The requested URL <code>{{ request_path }}</code> was not found on this server.
+    {% else %}
+        <br>{{ message }}
+    {% endif %}
 
-<p/>
+    <p/>
 </blockquote>
 <table width=100% cellpadding=0 cellspacing=0 border=0 summary="">
-	<tr>
-		<td bgcolor="#003846"><img alt="" width=1 height=4>
-		</td>
-	</tr>
+    <tr>
+        <td bgcolor="#003846"><img alt="" width=1 height=4>
+        </td>
+    </tr>
 </table>
 </body>
 </html>

@@ -1,95 +1,99 @@
 {% extends "inevent/base.html" %}
 
 {% block content_inevent_page %}
-	<div class="tab-content">
-		<div class="tab-pane active" id="tab1">
-			<div class="row-fluid">
-				<div class="col-fluid span12">
-			<!--		<h2>Most Recent Talks</h2> -->
-					<div id="graph_recent_tabs"></div>
-				</div>
-			</div>
-		
-			<div id="graph_recent_container" class="tabbable graph_container">
-				<div class="row-fluid span12 well" id="recency">
-					<div id="graph_recent" class="graph" style="display:none">
-						<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
-					</div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <div class="row-fluid">
+                <div class="col-fluid span12">
+                    <!--		<h2>Most Recent Talks</h2> -->
+                    <div id="graph_recent_tabs"></div>
+                </div>
+            </div>
 
-					<div id="graph_recent_sidepane" class="graph_sidepane col-fluid span3 pull-right">
-						<div>
-							<div id="graph_recent_params" class="graph_params span12">
-								{% include "inevent/graph_params.html" with div_id="graph_recent" %}
-							</div>
-						</div>
+            <div id="graph_recent_container" class="tabbable graph_container">
+                <div class="row-fluid span12 well" id="recency">
+                    <div id="graph_recent" class="graph" style="display:none">
+                        <div class="alert alert-info" style="margin-top:100px;position:relative;margin-bottom:100px">
+                            Work in progress...<br></br>The first time, it might take few minutes to load the most
+                            recents talks and their related ones. You may switch to other tabs and then come back.
+                        </div>
+                    </div>
 
-						<div class="filter">
-						</div>
-					</div>
+                    <div id="graph_recent_sidepane" class="graph_sidepane col-fluid span3 pull-right">
+                        <div>
+                            <div id="graph_recent_params" class="graph_params span12">
+                                {% include "inevent/graph_params.html" with div_id="graph_recent" %}
+                            </div>
+                        </div>
 
-					<div id="graph_recent_list">
-						<div class="lead">Latest events</div>
-						
-						{% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="tab-pane" id="tab2">
-			<div class="row-fluid">
-				<div class="col-fluid span12">
-					<h2>Favorite Talks</h2>
-				</div>
-			</div>
+                        <div class="filter">
+                        </div>
+                    </div>
 
-			<div class="row-fluid">
-				<div id="graph_container" class="tabbable well well-small span12">
-					<p> Coming Soon </p>
-				</div>
-			</div>
-		</div>
-		
-		<div class="tab-pane" id="tab3">
-			<div id="search_list">
+                    <div id="graph_recent_list">
+                        <div class="lead">Latest events</div>
 
-				<div class="row-fluid">
-					<div class="col-fluid span12">
-						<h2>Search in Talks</h2>
-					</div>
-				</div>
+                        {% include "inevent/hyperevents_content.html" with hyperevents=hyperevents %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-				<div class="row-fluid">
-					<div id="graph_search_container" class="tabbable well well-small span12 graph_container">
-						<p>No search query sent</p>
-						<div id="graph_search"></div>
-					</div>
+        <div class="tab-pane" id="tab2">
+            <div class="row-fluid">
+                <div class="col-fluid span12">
+                    <h2>Favorite Talks</h2>
+                </div>
+            </div>
 
-					<div id="graph_search_sidepane" class="col-fluid span3 pull-right hide" style="margin-right:10px;">
-						<div id="graph_search_params" class="graph_params well span3">
-						</div>
-						
-						<div class="filter">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#tab_recent').addClass("active") ;
+            <div class="row-fluid">
+                <div id="graph_container" class="tabbable well well-small span12">
+                    <p> Coming Soon </p>
+                </div>
+            </div>
+        </div>
 
-			div_id = "graph_recent" ;
-			INCREMENT_ID[div_id] = 0 ;
-			graphs[div_id] = new Graph(div_id) ;
+        <div class="tab-pane" id="tab3">
+            <div id="search_list">
 
-			$("#" + div_id + "_form .user_neighbours").val(3) ;
-			$("#" + div_id + "_form .user_depth").val(3) ;
-			$("#" + div_id + "_form .user_size").val(50) ;
+                <div class="row-fluid">
+                    <div class="col-fluid span12">
+                        <h2>Search in Talks</h2>
+                    </div>
+                </div>
 
-			graphs[div_id].start_graph(null, true) ;
-		});
-	</script>
-{% endblock%}
+                <div class="row-fluid">
+                    <div id="graph_search_container" class="tabbable well well-small span12 graph_container">
+                        <p>No search query sent</p>
+
+                        <div id="graph_search"></div>
+                    </div>
+
+                    <div id="graph_search_sidepane" class="col-fluid span3 pull-right hide" style="margin-right:10px;">
+                        <div id="graph_search_params" class="graph_params well span3">
+                        </div>
+
+                        <div class="filter">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tab_recent').addClass("active");
+
+            div_id = "graph_recent";
+            INCREMENT_ID[div_id] = 0;
+            graphs[div_id] = new Graph(div_id);
+
+            $("#" + div_id + "_form .user_neighbours").val(3);
+            $("#" + div_id + "_form .user_depth").val(3);
+            $("#" + div_id + "_form .user_size").val(50);
+
+            graphs[div_id].start_graph(null, true);
+        });
+    </script>
+{% endblock %}

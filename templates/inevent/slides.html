@@ -1,16 +1,16 @@
 {% if slides %}
-	<div class="row-fluid">	
-    	<div class="btn" id="toggle_slides">
- 			<i class="icon-chevron-down"></i>
- 			<b> Slides </b>
- 		</div>	
-    	<div  id="slides"> 
-    		{% for slide in slides %}
-        		<a href="{{ slide.slide_url }}" rel="shadowbox;">
-        			<img class="snap img-polaroid" src="{{ slide.slide_url }}" style="width:{{ width }}; margin: 1%"/>            
-       			</a>
-        	{% endfor %}
-    	</div>
+    <div class="row-fluid">
+        <div class="btn" id="toggle_slides">
+            <i class="icon-chevron-down"></i>
+            <b> Slides </b>
+        </div>
+        <div id="slides">
+            {% for slide in slides %}
+                <a href="{{ slide.slide_url }}" rel="shadowbox;">
+                    <img class="snap img-polaroid" src="{{ slide.slide_url }}" style="width:{{ width }}; margin: 1%"/>
+                </a>
+            {% endfor %}
+        </div>
     </div>
 {% endif %}    
            						

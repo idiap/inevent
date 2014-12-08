@@ -1,157 +1,165 @@
 {% extends "inevent/base.html" %}
 
 {% block extrastyle_inevent_page %}
-	{% load dajaxice_templatetags %}
-	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="http://releases.flowplayer.org/5.3.2/skin/functional.css" />
+    {% load dajaxice_templatetags %}
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="http://releases.flowplayer.org/5.3.2/skin/functional.css"/>
 {% endblock %}
 
 {% block extrascripts_inevent_page %}
-	<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51d54192080b635d"></script>
-	<!-- <script src="{{ STATIC_URL }}klewelportal/scripts/bootstrap.min.js" type="text/javascript"></script> -->
-	<script src="http://releases.flowplayer.org/js/flowplayer-3.2.12.min.js"></script>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar": true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51d54192080b635d"></script>
+    <!-- <script src="{{ STATIC_URL }}klewelportal/scripts/bootstrap.min.js" type="text/javascript"></script> -->
+    <script src="http://releases.flowplayer.org/js/flowplayer-3.2.12.min.js"></script>
 {% endblock %}
 
 {% load seconds %}
 
 {% block content_inevent_page %}
 
-<div class="tab-content">
-	<div class="tab-pane active" id="tab1">
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
 
-		<div class="row-fluid">
-			<div class="col-fluid span9">
-				<h3 id="center-element" class="pull-left" style="margin-right:20px;">
-					{% if hyperevent.snapshot_url %}
-						<img src="{{ hyperevent.snapshot_url }}" style="height:50px">
-					{% endif %}
-					
-					{{ hyperevent.title }}
-				</h3>
+            <div class="row-fluid">
+                <div class="col-fluid span9">
+                    <h3 id="center-element" class="pull-left" style="margin-right:20px;">
+                        {% if hyperevent.snapshot_url %}
+                            <img src="{{ hyperevent.snapshot_url }}" style="height:50px">
+                        {% endif %}
 
-				<!-- AddThis Button BEGIN -->
-				<div id="addthis" class="addthis_toolbox addthis_default_style pull-left" style="margin-top:20px">
-					<a class="addthis_counter addthis_pill_style"></a>
-				</div>
-				<!-- AddThis Button END -->
+                        {{ hyperevent.title }}
+                    </h3>
 
-				<div class="event-date pull-right" style="margin-top:20px;">
-					{% if hyperevent.date %}
-						<small class="pull-right"> <i class="icon-calendar"></i> {{ hyperevent.date|date:"D d M Y" }} </small>
-					{% endif %}
-				</div>
-			</div>
-		</div>
+                    <!-- AddThis Button BEGIN -->
+                    <div id="addthis" class="addthis_toolbox addthis_default_style pull-left" style="margin-top:20px">
+                        <a class="addthis_counter addthis_pill_style"></a>
+                    </div>
+                    <!-- AddThis Button END -->
 
-		<div class="row-fluid">
-			<div class="col-fluid span9">
-				{% if hyperevent.description or hyperevent.tags %}
-					{{ hyperevent.description }}
-					{% if hyperevent.tags and hyperevent.tags|length > 0 %}
-						</br>
-						<strong>Tags:</strong> {{ hyperevent.tags }}
-					{% endif %}
-				{% endif %}
-				
-			</div>
-		</div>
+                    <div class="event-date pull-right" style="margin-top:20px;">
+                        {% if hyperevent.date %}
+                            <small class="pull-right"><i class="icon-calendar"></i> {{ hyperevent.date|date:"D d M Y" }}
+                            </small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
-		<div class="row-fluid">
-			<div id="graph_event_tabs"></div>
-		</div>
+            <div class="row-fluid">
+                <div class="col-fluid span9">
+                    {% if hyperevent.description or hyperevent.tags %}
+                        {{ hyperevent.description }}
+                        {% if hyperevent.tags and hyperevent.tags|length > 0 %}
+                            </br>
+                            <strong>Tags:</strong> {{ hyperevent.tags }}
+                        {% endif %}
+                    {% endif %}
 
-		<div id="graph_event_container" class="row-fluid graph_container">
-			<div class="col-fluid span12">
-				<div id="graph_event" style="display:none;" class="graph well">
-					<div class="alert alert-info" style ="margin-top:100px;position:relative;margin-bottom:100px"> Work in progress...<br></br>The first time, it might take few minutes to load the most recents talks and their related ones. You may switch to other tabs and then come back. </div>
-				</div>
-				
-				<div id="graph_event_sidepane" class="graph_sidepane col-fluid span3 pull-right">
-					<div>
-						<div id="graph_event_params" class="graph_params span12">
-							{% include "inevent/graph_params.html" with div_id="graph_event" %}
-						</div>
-					</div>
-				
-					<div class="filter">
-					</div>
-				</div>
-			</div>
-		</div>
+                </div>
+            </div>
 
-		<div id="graph_event_list" class="row-fluid">
-			<div class="col-fluid span9">
-				<iframe id="hePlayer" width="100%" height="700px" src='http://inevent.klewel.com:8081/player.jsp?hyperEventId={{ hyperevent.id }}'style='border:none;'> </iframe>
-			</div>
+            <div class="row-fluid">
+                <div id="graph_event_tabs"></div>
+            </div>
 
-			<div class="col-fluid span3 well side_block">
-				<div class="row-fluid" id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id %}</div>
-			</div>
-		</div>
+            <div id="graph_event_container" class="row-fluid graph_container">
+                <div class="col-fluid span12">
+                    <div id="graph_event" style="display:none;" class="graph well">
+                        <div class="alert alert-info" style="margin-top:100px;position:relative;margin-bottom:100px">
+                            Work in progress...<br></br>The first time, it might take few minutes to load the most
+                            recents talks and their related ones. You may switch to other tabs and then come back.
+                        </div>
+                    </div>
 
-	</div>
+                    <div id="graph_event_sidepane" class="graph_sidepane col-fluid span3 pull-right">
+                        <div>
+                            <div id="graph_event_params" class="graph_params span12">
+                                {% include "inevent/graph_params.html" with div_id="graph_event" %}
+                            </div>
+                        </div>
 
-	{% include "inevent/search_result_tab.html" %}
-</div>
+                        <div class="filter">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="graph_event_list" class="row-fluid">
+                <div class="col-fluid span9">
+                    <iframe id="hePlayer" width="100%" height="700px"
+                            src='http://inevent.haifa.il.ibm.com/player.jsp?hyperEventId={{ hyperevent.id }}'
+                            style='border:none;'></iframe>
+                </div>
+
+                <div class="col-fluid span3 well side_block">
+                    <div class="row-fluid"
+                         id="related_talks">{% include "inevent/related_talks.html" with hyperevent_id=hyperevent.id %}</div>
+                </div>
+            </div>
+
+        </div>
+
+        {% include "inevent/search_result_tab.html" %}
+    </div>
 
 
 
-<script type = "text/javascript" >
-	
-	/*	$(document).ready(function() {
-		if ($("#toggle_transcript").length>0){
-			Dajaxice.inevent.get_transcript(display_transcript, {'transcript_url': "{{ hyperevent.transcript_url }}" },{'error_callback': 'error'});
-			$("#toggle_transcript").click({label: 'toggle_transcript', target:'transcript' }, toggle_element);
-		}
-			
-		
-		if ($("#toggle_slides").length>0)
-			$("#toggle_slides").on("click",{label: 'toggle_slides', target:'slides' }, toggle_element);
-			
-	});*/
+    <script type="text/javascript">
 
-	function toggle_element(event) {
-		$("#"+event.data.target).toggleClass('hide');
-		current_image = $("#"+event.data.label+" i");
-		if (current_image.hasClass('icon-chevron-down')){
-			current_image.removeClass('icon-chevron-down');
-			current_image.addClass('icon-chevron-up');
-		}
-		else{
-				current_image.removeClass('icon-chevron-up');
-				current_image.addClass('icon-chevron-down');
-		}
-	}
+        /*	$(document).ready(function() {
+         if ($("#toggle_transcript").length>0){
+         Dajaxice.inevent.get_transcript(display_transcript, {'transcript_url': "{{ hyperevent.transcript_url }}" },{'error_callback': 'error'});
+         $("#toggle_transcript").click({label: 'toggle_transcript', target:'transcript' }, toggle_element);
+         }
 
-	function display_transcript(data) {
-		if ($('#transcript').length>0){
-			$('#transcript').html(data);
-			$('#toggle_transcript').css('display', '');
-		}
-	}
 
-	$(document).ready(function() {
-		div_id = "graph_event" ;
-		INCREMENT_ID[div_id] = 0 ;
-		if("{{display_type}}" != undefined)
-			var display = "{{ display_type }}".replace(/&quot;/g,"\"") ;
-		else
-			var display = "list" ;
+         if ($("#toggle_slides").length>0)
+         $("#toggle_slides").on("click",{label: 'toggle_slides', target:'slides' }, toggle_element);
 
-		graphs[div_id] = new Graph(div_id, display) ;
-		graphs[div_id].setTabsTitle({"icon":"icon-film", "text":"Watch Event", "size":9}, {"text":"More Events" })
+         });*/
 
-		/*When the variable is returned by Django it turns all quotes into &quot;. Using {{someDjangoVariable|safe}} causes a Javascript error. */
-		$('.graph_container').content = 'Chosen event'
-		$("#" + div_id + "_form .user_neighbours").val(3) ;
-		$("#" + div_id + "_form .user_depth").val(6) ;
-		$("#" + div_id + "_form .user_size").val(20) ;
-		
-		var id = {{ hyperevent.id }} ;
-		if(id != undefined)
-			graphs[div_id].start_graph(id, true) ;
-	});
-</script>
+        function toggle_element(event) {
+            $("#" + event.data.target).toggleClass('hide');
+            current_image = $("#" + event.data.label + " i");
+            if (current_image.hasClass('icon-chevron-down')) {
+                current_image.removeClass('icon-chevron-down');
+                current_image.addClass('icon-chevron-up');
+            }
+            else {
+                current_image.removeClass('icon-chevron-up');
+                current_image.addClass('icon-chevron-down');
+            }
+        }
 
-{% endblock%}
+        function display_transcript(data) {
+            if ($('#transcript').length > 0) {
+                $('#transcript').html(data);
+                $('#toggle_transcript').css('display', '');
+            }
+        }
+
+        $(document).ready(function () {
+            div_id = "graph_event";
+            INCREMENT_ID[div_id] = 0;
+            if ("{{display_type}}" != undefined)
+                var display = "{{ display_type }}".replace(/&quot;/g, "\"");
+            else
+                var display = "list";
+
+            graphs[div_id] = new Graph(div_id, display);
+            graphs[div_id].setTabsTitle({"icon": "icon-film", "text": "Watch Event", "size": 9}, {"text": "More Events" })
+
+            /*When the variable is returned by Django it turns all quotes into &quot;. Using
+            {{someDjangoVariable|safe}} causes a Javascript error. */
+            $('.graph_container').content = 'Chosen event'
+            $("#" + div_id + "_form .user_neighbours").val(3);
+            $("#" + div_id + "_form .user_depth").val(6);
+            $("#" + div_id + "_form .user_size").val(20);
+
+            var id = {{ hyperevent.id }};
+            if (id != undefined)
+                graphs[div_id].start_graph(id, true);
+        });
+    </script>
+
+{% endblock %}

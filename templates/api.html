@@ -1,180 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-	
+
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>	Inevent | API </title>
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap.min.css" type="text/css" />
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/api.css"type="text/css" />	
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css" />
-	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/jquery.tocify.css" />
-	
-	
-	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.min.js"></script>
-	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.spin.js"></script>
-	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery-ui-widget.min.js"></script>
-	<script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.tocify.min.js"></script>
-	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Inevent | API </title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/bootstrap-responsive.min.css" type="text/css"/>
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/jquery.tocify.css"/>
 
-	<link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/prism.css">
-	<script src="{{ STATIC_URL }}inevent/scripts/prism.js"></script>
-</head>	
+
+    <script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.spin.js"></script>
+    <script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery-ui-widget.min.js"></script>
+    <script src="{{ STATIC_URL }}inevent/scripts/jquery/jquery.tocify.min.js"></script>
+
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}inevent/styles/prism.css">
+    <script src="{{ STATIC_URL }}inevent/scripts/prism.js"></script>
+</head>
 <body>
-	<div class="navbar navbar-inner" style="padding-left:0;">
-		<div class="nav pull-left span8">
-			<a href="/" class="nav nav-pills pull-left" style="padding-left:65px;background:url('{{ STATIC_URL }}inevent/images/logo_notext.png') -15px 14px; background-repeat:no-repeat;">
-				<h3>inEvent</h3>
-			</a>
-		</div>
-		<div id='right_menu' class="pull-right">
-					<a href="/">inEvent Portal</a> -
-					<a href="http://www.inevent-project.eu/">About</a> - 
-		</div>
-	</div>
+<div class="navbar navbar-inner" style="padding-left:0;">
+    <div class="nav pull-left span8">
+        <a href="/" class="nav nav-pills pull-left"
+           style="padding-left:65px;background:url('{{ STATIC_URL }}inevent/images/logo_notext.png') -15px 14px; background-repeat:no-repeat;">
+            <h3>inEvent</h3>
+        </a>
+    </div>
+    <div id='right_menu' class="pull-right">
+        <a href="/">inEvent Portal</a> -
+        <a href="http://www.inevent-project.eu/">About</a> -
+    </div>
+</div>
 
-	<div class="container-fluid">
-	<div class="row-fluid">
-		
-	<div class="span3 bs-docs-sidebar">
-		<div id="toc"></div>
-	</div>
+<div class="container-fluid">
+<div class="row-fluid">
 
-	<div class="span9">
-	<h1>WP3 Backend API</h1>
+<div class="span3 bs-docs-sidebar">
+    <div id="toc"></div>
+</div>
 
-	<h2>Description</h2>
+<div class="span9">
+<h1>WP3 Backend API</h1>
 
-	<p>The API specifications were developed during the inEvent projects to be able to exchange data and 
-		metadata via Web services, between the end-user plateform, the backend archiving system, and the processing modules.</p>
-	<!--<div class="alert alert-info"> http://inevent.klewel.com:8081/rest/</div>-->
+<h2>Description</h2>
 
-	<h2>DTO definitions</h2>
+<p>This documents describes an API exposed by WP3 backend system that allows to archive and retrieve HyperEvents</p>
 
-	<h3>HyperEvent Structure</h3>
+<div class="alert alert-info">In this API all date variables (ie: creationDate) are transmitted in mili timestamp format
+    and all time (ie: startTime) in miliseconds.
+</div>
+
+<h2>DTO definitions</h2>
+
+<h3>HyperEvent Structure</h3>
 
 <h4 id="HyperEventDTO">HyperEvent</h4>
 
 <p>The following table describes fields of HyperventEvent data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
 
-	<tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>parentId</th>
-		<td>Long</td>
-		<td>Parent (HyperEvent)</td>
-	</tr><tr>
-		<th>childrenIds</th>
-		<td>List of Long</td>
-		<td>Children (HyperEvent)</td>
-	</tr><tr>
-		<th>name</th>
-		<td>String</td>
-		<td>Name</td>
-	</tr><tr>
-		<th>type</th>
-		<td>String</td>
-		<td>Type</td>
-	</tr><tr>
-		<th>description</th>
-		<td>String</td>
-		<td>Description</td>
-	</tr><tr>
-		<th>creationDate</th>
-		<td>Integer</td>
-		<td>Date</td>
-	</tr><tr>
-		<th>Duration</th>
-		<td>Integer</td>
-		<td>Duration</td>
-	</tr><tr>
-		<th>Owner</th>
-		<td><a href="#UserDTO">User</a></td>
-		<td>The user who owns the hyperevent</td>
-	</tr><tr>
-		<th>customData</th>
-		<td>List of <a href="#CustomDataDTO">CustomData</a></td>
-		<td><a href="#CustomDataDTO">CustomData</a> are supplemetary data sent by provider</td>
-	</tr><tr>
-		<th>tracks</th>
-		<td>List of <a href="#TrackDTO">Track</a></td>
-		<td>Tracks</td>
-	</tr><tr>
-		<th>participations</th>
-		<td>List of <a href="#ParticipationDTO">Participation</a></td>
-		<td>Participations who map <a href="#ParticipantDTO">Participant</a> id and role</td>
-	</tr><tr>
-		<th>tags</th>
-		<td>List of <a href="#TagDTO">Tag</a><br/>(date, user, offset, value)</td>
-		<td>Tags</td>
-	</tr><tr>
-		<th>comments</th>
-		<td>List of <a href="CommentDTO">Comments</a><br/>(date, user, text)</td>
-		<td>Comments</td>
-	</tr><tr>
-		<th>children</th>
-		<td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>Children</td>
-	</tr><tr>
-		<th>links</th>
-		<td>List of <a href="#LinkDTO">Link</a></td>
-		<td>References</td>
-	</tr><tr>
-		<th>status <span class="label label-info">optional</span></th>
-		<td>String</td>
-		<td>
-			For real time HyperEvent only. Inform status of event.
-			<ul>
-				<li>recording</li>
-				<li>ended</li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<th>views</th>
-		<td>Long</td>
-		<td>Number of views</td>
-	</tr>
-	<tr>
-		<th>likes</th>
-		<td>Long</td>
-		<td>Number of likes</td>
-	</tr>
-	<tr>
-		<th>dislikes</th>
-		<td>Long</td>
-		<td>Number of dislikes</td>
-	</tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>parentId</th>
+        <td>Long</td>
+        <td>Parent (HyperEvent)</td>
+    </tr>
+    <tr>
+        <th>childrenIds</th>
+        <td>List of Long</td>
+        <td>Children (HyperEvent)</td>
+    </tr>
+    <tr>
+        <th>name</th>
+        <td>String</td>
+        <td>Name</td>
+    </tr>
+    <tr>
+        <th>type</th>
+        <td>String</td>
+        <td>Type</td>
+    </tr>
+    <tr>
+        <th>description</th>
+        <td>String</td>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <th>creationDate</th>
+        <td>Integer</td>
+        <td>Date</td>
+    </tr>
+    <tr>
+        <th>Duration</th>
+        <td>Integer</td>
+        <td>Duration</td>
+    </tr>
+    <tr>
+        <th>Owner</th>
+        <td><a href="#UserDTO">User</a></td>
+        <td>The user who owns the hyperevent</td>
+    </tr>
+    <tr>
+        <th>customData</th>
+        <td>List of <a href="#CustomDataDTO">CustomData</a></td>
+        <td><a href="#CustomDataDTO">CustomData</a> are supplemetary data sent by provider</td>
+    </tr>
+    <tr>
+        <th>tracks</th>
+        <td>List of <a href="#TrackDTO">Track</a></td>
+        <td>Tracks</td>
+    </tr>
+    <tr>
+        <th>participations</th>
+        <td>List of <a href="#ParticipationDTO">Participation</a></td>
+        <td>Participations who map <a href="#ParticipantDTO">Participant</a> id and role</td>
+    </tr>
+    <tr>
+        <th>tags</th>
+        <td>List of <a href="#TagDTO">Tag</a><br/>(date, user, offset, value)</td>
+        <td>Tags</td>
+    </tr>
+    <tr>
+        <th>comments</th>
+        <td>List of <a href="CommentDTO">Comments</a><br/>(date, user, text)</td>
+        <td>Comments</td>
+    </tr>
+    <tr>
+        <th>children</th>
+        <td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>Children</td>
+    </tr>
+    <tr>
+        <th>links</th>
+        <td>List of <a href="#LinkDTO">Link</a></td>
+        <td>References</td>
+    </tr>
+    <tr>
+        <th>status <span class="label label-info">optional</span></th>
+        <td>String</td>
+        <td>
+            For real time HyperEvent only. Inform status of event.
+            <ul>
+                <li>recording</li>
+                <li>ended</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>views</th>
+        <td>Long</td>
+        <td>Number of views</td>
+    </tr>
+    <tr>
+        <th>likes</th>
+        <td>Long</td>
+        <td>Number of likes</td>
+    </tr>
+    <tr>
+        <th>dislikes</th>
+        <td>Long</td>
+        <td>Number of dislikes</td>
+    </tr>
 </table>
 
 <p>HyperEvent is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"id": 1261,
-	"parentId": 1,
-	"childrenIds": [],
-	"owner": {},
-	"name": "Lecture 01",
-	"description": "Algebra",
-	"creationDate": "1330380000000",
-	"duration": 1800000,
-	"customData": [],
-	"tags": [],
-	"tracks": [],
-	"status": "ended",
-	"views":0,
-	"likes":0,
-	"dislikes":0
-}
+    {
+    "id": 1261,
+    "parentId": 1,
+    "childrenIds": [],
+    "owner": {},
+    "name": "Lecture 01",
+    "description": "Algebra",
+    "creationDate": "1330380000000",
+    "duration": 1800000,
+    "customData": [],
+    "tags": [],
+    "tracks": [],
+    "status": "ended",
+    "views":0,
+    "likes":0,
+    "dislikes":0
+    }
 </code></pre>
 
 <h4 id="TrackDTO">Track</h4>
@@ -182,51 +200,56 @@
 <p>The following table describes fields of Track data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>trackType</th>
-		<td>String</td>
-		<td>The track type<br>
-			<ul>
-				<li>audio</li>
-				<li>docs</li>
-				<li>participant-events</li>
-				<li>transcript</li>
-				<li>video-analysis</li>
-			</ul>
-		</td>
-	</tr><tr>
-		<th>description</th>
-		<td>String</td>
-		<td>Describe the track</td>
-	</tr><tr>
-		<th>parentId</th>
-		<td>Long</td>
-		<td>Parent <a href="#HyperEventDTO">HyperEvent</a></td>
-	</tr><tr>
-		<th>files</th>
-		<td>list of <a href="#FileDTO">File</a></td>
-		<td>Track files (images, videos, transcript, ...)</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>trackType</th>
+        <td>String</td>
+        <td>The track type<br>
+            <ul>
+                <li>audio</li>
+                <li>docs</li>
+                <li>participant-events</li>
+                <li>transcript</li>
+                <li>video-analysis</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>description</th>
+        <td>String</td>
+        <td>Describe the track</td>
+    </tr>
+    <tr>
+        <th>parentId</th>
+        <td>Long</td>
+        <td>Parent <a href="#HyperEventDTO">HyperEvent</a></td>
+    </tr>
+    <tr>
+        <th>files</th>
+        <td>list of <a href="#FileDTO">File</a></td>
+        <td>Track files (images, videos, transcript, ...)</td>
+    </tr>
 </table>
 
 <p>tracks field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Track objects:</p>
 
 <pre><code class="language-javascript">
-{
-	"id":2914,
-	"trackType":"inevent/video",
-	"description":"Radvision video",
-	"parentId":1261,
-	"files":[]
-}
+    {
+    "id":2914,
+    "trackType":"inevent/video",
+    "description":"Radvision video",
+    "parentId":1261,
+    "files":[]
+    }
 </code></pre>
 
 <h4 id="FileDTO">File</h4>
@@ -234,49 +257,54 @@
 <p>The following table describes fields of File data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>startDate</th>
-		<td>Date</td>
-		<td>milli timestamp</td>
-	</tr><tr>
-		<th>endDate</th>
-		<td>Date</td>
-		<td>milli timestamp</td>
-		<!--<td>When in <a href="#TrackDTO">Track</a> ?</td>-->
-	</tr><tr>
-		<th>fileName</th>
-		<td>String</td>
-		<td>File name</td>
-	</tr><tr>
-		<th>mimeType</th>
-		<td>String</td>
-		<td>file MIME/Type</td>
-	</tr><tr>
-		<th>trackId</th>
-		<td>Long</td>
-		<td>Corresponding <a href="#TrackDTO">Track</a> id</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>startDate</th>
+        <td>Date</td>
+        <td>When in <a href="#TrackDTO">Track</a> ?</td>
+    </tr>
+    <tr>
+        <th>endDate</th>
+        <td>Date</td>
+        <td>When in <a href="#TrackDTO">Track</a> ?</td>
+    </tr>
+    <tr>
+        <th>fileName</th>
+        <td>String</td>
+        <td>File name</td>
+    </tr>
+    <tr>
+        <th>mimeType</th>
+        <td>String</td>
+        <td>file MIME/Type</td>
+    </tr>
+    <tr>
+        <th>trackId</th>
+        <td>Long</td>
+        <td>Related <a href="#TrackDTO">Track</a> id</td>
+    </tr>
 </table>
 
 <p>files field of <a href="#TrackDTO">Track</a> is represented by array of File objects:</p>
 
 <pre><code class="language-javascript">
-{
-	"id":13999,
-	"startDate":1383091805000,
-	"endDate":1383091916000,
-	"fileName":"Slide8.jpg",
-	"mimeType":"image/jpeg",
-	"trackId":2915
-}
+    {
+    "id":13999,
+    "startDate":1383091805000,
+    "endDate":1383091916000,
+    "fileName":"Slide8.jpg",
+    "mimeType":"image/jpeg",
+    "trackId":2915
+    }
 </code></pre>
 
 <h4 id="ParticipationDTO">Participation</h4>
@@ -284,43 +312,47 @@
 <p>The following table describes fields of Participation data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>participant</th>
-		<td>List of <a href="#UserDTO">User</a></td>
-		<td>Participants</td>
-	</tr><tr>
-		<th>hyperEventId</th>
-		<td>Long</td>
-		<td>HyperEvent</td>
-	</tr><tr>
-		<th>role</th>
-		<td>String</td>
-		<td>Role
-			<ul>
-				<li>participant</li>
-				<li>lecturer</li>
-			</ul>
-		</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>participant</th>
+        <td>List of <a href="#UserDTO">User</a></td>
+        <td>Participants</td>
+    </tr>
+    <tr>
+        <th>hyperEventId</th>
+        <td>Long</td>
+        <td>HyperEvent</td>
+    </tr>
+    <tr>
+        <th>role</th>
+        <td>String</td>
+        <td>Role
+            <ul>
+                <li>participant</li>
+                <li>lecturer</li>
+            </ul>
+        </td>
+    </tr>
 </table>
 
 <p>participations field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Participation objects:</p>
 
 <pre><code class="language-javascript">
-{
-	"id": 0,
-	"participant": {},
-	"hyperEventId": 1,
-	"role": "participant"
-}
+    {
+    "id": 0,
+    "participant": {},
+    "hyperEventId": 1,
+    "role": "participant"
+    }
 </code></pre>
 
 <h4 id="UserDTO">User</h4>
@@ -328,39 +360,46 @@
 <p>The following table describes fields of User data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>firstName</th>
-		<td>String</td>
-		<td>First Name</td>
-	</tr><tr>
-		<th>lastName</th>
-		<td>String</td>
-		<td>Last Name</td>
-	</tr><tr>
-		<th>email</th>
-		<td>String</td>
-		<td>E-mail Address</td>
-	</tr><tr>
-		<th>login</th>
-		<td>String</td>
-		<td>User Name </td>
-	</tr><tr>
-		<th>hyperEventWatchHistory</th>
-		<td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>List of watched hyperevents </td>
-	</tr><tr>
-		<th>favoriteHyperEvents</th>
-		<td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>List of favorite hyperevents</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>firstName</th>
+        <td>String</td>
+        <td>First Name</td>
+    </tr>
+    <tr>
+        <th>lastName</th>
+        <td>String</td>
+        <td>Last Name</td>
+    </tr>
+    <tr>
+        <th>email</th>
+        <td>String</td>
+        <td>E-mail Address</td>
+    </tr>
+    <tr>
+        <th>login</th>
+        <td>String</td>
+        <td>User Name</td>
+    </tr>
+    <tr>
+        <th>hyperEventWatchHistory</th>
+        <td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>List of watched hyperevents</td>
+    </tr>
+    <tr>
+        <th>favoriteHyperEvents</th>
+        <td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>List of favorite hyperevents</td>
+    </tr>
 
 </table>
 
@@ -369,15 +408,15 @@
 <p>Here the user has certainly be automatically registered.</p>
 
 <pre><code class="language-javascript">
-{
-	"id": 402,
-	"firstName": Liz,
-	"lastName": Hal,
-	"email": "liz@inevent.com",
-	"login": "Liz40",
-	"hyperEventWatchHistory": [],
-	"favoriteHyperEvents": [],
-}
+    {
+    "id": 402,
+    "firstName": Liz,
+    "lastName": Hal,
+    "email": "liz@inevent.com",
+    "login": "Liz40",
+    "hyperEventWatchHistory": [],
+    "favoriteHyperEvents": [],
+    }
 </code></pre>
 
 <h4 id="TagDTO">Tag</h4>
@@ -385,43 +424,48 @@
 <p>The following table describes fields of Tag data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>hyperEventId</th>
-		<td>Long</td>
-		<td><a href="#HyperEventDTO">HyperEvent</a> reference</td>
-	</tr><tr>
-		<th>creationDate</th>
-		<td>Date</td>
-		<td>Creation date</td>
-	</tr><tr>
-		<th>creatorId</th>
-		<td>Long</td>
-		<td><a href="UserDTO">User</a>ID of the tag creator</td>
-	</tr><tr>
-		<th>value</th>
-		<td>String</td>
-		<td>Tag text</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>hyperEventId</th>
+        <td>Long</td>
+        <td><a href="#HyperEventDTO">HyperEvent</a> reference</td>
+    </tr>
+    <tr>
+        <th>creationDate</th>
+        <td>Date</td>
+        <td>Creation date</td>
+    </tr>
+    <tr>
+        <th>creatorId</th>
+        <td>Long</td>
+        <td><a href="UserDTO">User</a>ID of the tag creator</td>
+    </tr>
+    <tr>
+        <th>value</th>
+        <td>String</td>
+        <td>Tag text</td>
+    </tr>
 </table>
 
 <p>tags field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Tag objects:</p>
 
 <pre><code class="language-javascript">
-{
-	"id":0,
-	"value":"Webinar",
-	"creationDate":0,
-	"creatorId":0,
-	"hyperEventId":0
-}
+    {
+    "id":0,
+    "value":"Webinar",
+    "creationDate":0,
+    "creatorId":0,
+    "hyperEventId":0
+    }
 </code></pre>
 
 <h4 id="LinkDTO">Link</h4>
@@ -429,54 +473,59 @@
 <p>The following table describes fields of Link data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>parentId</th>
-		<td>Long</td>
-		<td>ID of the parent <a href="#HyperEventDTO">HyperEvent</a></td>
-	</tr><tr>
-		<th>type</th>
-		<td>String</td>
-		<td>
-			Link type:
-			<ul>
-				<li>CBR:content</li>
-				<li>EBR: Sentiment</li>
-			</ul>
-		</td>
-	</tr><tr>
-		<th>linkedEventId</th>
-		<td>Long</td>
-		<td>ID of the linked <a href="#HyperEventDTO">HyperEvent</a></td>
-	</tr><tr>
-		<th>relevance</th>
-		<td>Decimal</td>
-		<td>Relevance to the parent <a href="#HyperEventDTO">HyperEvent</a>Varies from 0 to 1.</td>
-	</tr><tr>
-		<th>confidence</th>
-		<td>Decimal</td>
-		<td>Confidence value. Varies from 0 to 1.</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>parentId</th>
+        <td>Long</td>
+        <td>ID of the parent <a href="#HyperEventDTO">HyperEvent</a></td>
+    </tr>
+    <tr>
+        <th>linkType</th>
+        <td>String</td>
+        <td>
+            Link type:
+            <ul>
+                <li>content</li>
+                <li>sentiment</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>linkedEventId</th>
+        <td>Long</td>
+        <td>ID of the linked <a href="#HyperEventDTO">HyperEvent</a></td>
+    </tr>
+    <tr>
+        <th>relevance</th>
+        <td>Decimal</td>
+        <td>Relevance to the parent <a href="#HyperEventDTO">HyperEvent</a>Varies from 0 to 1.</td>
+    </tr>
+    <tr>
+        <th>confidence</th>
+        <td>Decimal</td>
+        <td>Confidence value. Varies from 0 to 1.</td>
+    </tr>
 </table>
 
 <p>links field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Link objects:</p>
 
 <pre><code class="language-javascript">
-{
-	"id": 1,
-	"parentId": 1,
-	"linkedEventId": 2,
-	"relevance": 0.8,
-	"confidence": 0.2,
-	"type": "EBR",
-}
+    {
+    "id": 1,
+    "parentId": 1,
+    "linkedEventId": 2,
+    "relevance": 0.8,
+    "confidence": 0.2,
+    }
 </code></pre>
 
 <h4 id="CommentDTO">Comment</h4>
@@ -484,32 +533,37 @@
 <p>The following table describes fields of Comment data object transfert:</p>
 
 <table class="table">
-	<tr>
+    <tr>
 
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>Comment ID</td>
-	</tr><tr>
-		<th>user</th>
-		<td><a href="#UserDTO">User</a></td>
-		<td>The author of the comment</td>
-	</tr><tr>
-		<th>hyperEventId</th>
-		<td>Long</td>
-		<td>The ID of the commented <a href="#HyperEventDTO">Hyperevent</a></td>
-	</tr><tr>
-		<th>text</th>
-		<td>String</td>
-		<td>Comment</td>
-	</tr><tr>
-		<th>date</th>
-		<td>Long</td>
-		<td>Date</td>
-	</tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>Comment ID</td>
+    </tr>
+    <tr>
+        <th>user</th>
+        <td><a href="#UserDTO">User</a></td>
+        <td>The author of the comment</td>
+    </tr>
+    <tr>
+        <th>hyperEventId</th>
+        <td>Long</td>
+        <td>The ID of the commented <a href="#HyperEventDTO">Hyperevent</a></td>
+    </tr>
+    <tr>
+        <th>text</th>
+        <td>String</td>
+        <td>Comment</td>
+    </tr>
+    <tr>
+        <th>date</th>
+        <td>Long</td>
+        <td>Date</td>
+    </tr>
 </table>
 
 <p>comments field of <a href="#HyperEventDTO">HyperEvent</a> is represented by array of Comment objects:</p>
@@ -518,35 +572,39 @@
 
 <h4 id="SearchResultDTO">SearchResult</h4>
 
-<p>The type field of <a href="#HyperEventDTO">HyperEvent</a> must be set according to predefined <a href="#HyperEventDTO">HyperEvent</a> hierarchy. For example: Faculty -> Course -> Lecture.</p>
+<p>The type field of <a href="#HyperEventDTO">HyperEvent</a> must be set according to predefined <a
+        href="#HyperEventDTO">HyperEvent</a> hierarchy. For example: Faculty -> Course -> Lecture.</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>hyperEvents</th>
-		<td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>The data of search result</td>
-	</tr><tr>
-		<th>count</th>
-		<td>Integer</td>
-		<td>The total number of matching results</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>hyperEvents</th>
+        <td>List of <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>The data of search result</td>
+    </tr>
+    <tr>
+        <th>count</th>
+        <td>Integer</td>
+        <td>The total number of matching results</td>
+    </tr>
 </table>
 
 <p>SearchResult is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"hyperEvents":[],
-	"count":1000
-}
+    {
+    "hyperEvents":[],
+    "count":1000
+    }
 </code></pre>
 
 <h4 id="LinkResultDTO">LinkResult</h4>
@@ -554,32 +612,35 @@
 <p>The following table describes fields of LinkResult data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>links</th>
-		<td>List of <a href="#LinkDTO">Link</a></td>
-		<td></td>
-	</tr><tr>
-		<th>count</th>
-		<td>Integer</td>
-		<td>The total number of links</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>links</th>
+        <td>List of <a href="#LinkDTO">Link</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>count</th>
+        <td>Integer</td>
+        <td>The total number of links</td>
+    </tr>
 </table>
 
 <p>LinkResult is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"links":[],
-	"count":1000
-}
+    {
+    "links":[],
+    "count":1000
+    }
 </code></pre>
 
 <h4 id="FilterDTO">Filter</h4>
@@ -587,144 +648,158 @@
 <p>The following table describes fields of Filter data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>providerName</th>
-		<td>String</td>
-		<td>Search/Filter by provider</td>
-	</tr><tr>
-		<th>title</th>
-		<td>String</td>
-		<td>Search/Filter by title</td>
-	</tr><tr>
-		<th>startDate</th>
-		<td>milli timestamp</td>
-		<td>Search/Filter from date</td>
-	</tr><tr>
-		<th>endDate</th>
-		<td>milli timestamp</td>
-		<td>Search/Filter to date</td>
-	</tr><tr>
-		<th>speaker</th>
-		<td>String</td>
-		<td>Search/Filter by speaker</td>
-	</tr><tr>
-		<th>firstResult</th>
-		<td>Integer</td>
-		<td>For pagination purposes, first result to return</td>
-	</tr><tr>
-		<th>maxResults</th>
-		<td>Integer
-		<td>For pagination purposes, last result to return</td>
-	</tr><tr>
-		<th>orderBy <span class="label label-info">optional</span></th>
-		<td>String</td>
-		<td>Results ordering options: <br/>
-			<ul>
-				<li>date</li>
-				<li>title</li>
-				<li>speaker</li>
-				<li>likes</li>
-				<li>dislikes</li>
-				<li>views</li>
-			</ul>
-		</td>
-	</tr><tr>
-		<th>asc</th>
-		<td>Boolean</td>
-		<td>Sort ascending or descending</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>providerName</th>
+        <td>String</td>
+        <td>Search/Filter by provider</td>
+    </tr>
+    <tr>
+        <th>title</th>
+        <td>String</td>
+        <td>Search/Filter by title</td>
+    </tr>
+    <tr>
+        <th>startDate</th>
+        <td>milli timestamp</td>
+        <td>Search/Filter from date</td>
+    </tr>
+    <tr>
+        <th>endDate</th>
+        <td>milli timestamp</td>
+        <td>Search/Filter to date</td>
+    </tr>
+    <tr>
+        <th>speaker</th>
+        <td>String</td>
+        <td>Search/Filter by speaker</td>
+    </tr>
+    <tr>
+        <th>firstResult</th>
+        <td>Integer</td>
+        <td>For pagination purposes, first result to return</td>
+    </tr>
+    <tr>
+        <th>maxResults</th>
+        <td>Integer
+        <td>For pagination purposes, last result to return</td>
+    </tr>
+    <tr>
+        <th>orderBy <span class="label label-info">optional</span></th>
+        <td>String</td>
+        <td>Results ordering options: <br/>
+            <ul>
+                <li>date</li>
+                <li>title</li>
+                <li>speaker</li>
+                <li>likes</li>
+                <li>dislikes</li>
+                <li>views</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>asc</th>
+        <td>Boolean</td>
+        <td>Sort ascending or descending</td>
+    </tr>
 </table>
 
 <p>Filter is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"providerName":"TED",
-	"title":"A title",
-	"startDate":1398282433812,
-	"endDate":1398282433810,
-	"speaker":"A speaker",
-	"firstResult":0,
-	"maxResults":50,
-	"orderBy":"date",
-	"asc":false,
-	"startDoc":5
-}
+    {
+    "providerName":"TED",
+    "title":"A title",
+    "startDate":1398282433812,
+    "endDate":1398282433810,
+    "speaker":"A speaker",
+    "firstResult":0,
+    "maxResults":50,
+    "orderBy":"date",
+    "asc":false,
+    "startDoc":5
+    }
 </code></pre>
 
 <p>Function using this DTO: <a href="#searchHyperEvents">searchHyperEvents</a></p>
 
-<h3>Audio Processing Output</h3>
+<h3>Audio Processing</h3>
 
 <h4 id="AudioSegmentDTO">AudioSegment</h4>
 
 <p>The following table describes fields of AudioSegment data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>speakerId</th>
-		<td>Long</td>
-		<td>Current speaker identified by processing</td>
-	</tr><tr>
-		<th>startTime</th>
-		<td>Float</td>
-		<td>Start time in milliseconds</td>
-	</tr><tr>
-		<th>endTime</th>
-		<td>Float</td>
-		<td>End time in milliseconds</td>
-	</tr><tr>
-		<th>classes</th>
-		<td>String</td>
-		<td>
-			Possible Sound class or type: <br/>
-			<ul>
-				<li>silence</li>
-				<li>speech</li>
-				<li>music</li>
-				<li>laughter</li>
-				<li>applause</li>
-			</ul>
-		</td>
-	</tr><tr>
-		<th>spokenWords <span class="label label-info">optional</span></th>
-		<td>List of spoken <a href="#WordDTO">Words</a></td>
-		<td>Valid for "speech" class and after ASR service is called </td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>speakerId</th>
+        <td>Long</td>
+        <td>Current speaker identified by processing</td>
+    </tr>
+    <tr>
+        <th>startTime</th>
+        <td>Float</td>
+        <td>Start time in milliseconds</td>
+    </tr>
+    <tr>
+        <th>endTime</th>
+        <td>Float</td>
+        <td>End time in milliseconds</td>
+    </tr>
+    <tr>
+        <th>classes</th>
+        <td>String</td>
+        <td>
+            Possible Sound class or type: <br/>
+            <ul>
+                <li>silence</li>
+                <li>speech</li>
+                <li>music</li>
+                <li>laughter</li>
+                <li>applause</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>spokenWords <span class="label label-info">optional</span></th>
+        <td>List of spoken <a href="#WordDTO">Words</a></td>
+        <td>Only when the segment belongs to the "speech" class</td>
+    </tr>
 </table>
 
 <p>AudioSegment is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-// Segment of class "silence"
-{
-	"speakerId":0,
-	"startTime":1398287417648,
-	"endTime":1398287421648,
-	"class":"silence",
-}
+    // Segment of class "silence"
+    {
+    "speakerId":0,
+    "startTime":1398287417648,
+    "endTime":1398287421648,
+    "class":"silence",
+    }
 
 </code></pre>
 
 <pre><code class="language-javascript">
-// Segment of class "speech"
-{ "startTime": 0.00, 
-  				  "endTime": 730, 
-  				  "classId": "speech", 
-  				  "speakerId": "speaker_0", 
-				  "spokenWords":	[
-   					{ "wordStart":20, "wordEnd":180, "wordId":"GOOD", "wordConfidence":0.64 },
-   					{ "wordStart":180, "wordEnd":710, "wordId":"MORNING", "wordConfidence":0.58 },
-  				    { "wordStart":710, "wordEnd":730, "wordId":"EVERYONE", "wordConfidence":0.49 }]
-  				  }
+    // Segment of class "speech"
+    { "startTime": 0.00,
+    "endTime": 0.73,
+    "classId": "speech",
+    "speakerId": "speaker_0",
+    "spokenWords": [
+    { "wordStart":0.02, "wordEnd":0.18, "wordId":"GOOD", "wordConfidence":0.64 },
+    { "wordStart":0.18, "wordEnd":0.73, "wordId":"MORNING", "wordConfidence":0.58 },
+    { "wordStart":0.73, "wordEnd":1.02, "wordId":"EVERYONE", "wordConfidence":0.49 }]
+    }
 
 </code></pre>
 
@@ -733,86 +808,45 @@
 <p>The following table describes fields of Word data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>wordId</th>
-		<td>String</td>
-		<td>the actual word</td>
-	</tr><tr>
-		<th>wordStart</th>
-		<td>Float</td>
-		<td>Beginning of the word in milliseconds</td>
-	</tr><tr>
-		<th>wordEnd</th>
-		<td>Float</td>
-		<td>End of the word in milliseconds</td>
-	</tr><tr>
-		<th>wordConfidence</th>
-		<td>Float</td>
-		<td>Confidence value. Varies from 0 to 1.</td>
-	</tr>
-	
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>wordId</th>
+        <td>String</td>
+        <td>the actual word</td>
+    </tr>
+    <tr>
+        <th>wordStart</th>
+        <td>Float</td>
+        <td>Beginning of the word in milliseconds</td>
+    </tr>
+    <tr>
+        <th>wordEnd</th>
+        <td>Float</td>
+        <td>End of the word in milliseconds</td>
+    </tr>
+    <tr>
+        <th>wordConfidence</th>
+        <td>Float</td>
+        <td>Confidence value. Varies from 0 to 1.</td>
+    </tr>
+
 </table>
 
 <p>Word is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"wordId":"inEvent",
-	"wordStart":10000,
-	"wordEnd":12000,
-	"wordConfidence":0.9
-}
+    {
+    "wordId":"inEvent",
+    "wordStart":10000,
+    "wordEnd":12000,
+    "wordConfidence":0.9
+    }
 
 
-</code></pre>
-
-<h4 id="SpeakerDiarizationDTO">Speaker Acoustic Segmentation Output</h4>
-
-<p>The following table describes fields of the SpeakerDiarization data object transfer:</p>
-
-<table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>speakers</th>
-		<td>List of Long</td>
-		<td>Speakers identification</td>
-	</tr><tr>
-		<th>segments</th>
-		<td>List of <a href="#AudioSegmentDTO">Segments</a></td>
-		<td>List of audio segments</td>
-	</tr><tr>
-		<th>classes</th>
-		<td>List of sound classes</td>
-		<td>List of identified classes</td>
-	</tr>
-</table>
-
-<p>The SpeakerDiarization object is represented here in JSON format:</p>
-
-<pre><code class="language-javascript">
-{	"speakers": ["speaker_0", "speaker_1", "speaker_2", "speaker_3"],
- 	"classes":  ["speech", "silence", "music", "laugh", "applause"],
- 	"segments": [
-  				{ "startTime": 0.00, 
-  				  "endTime": 730, 
-  				  "classId": "speech", 
-  				  "speakerId": "speaker_0", 
-  				  },
-  			  { "startTime": 730, 
-  			    "endTime": 780, 
-  			    "classId": 
-  			    "silence" }, 
-  			  ...
-   	]
- }  
- 
 </code></pre>
 
 <h4 id="AugmentedAsrDTO">AugmentedASR</h4>
@@ -820,97 +854,105 @@
 <p>The following table describes fields of AugmentedASR data object transfer:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>speakers</th>
-		<td>List of Long</td>
-		<td>Speakers identification</td>
-	</tr><tr>
-		<th>segments</th>
-		<td>List of <a href="#AudioSegmentDTO">Segments</a></td>
-		<td>List of audio segments</td>
-	</tr><tr>
-		<th>classes</th>
-		<td>List of sound classes</td>
-		<td>List of identified classes</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>speakers</th>
+        <td>List of Long</td>
+        <td>Speakers identification</td>
+    </tr>
+    <tr>
+        <th>segments</th>
+        <td>List of <a href="#AudioSegmentDTO">Segments</a></td>
+        <td>List of audio segments</td>
+    </tr>
+    <tr>
+        <th>classes</th>
+        <td>List of sound classes</td>
+        <td>List of identified classes</td>
+    </tr>
 </table>
 
-<p>The AugmentedASR output is represented here in JSON format:</p>
+<p>AugmentedASR is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-	
-// AugmentedASR adds to the SpeakerDiarization objects the spoken words for "speech" classes
-{	"speakers": ["speaker_0", "speaker_1", "speaker_2", "speaker_3"],
- 	"classes":  ["speech", "silence", "music", "laugh", "applause"],
- 	"segments": [
-  				{ "startTime": 0.00, 
-  				  "endTime": 730, 
-  				  "classId": "speech", 
-  				  "speakerId": "speaker_0", 
-				  "spokenWords":	[
-   					{ "wordStart":20, "wordEnd":180, "wordId":"GOOD", "wordConfidence":0.64 },
-   					{ "wordStart":180, "wordEnd":710, "wordId":"MORNING", "wordConfidence":0.58 },
-  				    { "wordStart":710, "wordEnd":730, "wordId":"EVERYONE", "wordConfidence":0.49 }]
-  				  },
-  			  { "startTime": 730, 
-  			    "endTime": 780, 
-  			    "classId": 
-  			    "silence" }, 
-  			  ...
-   	]
- }  
- 
+    { "speakers": ["speaker_0", "speaker_2", "speaker_1", "speaker_3"],
+    "classes": ["speech", "silence", "music", "laugh", "applause"],
+    "segments": [
+    { "startTime": 0.00,
+    "endTime": 0.73,
+    "classId": "speech",
+    "speakerId": "speaker_0",
+    "spokenWords": [
+    { "wordStart":0.02, "wordEnd":0.18, "wordId":"GOOD", "wordConfidence":0.64 },
+    { "wordStart":0.18, "wordEnd":0.73, "wordId":"MORNING", "wordConfidence":0.58 },
+    { "wordStart":0.73, "wordEnd":1.02, "wordId":"EVERYONE", "wordConfidence":0.49 }]
+    },
+    { "startTime": 0.73,
+    "endTime": 0.78,
+    "classId":
+    "silence" },
+    ...
+    ]
+    }
+
 </code></pre>
 
-<h3>Video Processing Output</h3>
+<h3>Video Processing</h3>
 
 <h4 id="VideoAnalyticDTO">VideoAnalytic</h4>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>type</th>
-		<td>String</td>
-		<td>
-			Type of video analytic
-			<ul>
-				<li>slides</li>
-				<li>lecture</li>
-				<li>meeting</li>
-			</ul>
-		</td>
-	</tr><tr>
-		<th>peopleAverage <span class="label label-info">optional</span></th>
-		<td>Float</td>
-		<td></td>
-	</tr><tr>
-		<th>animationsNb <span class="label label-info">optional</span></th>
-		<td>Integer</td>
-		<td></td>
-	</tr><tr>
-		<th>dynamicContentNb <span class="label label-info">optional</span></th>
-		<td>Integer</td>
-		<td></td>
-	</tr><tr>
-		<th>slidesNb <span class="label label-info">optional</span></th>
-		<td>Integer</td>
-		<td></td>
-	</tr><tr>
-		<th>talkRatio <span class="label label-info">optional</span></th>
-		<td>Float</td>
-		<td></td>
-	</tr><tr>
-		<th>videoName <span class="label label-info">optional</span></th>
-		<td>String</td>
-		<td></td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>type</th>
+        <td>String</td>
+        <td>
+            Type of video analytic
+            <ul>
+                <li>slides</li>
+                <li>lecture</li>
+                <li>meeting</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>peopleAverage <span class="label label-info">optional</span></th>
+        <td>Float</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>animationsNb <span class="label label-info">optional</span></th>
+        <td>Integer</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>dynamicContentNb <span class="label label-info">optional</span></th>
+        <td>Integer</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>slidesNb <span class="label label-info">optional</span></th>
+        <td>Integer</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>talkRatio <span class="label label-info">optional</span></th>
+        <td>Float</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>videoName <span class="label label-info">optional</span></th>
+        <td>String</td>
+        <td></td>
+    </tr>
 </table>
 
 <h4 id="VideoSegmentDTO">VideoSegment</h4>
@@ -918,253 +960,258 @@
 <p>The following table describes fields of VideoSegment data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>type</th>
-		<td>String</td>
-		<td>
-			Type of segment
-			<ul>
-				<li>in case of slides</li>
-				<ul>
-					<li>animation</li>
-					<li>slide change</li>
-					<li>dynamic content</li>
-				</ul>
-				<li>in case of lecture</li>
-				<ul>
-					<li>slides</li>
-					<li>talk</li>
-					<li>preamble</li>
-					<li>epilogue</li>
-				</ul>
-				<li>meeting</li>
-				<ul>
-					<li>joining</li>
-					<li>leaving</li>
-				</ul>
-			</ul>
-		</td>
-	</tr><tr>
-		<th>startTime</th>
-		<td>Float</td>
-		<td>Start time in milliseconds</td>
-	</tr><tr>
-		<th>endTime</th>
-		<td>Float</td>
-		<td>End time in milliseconds</td>
-	</tr><tr>
-		<th>participantsInteraction <span class="label label-info">optional</span></th>
-		<td>Integer</td>
-		<td>Percentage value representation of level of interaction between participants</td>
-	</tr><tr>
-		<th>streams <span class="label label-info">optional</span></th>
-		<td>List of <a href="#StreamDTO">Stream</a></td>
-		<td></td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>type</th>
+        <td>String</td>
+        <td>
+            Type of segment
+            <ul>
+                <li>in case of slides</li>
+                <ul>
+                    <li>animation</li>
+                    <li>slide change</li>
+                    <li>dynamic content</li>
+                </ul>
+                <li>in case of lecture</li>
+                <ul>
+                    <li>slides</li>
+                    <li>talk</li>
+                    <li>preamble</li>
+                    <li>epilogue</li>
+                </ul>
+                <li>meeting</li>
+                <ul>
+                    <li>joining</li>
+                    <li>leaving</li>
+                </ul>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>startTime</th>
+        <td>Float</td>
+        <td>Start time in milliseconds</td>
+    </tr>
+    <tr>
+        <th>endTime</th>
+        <td>Float</td>
+        <td>End time in milliseconds</td>
+    </tr>
+    <tr>
+        <th>participantsInteraction <span class="label label-info">optional</span></th>
+        <td>Integer</td>
+        <td>Percentage value representation of level of interaction between participants</td>
+    </tr>
+    <tr>
+        <th>streams <span class="label label-info">optional</span></th>
+        <td>List of <a href="#StreamDTO">Stream</a></td>
+        <td></td>
+    </tr>
 </table>
 
 <h5>VideoSegment representation in "meeting" format</h5>
 
 <pre><code class="language-javascript">
-{
-	"type": "meeting"
-	"segments": [
-		{
-			"type": "leaving",
-			"startTime": 0,
-			"endTime": 10000,
-			"participantInteraction": 3,
-			"streams": [
-				{
-					"id": 0,
-					"activityIntervals": [
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						},
-						{
-							"startTime": 7000,
-							"endTime": 10000
-						}
-					],
-					"peopleNbAverage": 0.98,
-					"peopleMax": 1,
-					"displayName": "Oleg",
-					"faces": [
-						{
-							"id": 1,
-							"faceSizeAverage": 10.3,
-							"horizSpeedAverage": 2.4,
-							"pitchAverage": 1.4,
-							"speedAverage": 5.7,
-							"vertSpeedAverage": 44.56,
-							"yawAverage": 3.44,
-							"appearancePercentage": 55.67
-						}
-					]
-				},
-				{
-					"id": "0",
-					"activityIntervals": [
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						},
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						}
-					],
-					"peopleAverage": 0.98,
-					"peopleMax": 1,
-					"displayName": "Oleg",
-					"faces": [
-						{
-							"id": 1,
-							"faceSizeAverage": 10.3,
-							"horizSpeedAverage": 2.4,
-							"pitchAverage": 1.4,
-							"speedAverage": 5.7,
-							"vertSpeedAverage": 44.56,
-							"yawAverage": 3.44,
-							"appearancePercentage": 55.67
-						}
-					]
-				}
-			]
-		},
-		{
-			"startTime": 5000,
-			"endTime": 10000,
-			"type": "joining",
-			"participantsInteraction": 3,
-			"streams": [
-				{
-					"id": 0,
-					"activityIntervals": [
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						},
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						}
-					],
-					"peopleAverage": 0.98,
-					"peopleMax": 1,
-					"displayName": "Oleg",
-					"faces": [
-						{
-							"id": 1,
-							"faceSizeAverage": 10.3,
-							"horizSpeedAverage": 2.4,
-							"pitchAverage": 1.4,
-							"speedAverage": 5.7,
-							"vertSpeedAverage": 44.56,
-							"yawAverage": 3.44,
-							"appearancePercentage": 55.67
-						}
-					]
-				},
-				{
-					"id": "0",
-					"activityIntervals": [
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						},
-						{
-							"startTime": 5000,
-							"endTime": 10000
-						}
-					],
-					"peopleAverage": 0.98,
-					"peopleMax": 1,
-					"displayName": "Oleg",
-					"faces": [
-						{
-							"id": 1,
-							"faceSizeAverage": 10.3,
-							"horizSpeedAverage": 2.4,
-							"pitchAverage": 1.4,
-							"speedAverage": 5.7,
-							"vertSpeedAverage": 44.56,
-							"yawAverage": 3.44,
-							"appearancePercentage": 55.67
-						}
-					]
-				}
-			]
-		}
-	]
-}
+    {
+    "type": "meeting"
+    "segments": [
+    {
+    "type": "leaving",
+    "startTime": 0,
+    "endTime": 10000,
+    "participantInteraction": 3,
+    "streams": [
+    {
+    "id": 0,
+    "activityIntervals": [
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    },
+    {
+    "startTime": 7000,
+    "endTime": 10000
+    }
+    ],
+    "peopleNbAverage": 0.98,
+    "peopleMax": 1,
+    "displayName": "Oleg",
+    "faces": [
+    {
+    "id": 1,
+    "faceSizeAverage": 10.3,
+    "horizSpeedAverage": 2.4,
+    "pitchAverage": 1.4,
+    "speedAverage": 5.7,
+    "vertSpeedAverage": 44.56,
+    "yawAverage": 3.44,
+    "appearancePercentage": 55.67
+    }
+    ]
+    },
+    {
+    "id": "0",
+    "activityIntervals": [
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    },
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    }
+    ],
+    "peopleAverage": 0.98,
+    "peopleMax": 1,
+    "displayName": "Oleg",
+    "faces": [
+    {
+    "id": 1,
+    "faceSizeAverage": 10.3,
+    "horizSpeedAverage": 2.4,
+    "pitchAverage": 1.4,
+    "speedAverage": 5.7,
+    "vertSpeedAverage": 44.56,
+    "yawAverage": 3.44,
+    "appearancePercentage": 55.67
+    }
+    ]
+    }
+    ]
+    },
+    {
+    "startTime": 5000,
+    "endTime": 10000,
+    "type": "joining",
+    "participantsInteraction": 3,
+    "streams": [
+    {
+    "id": 0,
+    "activityIntervals": [
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    },
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    }
+    ],
+    "peopleAverage": 0.98,
+    "peopleMax": 1,
+    "displayName": "Oleg",
+    "faces": [
+    {
+    "id": 1,
+    "faceSizeAverage": 10.3,
+    "horizSpeedAverage": 2.4,
+    "pitchAverage": 1.4,
+    "speedAverage": 5.7,
+    "vertSpeedAverage": 44.56,
+    "yawAverage": 3.44,
+    "appearancePercentage": 55.67
+    }
+    ]
+    },
+    {
+    "id": "0",
+    "activityIntervals": [
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    },
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    }
+    ],
+    "peopleAverage": 0.98,
+    "peopleMax": 1,
+    "displayName": "Oleg",
+    "faces": [
+    {
+    "id": 1,
+    "faceSizeAverage": 10.3,
+    "horizSpeedAverage": 2.4,
+    "pitchAverage": 1.4,
+    "speedAverage": 5.7,
+    "vertSpeedAverage": 44.56,
+    "yawAverage": 3.44,
+    "appearancePercentage": 55.67
+    }
+    ]
+    }
+    ]
+    }
+    ]
+    }
 </code></pre>
 
 <h5>VideoSegment representation in "lecture" format</h5>
 
 <pre><code class="language-javascript">
-{
-	"type": "lecture",
-	"peopleAverage": 10,
-	"animationsNb": 2,
-	"dynamicContentNb": 4,
-	"slidesNb": 2,
-	"talkRatio": 0.5,
-	"videoName": "Test video",
-	"segments": [
-		{
-			"startTime": 0,
-			"endTime": 10000,
-			"type": "TALK",
-		},
-		{
-			"startTime": 10000,
-			"endTime": 20000,
-			"type": "PRES",
-			"animationIntervals": [
-				{
-					"startTime": 10000,
-					"endTime": 20000,
-					"type": "animation"
-				},
-				{
-					"startTime": 20000,
-					"endTime": 25000,
-					"type": "slide change"
-				}
-			]
-		}
-	]
-}
+    {
+    "type": "lecture",
+    "peopleAverage": 10,
+    "animationsNb": 2,
+    "dynamicContentNb": 4,
+    "slidesNb": 2,
+    "talkRatio": 0.5,
+    "videoName": "Test video",
+    "segments": [
+    {
+    "startTime": 0,
+    "endTime": 10000,
+    "type": "TALK",
+    },
+    {
+    "startTime": 10000,
+    "endTime": 20000,
+    "type": "PRES",
+    "animationIntervals": [
+    {
+    "startTime": 10000,
+    "endTime": 20000,
+    "type": "animation"
+    },
+    {
+    "startTime": 20000,
+    "endTime": 25000,
+    "type": "slide change"
+    }
+    ]
+    }
+    ]
+    }
 </code></pre>
 
 <h5>VideoSegment representation in "slides" format</h5>
 
 <pre><code class="language-javascript">
-{
-	"type": "slides",
-	"animationsNb": 2,
-	"dynamicContentNb": 4,
-	"slidesNb": 2,
-	"videoName": "Test video",
-	"animationIntervals": [
-		{
-			"startTime": 10000,
-			"endTime": 20000,
-			"type": "animation"
-		},
-		{
-			"startTime": 25000,
-			"endTime": 25000,
-			"type": "slide change"
-		}
-	]
-}
+    {
+    "type": "slides",
+    "animationsNb": 2,
+    "dynamicContentNb": 4,
+    "slidesNb": 2,
+    "videoName": "Test video",
+    "animationIntervals": [
+    {
+    "startTime": 10000,
+    "endTime": 20000,
+    "type": "animation"
+    },
+    {
+    "startTime": 25000,
+    "endTime": 25000,
+    "type": "slide change"
+    }
+    ]
+    }
 </code></pre>
 
 <h4 id="StreamDTO">Stream</h4>
@@ -1172,57 +1219,63 @@
 <p>The following table describes fields of Stream data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>activityIntervals</th>
-		<td>List of intervals (miliseconds timestamps)</td>
-		<td>The intervals where a speaker is speaking</td>
-	</tr><tr>
-		<th>peopleNbAverage</th>
-		<td>Float</td>
-		<td>An average of the number of the participant during the conference</td>
-	</tr><tr>
-		<th>peopleMax</th>
-		<td>Integer</td>
-		<td>Maximum of people in the segement</td>
-	</tr><tr>
-		<th>displayName</th>
-		<td>String</td>
-		<td>The name provided in video conference</td>
-	</tr><tr>
-		<th>faces</th>
-		<td><a href="#FaceDTO">Face</a></td>
-		<td></td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>activityIntervals</th>
+        <td>List of intervals (miliseconds timestamps)</td>
+        <td>The intervals where a speaker is speaking</td>
+    </tr>
+    <tr>
+        <th>peopleNbAverage</th>
+        <td>Float</td>
+        <td>An average of the number of the participant during the conference</td>
+    </tr>
+    <tr>
+        <th>peopleMax</th>
+        <td>Integer</td>
+        <td>Maximum of people in the segement</td>
+    </tr>
+    <tr>
+        <th>displayName</th>
+        <td>String</td>
+        <td>The name provided in video conference</td>
+    </tr>
+    <tr>
+        <th>faces</th>
+        <td><a href="#FaceDTO">Face</a></td>
+        <td></td>
+    </tr>
 </table>
 
 <p>Stream is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"id": 0,
-	"activityIntervals": [
-		{
-			"startTime": 5000,
-			"endTime": 10000
-		},
-		{
-			"startTime": 5000,
-			"endTime": 10000
-		}
-	],
-	"peopleNbAverage": 0.98,
-	"peopleMax": 1,
-	"displayName": "Oleg",
-	"faces": []
-}
+    {
+    "id": 0,
+    "activityIntervals": [
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    },
+    {
+    "startTime": 5000,
+    "endTime": 10000
+    }
+    ],
+    "peopleNbAverage": 0.98,
+    "peopleMax": 1,
+    "displayName": "Oleg",
+    "faces": []
+    }
 </code></pre>
 
 <h4 id="FaceDTO">Face</h4>
@@ -1230,58 +1283,66 @@
 <p>The following table describes fields of Face data object transfert:</p>
 
 <table class="table">
-	<tr>
-		<th></th>
-		<th>Type</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>id</th>
-		<td>Long</td>
-		<td>ID</td>
-	</tr><tr>
-		<th>faceSizeAverage</th>
-		<td>Float</td>
-		<td>Face average width in pixels</td>
-	</tr><tr>
-		<th>horizSpeedAverage</th>
-		<td>Float</td>
-		<td>Average face speed in horizontal direction</td>
-	</tr><tr>
-		<th>pitchAverage</th>
-		<td>Float</td>
-		<td>Face orientation in the image plan</td>
-	</tr><tr>
-		<th>speedAverage</th>
-		<td>Float</td>
-		<td>Face speed average</td>
-	</tr><tr>
-		<th>vertSpeedAverage</th>
-		<td>Float</td>
-		<td>Average face speed in vertical direction</td>
-	</tr><tr>
-		<th>yawAverage</th>
-		<td>Float</td>
-		<td>Face orientation out of plan (front/profile)</td>
-	</tr><tr>
-		<th>appearancePercentage</th>
-		<td>Float</td>
-		<td>Percentage of appearance in the windows (from 0 to 100)</td>
-	</tr>
+    <tr>
+        <th></th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>id</th>
+        <td>Long</td>
+        <td>ID</td>
+    </tr>
+    <tr>
+        <th>faceSizeAverage</th>
+        <td>Float</td>
+        <td>Face average width in pixels</td>
+    </tr>
+    <tr>
+        <th>horizSpeedAverage</th>
+        <td>Float</td>
+        <td>Average face speed in horizontal direction</td>
+    </tr>
+    <tr>
+        <th>pitchAverage</th>
+        <td>Float</td>
+        <td>Face orientation in the image plan</td>
+    </tr>
+    <tr>
+        <th>speedAverage</th>
+        <td>Float</td>
+        <td>Face speed average</td>
+    </tr>
+    <tr>
+        <th>vertSpeedAverage</th>
+        <td>Float</td>
+        <td>Average face speed in vertical direction</td>
+    </tr>
+    <tr>
+        <th>yawAverage</th>
+        <td>Float</td>
+        <td>Face orientation out of plan (front/profile)</td>
+    </tr>
+    <tr>
+        <th>appearancePercentage</th>
+        <td>Float</td>
+        <td>Percentage of appearance in the windows (from 0 to 100)</td>
+    </tr>
 </table>
 
 <p>Face is represented here in JSON format:</p>
 
 <pre><code class="language-javascript">
-{
-	"id": 0,
-	"faceSizeAverage": 10.3,
-	"horizSpeedAverage": 2.4,
-	"pitchAverage": 1.4,
-	"speedAverage": 5.7,
-	"vertSpeedAverage": 44.56,
-	"yawAverage": 3.44,
-	"appearancePercentage": 45.46
-}
+    {
+    "id": 0,
+    "faceSizeAverage": 10.3,
+    "horizSpeedAverage": 2.4,
+    "pitchAverage": 1.4,
+    "speedAverage": 5.7,
+    "vertSpeedAverage": 44.56,
+    "yawAverage": 3.44,
+    "appearancePercentage": 45.46
+    }
 </code></pre>
 
 <!-- ---------------------------------------------------------------------------
@@ -1290,17 +1351,9 @@ From here REST API declaration
 
 <h2>REST API</h2>
 
-<p class='well api-example'>
-	<b>The inEvent backend server is compliant with these API specifications.</br>
-	It can receive user management, archiving, and retrieval REST requests at the following address:</b> 
-	<a>http://inevent.klewel.com:8081/rest/</a>
-</p>	
-
-
 <h3>User management</h3>
 
 <h4>Login</h4>
-
 
 
 <p>Log a user into the system.</p>
@@ -1308,33 +1361,38 @@ From here REST API declaration
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/user/login</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>application/json (<a href="#UserDTO">User</a> object)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/user/login</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>application/json (<a href="#UserDTO">User</a> object)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
 </table>
 
 <h3>Archiving</h3>
@@ -1346,38 +1404,43 @@ From here REST API declaration
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/newHyperEvent</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/json</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain (newly created <a href="#HyperEventDTO">HyperEvent</a> id)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/newHyperEvent</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>text/plain (newly created <a href="#HyperEventDTO">HyperEvent</a> id)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>N/A</td>
-		<td>The <a href="#HyperEventDTO">HyperEvent</a> to create</td>
-		<td>Body</td>
-		<td>application/json</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>N/A</td>
+        <td>The <a href="#HyperEventDTO">HyperEvent</a> to create</td>
+        <td>Body</td>
+        <td>application/json</td>
+    </tr>
 </table>
 
 <h4>Update HyperEvent</h4>
@@ -1387,81 +1450,93 @@ From here REST API declaration
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/updateHyperEvent</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/json</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>N/A</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/updateHyperEvent</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>N/A</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>N/A</td>
-		<td>The updated <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>Body</td>
-		<td>application/json</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>N/A</td>
+        <td>The updated <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>Body</td>
+        <td>application/json</td>
+    </tr>
 </table>
 
 <h4>Delete HyperEvent</h4>
 
- 
 
-<p>Deletes <a href="#HyperEventDTO">HyperEvent</a> including its <a href="#TrackDTO">Tracks</a> and track <a href="#FileDTO">Files</a> in database (metadata) and repository (content)</p>
+<p>Deletes <a href="#HyperEventDTO">HyperEvent</a> including its <a href="#TrackDTO">Tracks</a> and track <a
+        href="#FileDTO">Files</a> in database (metadata) and repository (content)</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/deleteHyperEvent</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain (id of the <a href="#TrackDTO">Track</a> which is responsible for <a href="#HyperEventDTO">HyperEvent's</a> deletion)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/deleteHyperEvent</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>text/plain (id of the <a href="#TrackDTO">Track</a> which is responsible for <a href="#HyperEventDTO">HyperEvent's</a>
+            deletion)
+        </td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>hyperEventId</td>
-		<td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>hyperEventId</td>
+        <td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
 <h4>Set HyperEvent links</h4>
@@ -1471,157 +1546,183 @@ From here REST API declaration
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/setHyperEventLinks</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/json</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>N/A</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/setHyperEventLinks</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>N/A</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>hyperEventID</td>
-		<td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr><tr>
-		<td>N/A</td>
-		<td>List of linked <a href="#HyperEventDTO">HyperEvent</a> IDs</td>
-		<td>Body</td>
-		<td>
-			application/json<br/>
-			(list of Long values)
-		</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>hyperEventID</td>
+        <td>ID of the <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
+    <tr>
+        <td>N/A</td>
+        <td>List of linked <a href="#HyperEventDTO">HyperEvent</a> IDs</td>
+        <td>Body</td>
+        <td>
+            application/json<br/>
+            (list of Long values)
+        </td>
+    </tr>
 </table>
 
 <h5>Asynchronous methods</h5>
 
-<p>The following 4 methods are for modifying hyper events. They are asynchronous and will execute ones the hyper event is in unlocked state. Each hyper event is locked during:</p>
+<p>The following 4 methods are for modifying hyper events. They are asynchronous and will execute ones the hyper event
+    is in unlocked state. Each hyper event is locked during:</p>
 
 <ol>
-	<li>the "getTrackFile" method (locked only for modifying tasks)</li>
-	<li>One of the modifying methods is invoked (locked for any usage)</li>
+    <li>the "getTrackFile" method (locked only for modifying tasks)</li>
+    <li>One of the modifying methods is invoked (locked for any usage)</li>
 </ol>
 
-<p>When a modifying method is invoked and one or more files of its tracks is used by one or more callers of "getTrackFile", the hyper event will be marked “prelocked” and no more new callers of “getTrackFile” will be allowed. Ones all the callers are finished, the modifying task will be allowed to execute and will mark the hyper event “locked”. Each asynchronous method returns “id” of the task that was created for it and the task status can be monitored by the “checkTaskStatus” method, described below.</p>
+<p>When a modifying method is invoked and one or more files of its tracks is used by one or more callers of
+    "getTrackFile", the hyper event will be marked “prelocked” and no more new callers of “getTrackFile” will be
+    allowed. Ones all the callers are finished, the modifying task will be allowed to execute and will mark the hyper
+    event “locked”. Each asynchronous method returns “id” of the task that was created for it and the task status can be
+    monitored by the “checkTaskStatus” method, described below.</p>
 
 
 <h4>Upload track</h4>
 
-<p>Adds provided track to specified HyperEvent. The metadata of the track is described by "trackDTO" parameter and its actual data by "data" parameters.</p>
+<p>Adds provided track to specified HyperEvent. The metadata of the track is described by "trackDTO" parameter and its
+    actual data by "data" parameters.</p>
 
-Example of track might be: 
+Example of track might be:
 <ul>
-	<li>flash video file</li>
-	<li>sequence of slides</li>
-	<li><a href="#VideoAnalyticDTO">Video analytic</a></li>
+    <li>flash video file</li>
+    <li>sequence of slides</li>
+    <li>transcript (ASR result) - the format needs to be discussed with WP2</li>
 </ul>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/uploadTrack</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>multipart/form-data</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain (newly created <a href="#TrackDTO">Track</a> id)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/uploadTrack</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>multipart/form-data</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>text/plain (newly created <a href="#TrackDTO">Track</a> id)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>trackDTO</td>
-		<td>The <a href="#TrackDTO">Track</a> informations</td>
-		<td>FormParam</td>
-		<td>application/json</td>
-	</tr><tr>
-		<td>data</td>
-		<td><a href="#TrackDT=">Track</a> binary data (file)</td>
-		<td>FormParam</td>
-		<td>application/octet-stream</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>trackDTO</td>
+        <td>The <a href="#TrackDTO">Track</a> informations</td>
+        <td>FormParam</td>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <td>data</td>
+        <td><a href="#TrackDT=">Track</a> binary data (file)</td>
+        <td>FormParam</td>
+        <td>application/octet-stream</td>
+    </tr>
 </table>
 
 <h4>Update track</h4>
 
-<p>Updates existing <a href="#TrackDTO">Track</a>. The request format is same as for uploadTrack. For single file in data: the file will be created or replaced. For mutiple files (zipped data): new files will be created, existing ones replaced.</p>
+<p>Updates existing <a href="#TrackDTO">Track</a>. The request format is same as for uploadTrack. For single file in
+    data: the file will be created or replaced. For mutiple files (zipped data): new files will be created, existing
+    ones replaced.</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/updateTrack</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>multipart/form-data</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>N/A</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/updateTrack</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>multipart/form-data</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>N/A</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>trackDTO</td>
-		<td>New <a href="#TrackDTO">Track</a> informations</td>
-		<td>FormParam</td>
-		<td>application/json</td>
-	</tr><tr>
-		<td>data</td>
-		<td>New <a href="#TrackDTO">Track</a> binary data</td>
-		<td>FormParam</td>
-		<td>application/octet-stream</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>trackDTO</td>
+        <td>New <a href="#TrackDTO">Track</a> informations</td>
+        <td>FormParam</td>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <td>data</td>
+        <td>New <a href="#TrackDTO">Track</a> binary data</td>
+        <td>FormParam</td>
+        <td>application/octet-stream</td>
+    </tr>
 </table>
 
 <h4>Delete track</h4>
@@ -1631,38 +1732,43 @@ Example of track might be:
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/deleteTrack</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain (id of the task which is responsible for <a href="#TrackDTO">Track's</a> deletion)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/deleteTrack</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>text/plain (id of the task which is responsible for <a href="#TrackDTO">Track's</a> deletion)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>trackID</td>
-		<td>ID of the <a href="#TrackDTO">Track</a> to delete</td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>trackID</td>
+        <td>ID of the <a href="#TrackDTO">Track</a> to delete</td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
 <h4>Delete track file</h4>
@@ -1672,184 +1778,202 @@ Example of track might be:
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/deleteTrackFile</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain (id of the task which is responsible for track <a href="#File">File's</a> deletion)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/deleteTrackFile</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>text/plain (id of the task which is responsible for track <a href="#File">File's</a> deletion)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>trackField</td>
-		<td>ID of the track's <a href="#FileDTO">File</a></td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>trackField</td>
+        <td>ID of the track's <a href="#FileDTO">File</a></td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
 <h4>Check task status</h4>
 
- 
 
-<p>Checks status of the task created by one of the following requests: "deleteHyperEvent", "deleteTrack", "deleteTrackFile"</p>
+<p>Checks status of the task created by one of the following requests: "deleteHyperEvent", "deleteTrack",
+    "deleteTrackFile"</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/archiving/checkTaskStatus</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>
-			<p>text/plain</p>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/archiving/checkTaskStatus</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>
+            <p>text/plain</p>
 
-			Represented by on of the following values:
-			<ul>
-				<li>'WAITING' – the task is in waiting state before its execution</li>
-				<li>'RUNNING' – the task is currently being executed</li>
-				<li>'COMPLETED' – the task's execution completed successfully</li>
-				<li>'ERROR' – the task's execution completed with error</li>
-			</ul>
-		</td>
-	</tr>
+            Represented by on of the following values:
+            <ul>
+                <li>'WAITING' – the task is in waiting state before its execution</li>
+                <li>'RUNNING' – the task is currently being executed</li>
+                <li>'COMPLETED' – the task's execution completed successfully</li>
+                <li>'ERROR' – the task's execution completed with error</li>
+            </ul>
+        </td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>taskId</td>
-		<td>ID of the task</td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>taskId</td>
+        <td>ID of the task</td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
 <h3>Retrieval</h3>
 
 <h4>Get HyperEvent</h4>
 
- 
 
 <p>Retrieves desired <a href="#HyperEventDTO">HyperEvent</a> by id.</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/retrieval/getHyperEvent</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>application/json (<a href="#HyperEventDTO">HyperEvent</a> object)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/retrieval/getHyperEvent</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>application/json (<a href="#HyperEventDTO">HyperEvent</a> object)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>hyperEventId</td>
-		<td>ID of <a href="#HyperEventDTO">HyperEvent</a></td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>hyperEventId</td>
+        <td>ID of <a href="#HyperEventDTO">HyperEvent</a></td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
 <h4 id="searchHyperEvents">Search HyperEvents</h4>
 
-<p>Retrieves all <a href="#HyperEventDTO">HyperEvents</a> that match the search query.
-	If no keyword and no filter are specified, all hyperevents are returned.
-</p>
+<p>Retrieves all <a href="#HyperEventDTO">HyperEvents</a> which matching the provided search query.</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/retrieval/searchHyperEvents</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/json</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>application/json (<a href="#SearchResultDTO">SearchResult</a> object)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/retrieval/searchHyperEvents</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>application/json (<a href="#SearchResultDTO">SearchResult</a> object)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>searchQuery</td>
-		<td>Free text query condition</td>
-		<td>QueryParam</td>
-		<td>String</td>
-	</tr><tr>
-		<td>N/A</td>
-		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
-		<td>Body</td>
-		<td><a href="#FilterDTO">Filter</a></td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>searchQuery</td>
+        <td>Free text query condition</td>
+        <td>QueryParam</td>
+        <td>String</td>
+    </tr>
+    <tr>
+        <td>N/A</td>
+        <td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
+        <td>Body</td>
+        <td><a href="#FilterDTO">Filter</a></td>
+    </tr>
 </table>
 
 <h4>Find similar HyperEvents</h4>
@@ -1859,359 +1983,302 @@ Example of track might be:
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/retrieval/findSimilarHyperEvents</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/json</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>application/json (<a href="#LinkResultDTO">LinkResult</a> object)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/retrieval/findSimilarHyperEvents</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>application/json (<a href="#LinkResultDTO">LinkResult</a> object)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>hyperEventId</td>
-		<td><a href="#HyperEventDTO">HyperEvent</a> id</td>
-		<td>QueryParam</td>
-		<td><a href="#FilterDTO">Long</a></td>
-	</tr><tr>
-		<td>N/A <span class="label label-info">optional</span></td>
-		<td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
-		<td>Body</td>
-		<td><a href="#FilterDTO">Filter</a></td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>hyperEventId</td>
+        <td><a href="#HyperEventDTO">HyperEvent</a> id</td>
+        <td>QueryParam</td>
+        <td><a href="#FilterDTO">Long</a></td>
+    </tr>
+    <tr>
+        <td>N/A <span class="label label-info">optional</span></td>
+        <td><a href="#FilterDTO">Filter</a> object containing various fields for query filtering</td>
+        <td>Body</td>
+        <td><a href="#FilterDTO">Filter</a></td>
+    </tr>
 </table>
 
 <h4>Get track file</h4>
 
- 
 
-<p>Retrieves desired Track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track id</a> and <a href="#FileDTO">File</a> name and returns it with corresponding mime type in order to be played automatically.</p>
+<p>Retrieves desired Track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track id</a> and <a
+        href="#FileDTO">File</a> name and returns it with corresponding mime type in order to be played automatically.
+</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/retrieval/getTrackFile/{fileName}</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>*/* (file content)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/retrieval/getTrackFile/{fileName}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>*/* (file content)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>trackId</td>
-		<td>ID of <a href="#TrackDTO">Track</a></td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr><tr>
-		<td>start <span class="label label-info">optional</span></td>
-		<td>The starting position the <a href="#FileDTO">File</a> is downloaded from</td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>trackId</td>
+        <td>ID of <a href="#TrackDTO">Track</a></td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
+    <tr>
+        <td>start <span class="label label-info">optional</span></td>
+        <td>The starting position the <a href="#FileDTO">File</a> is downloaded from</td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
-<div class='well api-example'>
-  <b>Example: </b><a href='http://inevent.klewel.com:8081/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167'>http://inevent.klewel.com:8081/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167</a>
+<div class="alert alert-info"><b>Example:</b>
+    http://inevent.haifa.il.ibm.com/rest/retrieval/getTrackFile/snapshot.jpg?trackId=2167
 </div>
 
 <h4>Get track file raw</h4>
 
-<p>Retrieves desired Track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track id</a> and <a href="#FileDTO">File name</a> and returns it with mime type "application/octet-stream" in order to download it as is.</p>
+<p>Retrieves desired Track <a href="#FileDTO">File</a> by <a href="#TrackDTO">Track id</a> and <a href="#FileDTO">File
+    name</a> and returns it with mime type "application/octet-stream" in order to download it as is.</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/rest/retrieval/getTrackFileRaw/{fileName}</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>*/* (file content)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/rest/retrieval/getTrackFileRaw/{fileName}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>*/* (file content)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>trackId</td>
-		<td>ID of <a href="#TrackDTO">Track</a></td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr><tr>
-		<td>start <span class="label label-info">optional</span></td>
-		<td>The starting position the file is downloaded from</td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>trackId</td>
+        <td>ID of <a href="#TrackDTO">Track</a></td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
+    <tr>
+        <td>start <span class="label label-info">optional</span></td>
+        <td>The starting position the file is downloaded from</td>
+        <td>QueryParam</td>
+        <td>Long</td>
+    </tr>
 </table>
 
-<div class='well api-example'> 
-	<b>Example: </b><a href='http://inevent.klewel.com:8081/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167'>http://inevent.klewel.com:8081/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167</a>
-</div> 
+<div class="alert alert-info"><b>Example:</b>
+    http://inevent.haifa.il.ibm.com/rest/retrieval/getTrackFileRaw/snapshot.jpg?trackId=2167
+</div>
 
-<h3>Processing</h3>
+<h3>Process file</h3>
 
-<h4>Initiate Session </h4>
-
-
-<p>Initiates a session against specific analytics’ service.</b>
-All consecutive requests use the ID of the allocated session to make correlations over requests.</p>
+<p>Processes video <a href="#FileDTO">File</a> and returns analytic's result.</p>
 
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/initiateSession</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/json</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>application/json (newly created Session)</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/processFile?fileName=&lt;fileName&gt;</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>application/json (analytic's processing output in JSON format)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>N/A</td>
-		<td>The <a href="#HyperEventDTO">HyperEvent</a> to process</td>
-		<td>Body</td>
-		<td>application/json</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>fileName</td>
+        <td>Name of the <a href="#FileDTO">File</a> to process</td>
+        <td>QueryParam</td>
+        <td>String</td>
+    </tr>
 </table>
 
-<h4>Process</h4>
+<h3>Process file</h3>
 
-<p>Triggers audio or video processing on the video files sent.<br>Three processing Web services have been developed in compliance with the API specifications. They are described at the end of the section.</p>
+<p>Processes video <a href="#FileDTO">File</a> using Segmentation object received by calling to diarization service.
+    Returns aggregated <a href="#AugmentedASRDTO">AugmentedASR</a> result containing merged ASR and diarization data.
+</p>
+
 <p>Request parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/process</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>POST</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>application/zip</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>N/A</td>
-	</tr>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <th>URL</th>
+        <td>/processFile?fileName=
+            <fileName>&lt;fileName&gt;
+        </td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Accept</th>
+        <td>application/json</td>
+    </tr>
+    <tr>
+        <th>Return</th>
+        <td>application/json (<a href="#AugmentedASRDTO">AugmentedASR</a> object)</td>
+    </tr>
 </table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>sessionId</td>
-		<td>Session ID</td>
-		<td>QueryParam</td>
-		<td>Long</td>
-	</tr><tr>
-		<td>N/A</td>
-		<td>Content of the <a href="#FileDTO">Files</a></td>
-		<td>Body</td>
-		<td>application/zip</td>
-	</tr><tr>
-
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>fileName</td>
+        <td>Name of the file to process</td>
+        <td>QueryParam</td>
+        <td>String</td>
+    </tr>
+    <tr>
+        <td>N/A</td>
+        <td><a href="#SegmentDTO">Segment</a> object received by calling to diarization service</td>
+        <td>Body</td>
+        <td>application/json</td>
+    </tr>
 </table>
 
-<h4>Poll</h4>
-
-<p>Polls a session to get processing status.</p>
-<p>Request parameters</p>
-
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/poll</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>text/plain <br/> Status options: IDLE, IN_PROGRESS, SUCCESS, FAILURE</td>
-	</tr>
-</table>
 
 <p>Method parameters</p>
 
 <table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>sessionId</td>
-		<td>Session ID</td>
-		<td>QueryParam</td>
-		<td>Long</td>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>ParameterType</th>
+        <th>ValueType</th>
+    </tr>
+    <tr>
+        <td>fileName</td>
+        <td>Name of the <a href="#FileDTO">File</a> to process</td>
+        <td>QueryParam</td>
+        <td>String</td>
+    </tr>
 </table>
 
-<h4>Get result</h4>
-
-<p>Returns output of a completed processing request.</p>
-<p>Request parameters</p>
-
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-	</tr><tr>
-		<th>URL</th>
-		<td>/getResult</td>
-	</tr><tr>
-		<th>Method</th>
-		<td>GET</td>
-	</tr><tr>
-		<th>Accept</th>
-		<td>N/A</td>
-	</tr><tr>
-		<th>Return</th>
-		<td>multipart/form-data <br/> Contains JSON string representing analytics output (and possibly zipped files).</td>
-	</tr>
-</table>
-
-<p>Method parameters</p>
-
-<table class="table">
-	<tr>
-		<th>Name</th>
-		<th>Value</th>
-		<th>ParameterType</th>
-		<th>ValueType</th>
-	</tr><tr>
-		<td>sessionId</td>
-		<td>Session ID</td>
-		<td>QueryParam</td>
-		<td>Long</td>
-</table>
-
-<h5>Speaker diarization</h5>
-<div class='well api-example'>
-	<p>The base URL to specify in the REST request:<a> http://lab.idiap.ch/ineventrest:80.</a></p> 
-	<p>It takes as input the <a href="#FileDTO">raw video file</a> of a meeting or a presentation.</p> 
-	<p>The generated <a href="#AugmentedAsrDTO">speaker acoustic segmentation</a> output is returned in JSON format as a response to a "getResult" request. 
-</div>
-
-<h5>(Augmented) Automatic Speech Recognition</h5>
-<div class='well api-example'>
-	<p>The URL to specify in the REST request: <a>http://majestic.inf.ed.ac.uk:8080.</a></p> 
-	<p>It takes as input the <a href="#SpeakerDiarizationDTO">speaker diarization</a> output as well as the <a href="#FileDTO">video file.</a></p> 
-	<p>The generated <a href="#AugmentedAsrDTO">augmented transcript</a> is returned in JSON format as a response to a "getResult" request. 
-		</br> Audio segments are split into different audio classes (e.g. speech, silence, applause) and for speech segments, <a href="#WordDTO">words</a> are returned.</p> 
-
-</div>
-
-<h5>Video analytics</h5>	
-	<div class='well api-example'>
-	<p> The URL to specify in the REST "process" request: <a>http://inevent.hhi.fraunhofer.de:80.</a></p>
-		<ul>
-			<li>when a <a href="#FileDTO">single video input </a> of a meeting is sent (e.g. Radvision), video analysis extracts thumbnails along with participant name and detects active speakers.</li>
-			<li>when a <a href="#FileDTO">single video input </a> of a lecture is sent (e.g. TED talks), temporal video segmentation and classification
-				is performed to identify talk vs. presentation segments.</li> 
-			<li>when <a href="#FileDTO"> input lecture files </a> for presentation and slides are separately recorded  and sent (e.g. Klewel talks), 
-				slide changes, animation, and dynamic content are detected.</li>
-		</ul>
-	<p>The generated <a href="#VideoAnalyticDTO">Video analytic</a> JSON object is returned as a response to a "getResult" request.</p> 	
-	</div>		 
 </div>
 
 </div>
 </div>
 </div>
-	</body>
+</body>
 </html>
 <script>
-//Executes your code when the DOM is ready. Acts the same as $(document).ready().
-$(function() {
-	//Calls the tocify method on your HTML div.
-	$("#toc").tocify({
-		selectors: "h2, h3, h4",
-	}) ;
-});
+    //Executes your code when the DOM is ready. Acts the same as $(document).ready().
+    $(function () {
+        //Calls the tocify method on your HTML div.
+        $("#toc").tocify({
+            selectors: "h2, h3, h4",
+        });
+    });
 </script>
 
 
